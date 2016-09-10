@@ -33,20 +33,6 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/test_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="testMethod"
-            android:text="@string/button_test"
-            android:layout_gravity="center_horizontal"/>
-
-        <RatingBar
-            android:id="@+id/ratingBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal" />
-
-        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Create outgoing"

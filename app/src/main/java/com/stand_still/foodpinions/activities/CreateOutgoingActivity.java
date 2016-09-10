@@ -4,11 +4,13 @@ import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.RatingBar;
+import android.widget.Toast;
 
 import com.stand_still.foodpinions.R;
 import com.stand_still.foodpinions.classes.Outgoing;
@@ -46,6 +48,11 @@ public class CreateOutgoingActivity extends AppCompatActivity {
             int oFrequency = Integer.parseInt(outgoingFrequency.getText().toString());
             User.addOutgoing(new Outgoing(oName, oCost, oFrequency));
             clearFields();
+
+            Toast.makeText(
+                    getApplicationContext(),
+                    String.format("Outgoing \"%s\" added", oName),
+                    Toast.LENGTH_LONG).show();
         }
     }
 
@@ -68,10 +75,12 @@ public class CreateOutgoingActivity extends AppCompatActivity {
     }
 
     void clearFields() {
+//        Animation fadeOut = new AlphaAnimation(1.0f, 0.0f);
+//        fadeOut.setDuration(100);
         for (EditText editTextField :
                 editTextFields) {
+//            editTextField.startAnimation(fadeOut);
             editTextField.getText().clear();
-            editTextField.clearAnimation();
         }
     }
 }

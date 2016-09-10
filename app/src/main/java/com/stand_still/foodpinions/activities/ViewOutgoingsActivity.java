@@ -20,23 +20,27 @@ public class ViewOutgoingsActivity extends AppCompatActivity {
     ListView listView;
     ArrayList<Outgoing> outgoings;
 
+    TextView outgoingsNames;
+    TextView outgoingsCosts;
+    TextView outgoingsFrequencies;
+
+    ArrayList<String> names;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_outgoings);
-
         listView = (ListView) findViewById(R.id.outgoings_list);
-
-        ArrayList<String> names = new ArrayList<>();
-
+        outgoingsNames = (TextView) findViewById(R.id.outgoings_names);
+        outgoingsCosts = (TextView) findViewById(R.id.outgoings_costs);
+        outgoingsFrequencies = (TextView) findViewById(R.id.outgoings_frequencies);
+        names = new ArrayList<>();
         outgoings = User.getOutgoings();
 
-        for (Outgoing outgoing :
-                outgoings) {
+        for (Outgoing outgoing : outgoings)
             names.add(outgoing.getName());
-        }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_list_item_1, android.R.id.text1, names);
 
         listView.setAdapter(adapter);
@@ -44,36 +48,18 @@ public class ViewOutgoingsActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                int itemPosition = position;
-
                 String itemValue = (String) listView.getItemAtPosition(position);
+
+                Outgoing outgoing = User.getOutgoings().get(position);
+                int itemCost = outgoing.getCost();
+                int itemFrequency = outgoing.getFrequency();
 
                 Toast.makeText(
                         getApplicationContext(),
-                        "Position:"+itemPosition+" ListItem:"+itemValue, Toast.LENGTH_LONG).show();
+                        String.format("Name: %s, Cost: %s, Frequency: %s",
+                                itemValue, itemCost, itemFrequency),
+                        Toast.LENGTH_LONG).show();
             }
         });
-
-
-
-        TextView outgoingsNames = (TextView) findViewById(R.id.outgoings_names);
-        TextView outgoingsCosts = (TextView) findViewById(R.id.outgoings_costs);
-        TextView outgoingsFrequencies = (TextView) findViewById(R.id.outgoings_frequencies);
-
-
-        String namesMessage = "";
-        String costsMessage = "";
-        String frequenciesMessage = "";
-
-        for (Outgoing outgoing :
-                outgoings) {
-            namesMessage += outgoing.getName() + " ";
-            costsMessage += outgoing.getCost() + " ";
-            frequenciesMessage += outgoing.getFrequency() + " ";
-        }
-        
-        outgoingsNames.setText(namesMessage);
-        outgoingsCosts.setText(costsMessage);
-        outgoingsFrequencies.setText(frequenciesMessage);
     }
 }

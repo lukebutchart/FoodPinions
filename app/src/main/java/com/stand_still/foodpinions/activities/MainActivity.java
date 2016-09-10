@@ -38,9 +38,4 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ViewOutgoingsActivity.class);
         startActivity(intent);
     }
-
-    public void testMethod(View view) {
-        RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingBar);
-        ratingBar.setRating((ratingBar.getRating() + 0.5f) % 5.5f);
-    }
 }

@@ -10,7 +10,7 @@ public class User {
     static int income;
     static int expenditure;
     static int funds;
-    static ArrayList<Outgoing> outgoings = new ArrayList<>();
+    static OutgoingsList outgoings = new OutgoingsList();
 
     public static void User(String name, int income){
         User.name = name;
@@ -21,7 +21,7 @@ public class User {
         outgoings.add(outgoing);
     }
 
-    public static ArrayList<Outgoing> getOutgoings(){
+    public static OutgoingsList getOutgoings(){
         return outgoings;
     }
 }
