@@ -15,7 +15,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.DisplayMessageActivity"></activity>
+        <activity android:name=".activities.DisplayMessageActivity" />
+        <activity android:name=".activities.CreateOutgoingActivity" />
+        <activity android:name=".activities.ViewOutgoingsActivity"></activity>
     </application>
 
 </manifest>
