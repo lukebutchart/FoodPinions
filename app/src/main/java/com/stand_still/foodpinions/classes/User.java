@@ -20,4 +20,8 @@ public class User {
     public static void addOutgoing(Outgoing outgoing){
         outgoings.add(outgoing);
     }
+
+    public static ArrayList<Outgoing> getOutgoings(){
+        return outgoings;
+    }
 }

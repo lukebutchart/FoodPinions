@@ -14,5 +14,15 @@ public class Outgoing {
         this.frequency = frequency;
     }
 
+    public String getName(){
+        return name;
+    }
 
+    public int getCost(){
+        return cost;
+    }
+
+    public int getFrequency(){
+        return frequency;
+    }
 }

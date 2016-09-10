@@ -59,7 +59,8 @@
             android:layout_height="wrap_content"
             android:text="View outgoings"
             android:id="@+id/view_outgoings_button"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:onClick="goToViewOutgoings"/>
 
     </LinearLayout>
 </LinearLayout>
