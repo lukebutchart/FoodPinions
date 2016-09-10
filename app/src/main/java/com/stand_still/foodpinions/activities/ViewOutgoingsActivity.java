@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.stand_still.foodpinions.R;
+import com.stand_still.foodpinions.classes.CustomArrayAdapter;
 import com.stand_still.foodpinions.classes.Outgoing;
 import com.stand_still.foodpinions.classes.User;
 
@@ -40,10 +41,15 @@ public class ViewOutgoingsActivity extends AppCompatActivity {
         for (Outgoing outgoing : outgoings)
             names.add(outgoing.getName());
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this, android.R.layout.simple_list_item_1, android.R.id.text1, names);
+//        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+//                this, android.R.layout.simple_list_item_1, android.R.id.text1, names);
 
-        listView.setAdapter(adapter);
+        CustomArrayAdapter customAdapter = new CustomArrayAdapter(
+                this, User.getOutgoings()
+        );
+
+//        listView.setAdapter(adapter);
+        listView.setAdapter(customAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

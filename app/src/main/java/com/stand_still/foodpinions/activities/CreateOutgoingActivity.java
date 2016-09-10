@@ -53,6 +53,8 @@ public class CreateOutgoingActivity extends AppCompatActivity {
                     getApplicationContext(),
                     String.format("Outgoing \"%s\" added", oName),
                     Toast.LENGTH_LONG).show();
+
+            outgoingName.requestFocus();
         }
     }
 

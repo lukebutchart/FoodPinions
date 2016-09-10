@@ -42,9 +42,11 @@ public class CustomArrayAdapter extends ArrayAdapter {
         View rowView = inflater.inflate(R.layout.list_custom, parent, false);
         TextView nameColumn = (TextView) rowView.findViewById(R.id.name_column);
         TextView costColumn = (TextView) rowView.findViewById(R.id.cost_column);
+        TextView frequencyColumn = (TextView) rowView.findViewById(R.id.frequency_column);
 //        ImageView imageView = (ImageView) rowView.findViewById(R.id.logo);
         nameColumn.setText(outgoingsList.get(position).getName());
-        costColumn.setText(outgoingsList.get(position).getCost());
+        costColumn.setText(Integer.toString(outgoingsList.get(position).getCost()));
+        frequencyColumn.setText(Integer.toString(outgoingsList.get(position).getFrequency()));
 
 //        // Change icon based on name
 //        String s = values[position];

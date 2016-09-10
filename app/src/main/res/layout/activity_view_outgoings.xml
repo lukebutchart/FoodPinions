@@ -16,27 +16,6 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Outgoings names"
-            android:id="@+id/outgoings_names"
-            android:layout_gravity="center_horizontal" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Outgoings costs"
-            android:id="@+id/outgoings_costs"
-            android:layout_gravity="center_horizontal" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Outgoings frequencies"
-            android:id="@+id/outgoings_frequencies"
-            android:layout_gravity="center_horizontal" />
-
         <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
