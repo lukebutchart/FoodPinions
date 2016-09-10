@@ -1,12 +1,12 @@
-package com.stand_still.foodpinions;
+package com.stand_still.foodpinions.activities;
 
 import android.content.Intent;
-import android.support.v4.app.ShareCompat;
-import android.support.v4.view.ViewGroupCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.stand_still.foodpinions.R;
 
 public class DisplayMessageActivity extends AppCompatActivity {
 
