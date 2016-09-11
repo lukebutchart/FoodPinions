@@ -22,6 +22,7 @@ public class User {
     }
 
     public static OutgoingsList getOutgoings(){
+        outgoings.add(new Outgoing("1",2,3));   // For testing
         return outgoings;
     }
 }

@@ -21,10 +21,6 @@ public class ViewOutgoingsActivity extends AppCompatActivity {
     ListView listView;
     ArrayList<Outgoing> outgoings;
 
-    TextView outgoingsNames;
-    TextView outgoingsCosts;
-    TextView outgoingsFrequencies;
-
     ArrayList<String> names;
 
     @Override
@@ -32,23 +28,16 @@ public class ViewOutgoingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_outgoings);
         listView = (ListView) findViewById(R.id.outgoings_list);
-        outgoingsNames = (TextView) findViewById(R.id.outgoings_names);
-        outgoingsCosts = (TextView) findViewById(R.id.outgoings_costs);
-        outgoingsFrequencies = (TextView) findViewById(R.id.outgoings_frequencies);
         names = new ArrayList<>();
         outgoings = User.getOutgoings();
 
         for (Outgoing outgoing : outgoings)
             names.add(outgoing.getName());
 
-//        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-//                this, android.R.layout.simple_list_item_1, android.R.id.text1, names);
-
         CustomArrayAdapter customAdapter = new CustomArrayAdapter(
                 this, User.getOutgoings()
         );
 
-//        listView.setAdapter(adapter);
         listView.setAdapter(customAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
