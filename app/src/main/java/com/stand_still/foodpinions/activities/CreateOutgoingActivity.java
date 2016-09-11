@@ -46,13 +46,17 @@ public class CreateOutgoingActivity extends AppCompatActivity {
             String oName = outgoingName.getText().toString();
             int oCost = Integer.parseInt(outgoingCost.getText().toString());
             int oFrequency = Integer.parseInt(outgoingFrequency.getText().toString());
-            User.addOutgoing(new Outgoing(oName, oCost, oFrequency));
-            clearFields();
 
-            Toast.makeText(
-                    getApplicationContext(),
-                    String.format("Outgoing \"%s\" added", oName),
-                    Toast.LENGTH_LONG).show();
+            if (User.addOutgoing(new Outgoing(oName, oCost, oFrequency))) {
+                clearFields();
+                Toast.makeText(
+                        getApplicationContext(),
+                        String.format("Outgoing \"%s\" added", oName),
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                outgoingName.setError(
+                        String.format("An outgoing named \"%s\" already exists", oName));
+            }
 
             outgoingName.requestFocus();
         }
@@ -70,7 +74,7 @@ public class CreateOutgoingActivity extends AppCompatActivity {
         return returnValue;
     }
 
-    void showError(EditText editText){
+    void showError(EditText editText) {
         Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
         editText.startAnimation(shake);
         editText.setError("Field is empty");

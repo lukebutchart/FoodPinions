@@ -17,12 +17,11 @@ public class User {
         User.income = income;
     }
 
-    public static void addOutgoing(Outgoing outgoing){
-        outgoings.add(outgoing);
+    public static boolean addOutgoing(Outgoing outgoing){
+        return outgoings.add(outgoing);
     }
 
     public static OutgoingsList getOutgoings(){
-        outgoings.add(new Outgoing("1",2,3));   // For testing
         return outgoings;
     }
 }

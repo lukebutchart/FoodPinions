@@ -3,9 +3,6 @@ package com.stand_still.foodpinions.classes;
 import java.util.ArrayList;
 import java.util.Objects;
 
-/**
- * Created by Luke on 10/09/2016.
- */
 public class OutgoingsList extends ArrayList<Outgoing> {
     ArrayList<String> names;
 
@@ -25,15 +22,9 @@ public class OutgoingsList extends ArrayList<Outgoing> {
         } else return false;
     }
 
-    //    @Override
-//    public boolean contains(Object outgoing){
     public boolean contains(Outgoing outgoing) {
         if (super.contains(outgoing)) {
             return true;
-        } else if(getNames().contains(outgoing.getName())){
-            return true;
-        } else {
-            return false;
-        }
+        } else return getNames().contains(outgoing.getName());
     }
 }
