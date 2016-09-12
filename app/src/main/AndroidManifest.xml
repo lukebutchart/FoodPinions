@@ -16,8 +16,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.DisplayMessageActivity" />
-        <activity android:name=".activities.CreateOutgoingActivity" />
-        <activity android:name=".activities.ViewOutgoingsActivity"></activity>
+        <activity android:name=".xbudget.activities.CreateOutgoingActivity" />
+        <activity android:name=".xbudget.activities.ViewOutgoingsActivity" />
+        <activity android:name=".xbudget.activities.MainBudgetActivity"></activity>
     </application>
 
 </manifest>

@@ -1,6 +1,4 @@
-package com.stand_still.foodpinions.classes;
-
-import java.util.ArrayList;
+package com.stand_still.foodpinions.xbudget.classes;
 
 /**
  * Created by Luke on 10/09/2016.

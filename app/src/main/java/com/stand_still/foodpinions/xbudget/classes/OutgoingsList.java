@@ -1,7 +1,6 @@
-package com.stand_still.foodpinions.classes;
+package com.stand_still.foodpinions.xbudget.classes;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class OutgoingsList extends ArrayList<Outgoing> {
     ArrayList<String> names;

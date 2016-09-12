@@ -1,18 +1,16 @@
-package com.stand_still.foodpinions.activities;
+package com.stand_still.foodpinions.xbudget.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.stand_still.foodpinions.R;
 import com.stand_still.foodpinions.classes.CustomArrayAdapter;
-import com.stand_still.foodpinions.classes.Outgoing;
-import com.stand_still.foodpinions.classes.User;
+import com.stand_still.foodpinions.xbudget.classes.Outgoing;
+import com.stand_still.foodpinions.xbudget.classes.User;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.stand_still.foodpinions.classes;
+package com.stand_still.foodpinions.xbudget.classes;
 
 /**
  * Created by Luke on 10/09/2016.
