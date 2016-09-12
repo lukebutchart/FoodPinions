@@ -1,18 +1,17 @@
 package com.stand_still.foodpinions.xbudget.classes;
 
-/**
- * Created by Luke on 10/09/2016.
- */
-public class User {
-    static String name;
+import com.stand_still.foodpinions.classes.User;
+
+public class BudgetUser extends User {
+
     static int income;
     static int expenditure;
     static int funds;
     static OutgoingsList outgoings = new OutgoingsList();
 
-    public static void User(String name, int income){
-        User.name = name;
-        User.income = income;
+    public static void BudgetUser(String name, int income){
+        BudgetUser.name = name;
+        BudgetUser.income = income;
     }
 
     public static boolean addOutgoing(Outgoing outgoing){

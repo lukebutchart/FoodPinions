@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import com.stand_still.foodpinions.R;
 import com.stand_still.foodpinions.xbudget.classes.Outgoing;
-import com.stand_still.foodpinions.xbudget.classes.User;
+import com.stand_still.foodpinions.xbudget.classes.BudgetUser;
 
 import java.util.ArrayList;
 
@@ -43,7 +43,7 @@ public class CreateOutgoingActivity extends AppCompatActivity {
             int oCost = Integer.parseInt(outgoingCost.getText().toString());
             int oFrequency = Integer.parseInt(outgoingFrequency.getText().toString());
 
-            if (User.addOutgoing(new Outgoing(oName, oCost, oFrequency))) {
+            if (BudgetUser.addOutgoing(new Outgoing(oName, oCost, oFrequency))) {
                 clearFields();
                 Toast.makeText(
                         getApplicationContext(),

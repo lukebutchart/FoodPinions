@@ -10,7 +10,7 @@ import android.widget.Toast;
 import com.stand_still.foodpinions.R;
 import com.stand_still.foodpinions.classes.CustomArrayAdapter;
 import com.stand_still.foodpinions.xbudget.classes.Outgoing;
-import com.stand_still.foodpinions.xbudget.classes.User;
+import com.stand_still.foodpinions.xbudget.classes.BudgetUser;
 
 import java.util.ArrayList;
 
@@ -27,13 +27,13 @@ public class ViewOutgoingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_outgoings);
         listView = (ListView) findViewById(R.id.outgoings_list);
         names = new ArrayList<>();
-        outgoings = User.getOutgoings();
+        outgoings = BudgetUser.getOutgoings();
 
         for (Outgoing outgoing : outgoings)
             names.add(outgoing.getName());
 
         CustomArrayAdapter customAdapter = new CustomArrayAdapter(
-                this, User.getOutgoings()
+                this, BudgetUser.getOutgoings()
         );
 
         listView.setAdapter(customAdapter);
@@ -43,7 +43,7 @@ public class ViewOutgoingsActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 String itemValue = (String) listView.getItemAtPosition(position);
 
-                Outgoing outgoing = User.getOutgoings().get(position);
+                Outgoing outgoing = BudgetUser.getOutgoings().get(position);
                 int itemCost = outgoing.getCost();
                 int itemFrequency = outgoing.getFrequency();
 
