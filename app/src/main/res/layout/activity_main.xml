@@ -5,11 +5,27 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <!--<Button-->
+        <!--android:id="@+id/budget_button"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:onClick="openBudget"-->
+        <!--android:text="@string/button_budget" />-->
+
     <Button
-        android:id="@+id/budget_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/newFoodPinion_button"
         android:layout_gravity="center"
-        android:onClick="openBudget"
-        android:text="@string/button_budget" />
+        android:onClick="newFoodPinion"
+        android:text="@string/button_newFoodPinion" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/search_editText"
+        android:layout_gravity="center_horizontal"
+        android:inputType="textVisiblePassword"
+        android:hint="@string/search_editText"/>
 </LinearLayout>

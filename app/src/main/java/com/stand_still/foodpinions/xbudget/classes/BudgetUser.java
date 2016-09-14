@@ -2,8 +2,9 @@ package com.stand_still.foodpinions.xbudget.classes;
 
 import com.stand_still.foodpinions.classes.User;
 
-public class BudgetUser extends User {
+public class BudgetUser {
 
+    static String name;
     static int income;
     static int expenditure;
     static int funds;

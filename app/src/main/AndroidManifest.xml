@@ -18,7 +18,8 @@
         <activity android:name=".activities.DisplayMessageActivity" />
         <activity android:name=".xbudget.activities.CreateOutgoingActivity" />
         <activity android:name=".xbudget.activities.ViewOutgoingsActivity" />
-        <activity android:name=".xbudget.activities.MainBudgetActivity"></activity>
+        <activity android:name=".xbudget.activities.MainBudgetActivity" />
+        <activity android:name=".activities.NewFoodPinionActivity"></activity>
     </application>
 
 </manifest>
