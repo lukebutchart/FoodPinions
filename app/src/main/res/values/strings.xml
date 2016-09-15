@@ -9,4 +9,5 @@
     <string name="comment_newFoodPinion_editText">Comment</string>
     <string name="rating_newFoodPinion_editText">Rating</string>
     <string name="search_editText">Search FoodPinion</string>
+    <string name="createFoodPinion_newFoodPinion_button">Create FoodPinion</string>
 </resources>

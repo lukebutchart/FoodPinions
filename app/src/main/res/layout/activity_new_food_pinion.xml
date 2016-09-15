@@ -29,14 +29,19 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <EditText
-        android:layout_width="match_parent"
+    <RatingBar
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/rating_newFoodPinion_editText"
-        android:layout_gravity="center_horizontal"
-        android:inputType="textVisiblePassword"
-        android:hint="@string/rating_newFoodPinion_editText"
+        android:id="@+id/rating_newFoodPinion_ratingBar"
         android:layout_below="@+id/comment_newFoodPinion_editText"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/createFoodPinion_newFoodPinion_button"
+        android:id="@+id/createFoodPinion_newFoodPinion_button"
+        android:layout_below="@+id/rating_newFoodPinion_ratingBar"
+        android:onClick="createFoodPinion"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

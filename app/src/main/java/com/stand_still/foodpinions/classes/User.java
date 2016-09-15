@@ -8,4 +8,10 @@ public class User {
     public User(String name){
         User.name = name;
     }
+
+    static FoodPinionArrayList foodPinions = new FoodPinionArrayList();
+
+    public static void addFoodPinion(FoodPinion foodPinion){
+        foodPinions.add(foodPinion);
+    }
 }
