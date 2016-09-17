@@ -19,7 +19,16 @@
         <activity android:name=".xbudget.activities.CreateOutgoingActivity" />
         <activity android:name=".xbudget.activities.ViewOutgoingsActivity" />
         <activity android:name=".xbudget.activities.MainBudgetActivity" />
-        <activity android:name=".activities.NewFoodPinionActivity"></activity>
+        <activity android:name=".activities.NewFoodPinionActivity" />
+        <activity
+            android:name=".activities.EditFoodPinionActivity"
+            android:label="@string/title_activity_edit_food_pinion"
+            android:parentActivityName=".activities.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.stand_still.foodpinions.activities.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

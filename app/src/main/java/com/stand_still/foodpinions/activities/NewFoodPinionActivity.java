@@ -3,9 +3,12 @@ package com.stand_still.foodpinions.activities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.Toast;
@@ -25,6 +28,7 @@ public class NewFoodPinionActivity extends AppCompatActivity {
     String comment;
     float rating;
     FoodPinion foodPinion;
+    Button createFoodPinionButton;
 
     ArrayList<EditText> editTextFields = new ArrayList<>();
 
@@ -39,13 +43,17 @@ public class NewFoodPinionActivity extends AppCompatActivity {
         String searchValue = intent.getStringExtra(MainActivity.EXTRA_SEARCH_VALUE);
 
         nameEditText = (EditText) findViewById(R.id.name_newFoodPinion_editText);
-        editTextFields.add(nameEditText);
+        nameEditText.setText(searchValue);
+        nameEditText.addTextChangedListener(newFoodPinionTextWatcher);
         commentEditText = (EditText) findViewById(R.id.comment_newFoodPinion_editText);
-        editTextFields.add(commentEditText);
+        commentEditText.addTextChangedListener(newFoodPinionTextWatcher);
         ratingRatingBar = (RatingBar) findViewById(R.id.rating_newFoodPinion_ratingBar);
         ratingRatingBar.setRating(RATING_DEFAULT);
+        createFoodPinionButton = (Button) findViewById(R.id.createFoodPinion_newFoodPinion_button);
+        createFoodPinionButton.setEnabled(false);
 
-        nameEditText.setText(searchValue);
+        editTextFields.add(nameEditText);
+        editTextFields.add(commentEditText);
     }
 
     public void createFoodPinion(View view) {
@@ -53,7 +61,7 @@ public class NewFoodPinionActivity extends AppCompatActivity {
         comment = commentEditText.getText().toString();
         rating = ratingRatingBar.getRating();
 
-        if (checkFieldsAreValid()) {
+        if (checkFieldsAreValidOnPress()) {
             foodPinion = new FoodPinion(name, comment, rating);
             clearFields();
             Toast.makeText(
@@ -62,10 +70,7 @@ public class NewFoodPinionActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
         }
 
-
         User.addFoodPinion(foodPinion);
-
-        clearFields();
     }
 
     void showError(EditText editText) {
@@ -74,11 +79,21 @@ public class NewFoodPinionActivity extends AppCompatActivity {
         editText.setError("Field is empty");
     }
 
-    private boolean checkFieldsAreValid() {
+    private boolean checkFieldsAreValidOnPress() {
         boolean returnValue = true;
         for (EditText editTextField : editTextFields) {
             if (editTextField.getText().toString().isEmpty()) {
                 showError(editTextField);
+                returnValue = false;
+            }
+        }
+        return returnValue;
+    }
+
+    private boolean checkFieldsAreValid() {
+        boolean returnValue = true;
+        for (EditText editTextField : editTextFields) {
+            if (editTextField.getText().toString().isEmpty()) {
                 returnValue = false;
             }
         }
@@ -90,4 +105,24 @@ public class NewFoodPinionActivity extends AppCompatActivity {
         commentEditText.getText().clear();
         ratingRatingBar.setRating(RATING_DEFAULT);
     }
+
+    TextWatcher newFoodPinionTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
+            // Action to perform before text changed
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+            // While changing(?)
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            // Action after changed
+            if (checkFieldsAreValid()){
+                createFoodPinionButton.setEnabled(true);
+            } else createFoodPinionButton.setEnabled(false);
+        }
+    };
 }
