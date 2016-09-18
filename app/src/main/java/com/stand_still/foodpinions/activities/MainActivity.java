@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
         newFoodPinionButton = (Button) findViewById(R.id.newFoodPinion_button);
 
-        newFoodPinionButton.setEnabled(false);
+        hideButton();
 
         searchEditText.addTextChangedListener(searchTextWatcher);
 
@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
                 String itemName = (String) foodPinionsListView.getItemAtPosition(position);
 
                 FoodPinion foodPinion = User.getFoodPinions().get(position);
+
+                String itemRestaurant = foodPinion.getRestaurant();
                 float itemRating = foodPinion.getRating();
                 Date itemDate = foodPinion.getDate();
 
@@ -66,15 +68,15 @@ public class MainActivity extends AppCompatActivity {
 
                 Toast.makeText(
                         getApplicationContext(),
-                        String.format("Name: %s, Rating: %s, Date: %s",
-                                itemName, itemRating, itemDate),
+                        String.format("Name: %s, Restaurant: %s, Rating: %s, Date: %s",
+                                itemName, itemRestaurant, itemRating, itemDate),
                         Toast.LENGTH_LONG).show();
             }
         });
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         foodPinionsArrayAdapter = new ViewFoodPinionsArrayAdapter(this, User.getFoodPinions());
         foodPinionsListView.setAdapter(foodPinionsArrayAdapter);
@@ -85,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void moveToNewFoodPinion() {
-        Intent intent = new Intent(this, NewFoodPinionActivity.class);
+        Intent intent = new Intent(this, EditFoodPinionActivity.class);
         String searchValue = searchEditText.getText().toString();
         intent.putExtra(EXTRA_NAME_VALUE, searchValue);
         startActivity(intent);
@@ -116,9 +118,21 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void afterTextChanged(Editable editable) {
-            if (editable.length() > 0)
-                newFoodPinionButton.setEnabled(true);
-            else newFoodPinionButton.setEnabled(false);
+            if (editable.length() > 0) {
+                showButton();
+            } else {
+                hideButton();
+            }
         }
     };
+
+    private void hideButton() {
+        newFoodPinionButton.setEnabled(false);
+        newFoodPinionButton.setVisibility(View.INVISIBLE);
+    }
+
+    private void showButton() {
+        newFoodPinionButton.setEnabled(true);
+        newFoodPinionButton.setVisibility(View.VISIBLE);
+    }
 }

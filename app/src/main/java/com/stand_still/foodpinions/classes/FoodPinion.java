@@ -1,23 +1,21 @@
 package com.stand_still.foodpinions.classes;
 
-import java.sql.Time;
 import java.util.Date;
 
 public class FoodPinion {
     String name;
+    String restaurant;
     String comment;
     float rating;
     Date date;
 
-    public FoodPinion(String name, String comment, float rating){
-        this.name = name;
-        this.comment = comment;
-        this.rating = rating;
-        date = new Date();
+    public FoodPinion(String name, String restaurant, String comment, float rating) {
+        editFoodPinion(name, restaurant, comment, rating);
     }
 
-    public void editFoodPinion(String name, String comment, float rating){
+    public void editFoodPinion(String name, String restaurant, String comment, float rating) {
         this.name = name;
+        this.restaurant = restaurant;
         this.comment = comment;
         this.rating = rating;
         date = new Date();
@@ -33,5 +31,9 @@ public class FoodPinion {
 
     public Date getDate() {
         return date;
+    }
+
+    public String getRestaurant() {
+        return restaurant;
     }
 }
