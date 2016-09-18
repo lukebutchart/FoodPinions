@@ -40,10 +40,11 @@ public class NewFoodPinionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_food_pinion);
 
         Intent intent = getIntent();
-        String searchValue = intent.getStringExtra(MainActivity.EXTRA_SEARCH_VALUE);
+        String nameValue = intent.getStringExtra(MainActivity.EXTRA_NAME_VALUE);
+
 
         nameEditText = (EditText) findViewById(R.id.name_newFoodPinion_editText);
-        nameEditText.setText(searchValue);
+        nameEditText.setText(nameValue);
         nameEditText.addTextChangedListener(newFoodPinionTextWatcher);
         commentEditText = (EditText) findViewById(R.id.comment_newFoodPinion_editText);
         commentEditText.addTextChangedListener(newFoodPinionTextWatcher);
@@ -92,11 +93,9 @@ public class NewFoodPinionActivity extends AppCompatActivity {
 
     private boolean checkFieldsAreValid() {
         boolean returnValue = true;
-        for (EditText editTextField : editTextFields) {
-            if (editTextField.getText().toString().isEmpty()) {
+        for (EditText editTextField : editTextFields)
+            if (editTextField.getText().toString().isEmpty())
                 returnValue = false;
-            }
-        }
         return returnValue;
     }
 
@@ -120,9 +119,9 @@ public class NewFoodPinionActivity extends AppCompatActivity {
         @Override
         public void afterTextChanged(Editable editable) {
             // Action after changed
-            if (checkFieldsAreValid()){
+            if (checkFieldsAreValid())
                 createFoodPinionButton.setEnabled(true);
-            } else createFoodPinionButton.setEnabled(false);
+            else createFoodPinionButton.setEnabled(false);
         }
     };
 }

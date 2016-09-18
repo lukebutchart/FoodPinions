@@ -1,4 +1,4 @@
-package com.stand_still.foodpinions.classes;
+package com.stand_still.foodpinions.xbudget.classes;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,23 +12,20 @@ import com.stand_still.foodpinions.xbudget.classes.OutgoingsList;
 
 import java.util.ArrayList;
 
-/**
- * Created by Luke on 10/09/2016.
- */
-public class CustomArrayAdapter extends ArrayAdapter {
+public class ViewOutgoingsArrayAdapter extends ArrayAdapter {
     private final Context context;
     //    private final String[] values;
     private final ArrayList<String> values;
     private final OutgoingsList outgoingsList;
 
-//    public CustomArrayAdapter(Context context, String[] values) {
+//    public ViewOutgoingsArrayAdapter(Context context, String[] values) {
 //        super(context, R.layout.list_custom, values);
 //        this.context = context;
 //        this.values = values;
 //    }
 
-    public CustomArrayAdapter(Context context, OutgoingsList outgoings) {
-        super(context, R.layout.list_custom, outgoings.getNames());
+    public ViewOutgoingsArrayAdapter(Context context, OutgoingsList outgoings) {
+        super(context, R.layout.list_view_outgoings, outgoings.getNames());
         this.context = context;
         this.values = outgoings.getNames();
         this.outgoingsList = outgoings;
@@ -39,7 +36,7 @@ public class CustomArrayAdapter extends ArrayAdapter {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View rowView = inflater.inflate(R.layout.list_custom, parent, false);
+        View rowView = inflater.inflate(R.layout.list_view_outgoings, parent, false);
         TextView nameColumn = (TextView) rowView.findViewById(R.id.name_column);
         TextView costColumn = (TextView) rowView.findViewById(R.id.cost_column);
         TextView frequencyColumn = (TextView) rowView.findViewById(R.id.frequency_column);

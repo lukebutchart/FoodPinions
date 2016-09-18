@@ -8,7 +8,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.stand_still.foodpinions.R;
-import com.stand_still.foodpinions.classes.CustomArrayAdapter;
+import com.stand_still.foodpinions.xbudget.classes.ViewOutgoingsArrayAdapter;
 import com.stand_still.foodpinions.xbudget.classes.Outgoing;
 import com.stand_still.foodpinions.xbudget.classes.BudgetUser;
 
@@ -32,7 +32,7 @@ public class ViewOutgoingsActivity extends AppCompatActivity {
         for (Outgoing outgoing : outgoings)
             names.add(outgoing.getName());
 
-        CustomArrayAdapter customAdapter = new CustomArrayAdapter(
+        ViewOutgoingsArrayAdapter customAdapter = new ViewOutgoingsArrayAdapter(
                 this, BudgetUser.getOutgoings()
         );
 
