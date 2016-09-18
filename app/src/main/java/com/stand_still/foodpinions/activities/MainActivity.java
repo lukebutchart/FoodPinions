@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -24,48 +25,35 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_NAME_VALUE = "com.stand_still.foodpinions.NAME_VALUE";
 
     EditText searchEditText;
-
     Button newFoodPinionButton;
-
     ListView foodPinionsListView;
-
     ViewFoodPinionsArrayAdapter foodPinionsArrayAdapter;
+    LinearLayout listHeadersLinearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        listHeadersLinearLayout = (LinearLayout) findViewById(R.id.list_headers_linearLayout);
         searchEditText = (EditText) findViewById(R.id.search_editText);
-
         newFoodPinionButton = (Button) findViewById(R.id.newFoodPinion_button);
-
-        hideButton();
-
         searchEditText.addTextChangedListener(searchTextWatcher);
-
         foodPinionsListView = (ListView) findViewById(R.id.foodPinions_list);
-
         foodPinionsArrayAdapter = new ViewFoodPinionsArrayAdapter(this, User.getFoodPinions());
-
         foodPinionsListView.setAdapter(foodPinionsArrayAdapter);
 
-        // MAKE THIS RELEVANT
+        hideButton();
+        decideHeadersVisible();
+
         foodPinionsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 String itemName = (String) foodPinionsListView.getItemAtPosition(position);
-
                 FoodPinion foodPinion = User.getFoodPinions().get(position);
-
                 String itemRestaurant = foodPinion.getRestaurant();
                 float itemRating = foodPinion.getRating();
                 Date itemDate = foodPinion.getDate();
-
-//                Outgoing outgoing = BudgetUser.getOutgoings().get(position);
-//                int itemCost = outgoing.getCost();
-//                int itemFrequency = outgoing.getFrequency();
-
                 Toast.makeText(
                         getApplicationContext(),
                         String.format("Name: %s, Restaurant: %s, Rating: %s, Date: %s",
@@ -75,11 +63,18 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void decideHeadersVisible() {
+        if (User.getFoodPinions().isEmpty())
+            listHeadersLinearLayout.setVisibility(View.INVISIBLE);
+        else listHeadersLinearLayout.setVisibility(View.VISIBLE);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         foodPinionsArrayAdapter = new ViewFoodPinionsArrayAdapter(this, User.getFoodPinions());
         foodPinionsListView.setAdapter(foodPinionsArrayAdapter);
+        decideHeadersVisible();
     }
 
     public void newFoodPinion(View view) {
@@ -93,17 +88,15 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    //    }
-//        startActivity(intent);
-//        Intent intent = new Intent(this, MainBudgetActivity.class);
-//    }
-//        startActivity(intent);
-//        intent.putExtra(EXTRA_MESSAGE, message);
-//        String message = editText.getText().toString();
-//        EditText editText = (EditText) findViewById(R.id.edit_message);
-//        Intent intent = new Intent(this, DisplayMessageActivity.class);
-//    public void sendMessage(View view) {
-//    // In order for this to work: Must be public, must return void, must have View as only parameter
+    private void hideButton() {
+        newFoodPinionButton.setEnabled(false);
+        newFoodPinionButton.setVisibility(View.INVISIBLE);
+    }
+
+    private void showButton() {
+        newFoodPinionButton.setEnabled(true);
+        newFoodPinionButton.setVisibility(View.VISIBLE);
+    }
 
     TextWatcher searchTextWatcher = new TextWatcher() {
         @Override
@@ -118,21 +111,9 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void afterTextChanged(Editable editable) {
-            if (editable.length() > 0) {
+            if (editable.length() > 0)
                 showButton();
-            } else {
-                hideButton();
-            }
+            else hideButton();
         }
     };
-
-    private void hideButton() {
-        newFoodPinionButton.setEnabled(false);
-        newFoodPinionButton.setVisibility(View.INVISIBLE);
-    }
-
-    private void showButton() {
-        newFoodPinionButton.setEnabled(true);
-        newFoodPinionButton.setVisibility(View.VISIBLE);
-    }
 }

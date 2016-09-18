@@ -31,9 +31,7 @@ public class EditFoodPinionActivity extends AppCompatActivity {
     float rating;
     FoodPinion foodPinion;
     Button createFoodPinionButton;
-
     ArrayList<EditText> editTextFields = new ArrayList<>();
-
     final float RATING_DEFAULT = 2.5f;
 
     @Override
@@ -42,21 +40,20 @@ public class EditFoodPinionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_food_pinion);
 
         Intent intent = getIntent();
-        String nameValue = intent.getStringExtra(MainActivity.EXTRA_NAME_VALUE);
-
-
-        nameEditText = (EditText) findViewById(R.id.name_newFoodPinion_editText);
-        nameEditText.setText(nameValue);
-        nameEditText.addTextChangedListener(newFoodPinionTextWatcher);
+        String restaurantValue = intent.getStringExtra(MainActivity.EXTRA_NAME_VALUE);
 
         restaurantEditText = (EditText) findViewById(R.id.restaurant_newFoodPinion_editText);
-        restaurantEditText.addTextChangedListener(newFoodPinionTextWatcher);
-
+        nameEditText = (EditText) findViewById(R.id.name_newFoodPinion_editText);
         commentEditText = (EditText) findViewById(R.id.comment_newFoodPinion_editText);
-        commentEditText.addTextChangedListener(newFoodPinionTextWatcher);
         ratingRatingBar = (RatingBar) findViewById(R.id.rating_newFoodPinion_ratingBar);
-        ratingRatingBar.setRating(RATING_DEFAULT);
         createFoodPinionButton = (Button) findViewById(R.id.createFoodPinion_newFoodPinion_button);
+
+        restaurantEditText.setText(restaurantValue);
+        restaurantEditText.addTextChangedListener(newFoodPinionTextWatcher);
+        nameEditText.addTextChangedListener(newFoodPinionTextWatcher);
+        nameEditText.requestFocus();
+        commentEditText.addTextChangedListener(newFoodPinionTextWatcher);
+        ratingRatingBar.setRating(RATING_DEFAULT);
         createFoodPinionButton.setEnabled(false);
 
         editTextFields.add(nameEditText);
@@ -77,6 +74,7 @@ public class EditFoodPinionActivity extends AppCompatActivity {
                     getApplicationContext(),
                     String.format("FoodPinion \"%s\" added", name),
                     Toast.LENGTH_SHORT).show();
+            nameEditText.requestFocus();
         }
 
         User.addFoodPinion(foodPinion);
@@ -90,12 +88,11 @@ public class EditFoodPinionActivity extends AppCompatActivity {
 
     private boolean checkFieldsAreValidOnPress() {
         boolean returnValue = true;
-        for (EditText editTextField : editTextFields) {
+        for (EditText editTextField : editTextFields)
             if (editTextField.getText().toString().isEmpty()) {
                 showError(editTextField);
                 returnValue = false;
             }
-        }
         return returnValue;
     }
 
@@ -110,7 +107,6 @@ public class EditFoodPinionActivity extends AppCompatActivity {
     private void clearFields() {
         nameEditText.getText().clear();
         commentEditText.getText().clear();
-        ratingRatingBar.setRating(RATING_DEFAULT);
     }
 
     TextWatcher newFoodPinionTextWatcher = new TextWatcher() {

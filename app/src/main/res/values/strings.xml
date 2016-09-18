@@ -12,4 +12,6 @@
     <string name="createFoodPinion_newFoodPinion_button">Create FoodPinion</string>
     <string name="title_activity_edit_food_pinion">EditFoodPinionActivity</string>
     <string name="restaurant_newFoodPinion_editText">Restaurant</string>
+    <string name="name_header_textView">Name</string>
+    <string name="restaurant_header_textView">Restaurant</string>
 </resources>

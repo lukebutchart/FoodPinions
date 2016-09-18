@@ -49,10 +49,8 @@ public class CreateOutgoingActivity extends AppCompatActivity {
                         getApplicationContext(),
                         String.format("Outgoing \"%s\" added", oName),
                         Toast.LENGTH_SHORT).show();
-            } else {
-                outgoingName.setError(
-                        String.format("An outgoing named \"%s\" already exists", oName));
-            }
+            } else
+                outgoingName.setError(String.format("An outgoing named \"%s\" already exists", oName));
 
             outgoingName.requestFocus();
         }
