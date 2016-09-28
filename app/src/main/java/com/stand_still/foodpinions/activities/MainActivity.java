@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.stand_still.foodpinions.R;
 import com.stand_still.foodpinions.classes.FoodPinion;
@@ -22,6 +21,7 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String EXTRA_RESTAURANT_VALUE = "com.stand_still.foodpinions.RESTAURANT_VALUE";
     public static final String EXTRA_NAME_VALUE = "com.stand_still.foodpinions.NAME_VALUE";
 
     EditText searchEditText;
@@ -51,23 +51,16 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 String itemName = (String) foodPinionsListView.getItemAtPosition(position);
                 FoodPinion foodPinion = User.getFoodPinions().get(position);
-                String itemRestaurant = foodPinion.getRestaurant();
-                float itemRating = foodPinion.getRating();
-                Date itemDate = foodPinion.getDate();
 
                 moveToEditFoodPinion(foodPinion);
-//                Toast.makeText(
-//                        getApplicationContext(),
-//                        String.format("Name: %s, Restaurant: %s, Rating: %s, Date: %s",
-//                                itemName, itemRestaurant, itemRating, itemDate),
-//                        Toast.LENGTH_LONG).show();
             }
         });
     }
 
     private void moveToEditFoodPinion(FoodPinion foodPinion) {
         Intent intent = new Intent(this, EditFoodPinionActivity.class);
-        intent.putExtra(EXTRA_NAME_VALUE, foodPinion.getRestaurant());
+        intent.putExtra(EXTRA_RESTAURANT_VALUE, foodPinion.getRestaurant());
+        intent.putExtra(EXTRA_NAME_VALUE, foodPinion.getName());
         startActivity(intent);
     }
 
@@ -92,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
     private void moveToNewFoodPinion() {
         Intent intent = new Intent(this, EditFoodPinionActivity.class);
         String searchValue = searchEditText.getText().toString();
-        intent.putExtra(EXTRA_NAME_VALUE, searchValue);
+        intent.putExtra(EXTRA_RESTAURANT_VALUE, searchValue);
         startActivity(intent);
     }
 
