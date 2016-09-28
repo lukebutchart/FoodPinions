@@ -54,13 +54,21 @@ public class MainActivity extends AppCompatActivity {
                 String itemRestaurant = foodPinion.getRestaurant();
                 float itemRating = foodPinion.getRating();
                 Date itemDate = foodPinion.getDate();
-                Toast.makeText(
-                        getApplicationContext(),
-                        String.format("Name: %s, Restaurant: %s, Rating: %s, Date: %s",
-                                itemName, itemRestaurant, itemRating, itemDate),
-                        Toast.LENGTH_LONG).show();
+
+                moveToEditFoodPinion(foodPinion);
+//                Toast.makeText(
+//                        getApplicationContext(),
+//                        String.format("Name: %s, Restaurant: %s, Rating: %s, Date: %s",
+//                                itemName, itemRestaurant, itemRating, itemDate),
+//                        Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void moveToEditFoodPinion(FoodPinion foodPinion) {
+        Intent intent = new Intent(this, EditFoodPinionActivity.class);
+        intent.putExtra(EXTRA_NAME_VALUE, foodPinion.getRestaurant());
+        startActivity(intent);
     }
 
     private void decideHeadersVisible() {

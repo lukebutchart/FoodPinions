@@ -40,25 +40,35 @@ public class EditFoodPinionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_food_pinion);
 
         Intent intent = getIntent();
-        String restaurantValue = intent.getStringExtra(MainActivity.EXTRA_NAME_VALUE);
+        String restaurantString = intent.getStringExtra(MainActivity.EXTRA_NAME_VALUE);
 
+        boolean alreadyExists = User.getFoodPinions().containsWithRestaurant(restaurantString);
+        // Find and set views
         restaurantEditText = (EditText) findViewById(R.id.restaurant_newFoodPinion_editText);
         nameEditText = (EditText) findViewById(R.id.name_newFoodPinion_editText);
         commentEditText = (EditText) findViewById(R.id.comment_newFoodPinion_editText);
         ratingRatingBar = (RatingBar) findViewById(R.id.rating_newFoodPinion_ratingBar);
         createFoodPinionButton = (Button) findViewById(R.id.createFoodPinion_newFoodPinion_button);
-
-        restaurantEditText.setText(restaurantValue);
+        // Add textChangedListeners
         restaurantEditText.addTextChangedListener(newFoodPinionTextWatcher);
         nameEditText.addTextChangedListener(newFoodPinionTextWatcher);
-        nameEditText.requestFocus();
         commentEditText.addTextChangedListener(newFoodPinionTextWatcher);
+
+        restaurantEditText.setText(restaurantString);
         ratingRatingBar.setRating(RATING_DEFAULT);
+
         createFoodPinionButton.setEnabled(false);
 
         editTextFields.add(nameEditText);
         editTextFields.add(restaurantEditText);
         editTextFields.add(commentEditText);
+
+        if (alreadyExists){
+            FoodPinion foodPinion = User.getFoodPinion(restaurantString);
+            nameEditText.setText(foodPinion.getName());
+            commentEditText.setText(foodPinion.getComment());
+            ratingRatingBar.setRating(foodPinion.getRating());
+        } else nameEditText.requestFocus();
     }
 
     public void createFoodPinion(View view) {

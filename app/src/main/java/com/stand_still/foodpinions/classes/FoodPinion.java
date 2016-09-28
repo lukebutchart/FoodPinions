@@ -36,4 +36,8 @@ public class FoodPinion {
     public String getRestaurant() {
         return restaurant;
     }
+
+    public String getComment() {
+        return comment;
+    }
 }

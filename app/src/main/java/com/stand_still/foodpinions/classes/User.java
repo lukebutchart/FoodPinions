@@ -27,4 +27,8 @@ public class User {
         });
         return foodPinions;
     }
+
+    public static FoodPinion getFoodPinion(String name){
+        return getFoodPinions().get(name);
+    }
 }
