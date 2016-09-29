@@ -45,7 +45,15 @@
         android:id="@+id/createFoodPinion_newFoodPinion_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="createFoodPinion"
+        android:onClick="confirmFoodPinion"
         android:text="@string/createFoodPinion_newFoodPinion_button"
         android:layout_gravity="center_horizontal"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editButtonImageView"
+        android:layout_gravity="center_horizontal"
+        android:src="@android:drawable/ic_menu_edit"
+        android:visibility="invisible" />
 </LinearLayout>

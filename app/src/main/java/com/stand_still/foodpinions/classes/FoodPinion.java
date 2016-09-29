@@ -40,4 +40,20 @@ public class FoodPinion {
     public String getComment() {
         return comment;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setRestaurant(String restaurant) {
+        this.restaurant = restaurant;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
 }

@@ -10,6 +10,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
@@ -26,82 +27,103 @@ public class EditFoodPinionActivity extends AppCompatActivity {
     EditText restaurantEditText;
     EditText commentEditText;
     RatingBar ratingRatingBar;
-    String name;
-    String restaurant;
-    String comment;
-    float rating;
     Button createFoodPinionButton;
-    ArrayList<EditText> editTextFields = new ArrayList<>();
     final float RATING_DEFAULT = 2.5f;
+    FoodPinion currentFoodPinion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_food_pinion);
-
+        // Retrieve intent information
         Intent intent = getIntent();
         String restaurantString = intent.getStringExtra(MainActivity.EXTRA_RESTAURANT_VALUE);
         String nameString = intent.getStringExtra(MainActivity.EXTRA_NAME_VALUE);
 
         boolean alreadyExists = nameString != null;
-        // Find and set views
-        restaurantEditText = (EditText) findViewById(R.id.restaurant_newFoodPinion_editText);
-        nameEditText = (EditText) findViewById(R.id.name_newFoodPinion_editText);
-        commentEditText = (EditText) findViewById(R.id.comment_newFoodPinion_editText);
-        ratingRatingBar = (RatingBar) findViewById(R.id.rating_newFoodPinion_ratingBar);
-        createFoodPinionButton = (Button) findViewById(R.id.createFoodPinion_newFoodPinion_button);
-        // Add textChangedListeners
+        findAndSetViews();
+        addTextChangedListeners();
+        setDefaultValues(restaurantString);
+        createFoodPinionButton.setEnabled(false);
+
+        ImageView editIcon = (ImageView) findViewById(R.id.editButtonImageView);
+        editIcon.setVisibility(View.INVISIBLE);
+        currentFoodPinion = null;
+
+        if (alreadyExists) {
+            editIcon.setVisibility(View.VISIBLE);
+            currentFoodPinion = User.getFoodPinionByPair(nameString, restaurantString);
+            nameEditText.setText(currentFoodPinion.getName());
+            commentEditText.setText(currentFoodPinion.getComment());
+            ratingRatingBar.setRating(currentFoodPinion.getRating());
+        } else nameEditText.requestFocus();
+    }
+
+    private void setDefaultValues(String restaurantString) {
+        restaurantEditText.setText(restaurantString);
+        ratingRatingBar.setRating(RATING_DEFAULT);
+    }
+
+    private void addTextChangedListeners() {
         if (Settings.isRestaurantMandatory())
             restaurantEditText.addTextChangedListener(newFoodPinionTextWatcher);
         if (Settings.isNameMandatory())
             nameEditText.addTextChangedListener(newFoodPinionTextWatcher);
         if (Settings.isCommentMandatory())
             commentEditText.addTextChangedListener(newFoodPinionTextWatcher);
-        // Set default values
-        restaurantEditText.setText(restaurantString);
-        ratingRatingBar.setRating(RATING_DEFAULT);
-        // Disable the create button
-        createFoodPinionButton.setEnabled(false);
-        // Add EditTexts to collection
-        editTextFields.add(nameEditText);
-        editTextFields.add(restaurantEditText);
-        editTextFields.add(commentEditText);
-
-        if (alreadyExists) {
-            FoodPinion foodPinion = User.getFoodPinionByPair(nameString, restaurantString);
-            nameEditText.setText(foodPinion.getName());
-            commentEditText.setText(foodPinion.getComment());
-            ratingRatingBar.setRating(foodPinion.getRating());
-        } else nameEditText.requestFocus();
     }
 
-    public void createFoodPinion(View view) {
-        FoodPinion foodPinion;
+    private void findAndSetViews() {
+        restaurantEditText = (EditText) findViewById(R.id.restaurant_newFoodPinion_editText);
+        nameEditText = (EditText) findViewById(R.id.name_newFoodPinion_editText);
+        commentEditText = (EditText) findViewById(R.id.comment_newFoodPinion_editText);
+        ratingRatingBar = (RatingBar) findViewById(R.id.rating_newFoodPinion_ratingBar);
+        createFoodPinionButton = (Button) findViewById(R.id.createFoodPinion_newFoodPinion_button);
+    }
 
-        name = nameEditText.getText().toString();
-        restaurant = restaurantEditText.getText().toString();
-        comment = commentEditText.getText().toString();
-        rating = ratingRatingBar.getRating();
+    public void confirmFoodPinion(View view) {
+        FoodPinion foodPinion;
+        String addOrEdit = "added";
+
+        String name = nameEditText.getText().toString();
+        String restaurant = restaurantEditText.getText().toString();
+        String comment = commentEditText.getText().toString();
+        float rating = ratingRatingBar.getRating();
+
+        boolean editOnly = currentFoodPinion != null;
 
         foodPinion = new FoodPinion(name, restaurant, comment, rating);
 
-        if (User.foodPinionExists(foodPinion)) {
-            Toast.makeText(
-                    getApplicationContext(),
-                    String.format("A FoodPinion with those details already exists"),
-                    Toast.LENGTH_SHORT).show();
-            return;
-        }
-
         if (checkFieldsAreValid()) {
-            clearFields();
-            Toast.makeText(
-                    getApplicationContext(),
-                    String.format("FoodPinion \"%s\" added", name),
-                    Toast.LENGTH_SHORT).show();
-            nameEditText.requestFocus();
-            User.addFoodPinion(foodPinion);
+            FoodPinion checkFoodPinion = User.getFoodPinionByPair(name, restaurant);
+
+            if (editOnly) {
+                currentFoodPinion.editFoodPinion(name, restaurant, comment, rating);
+                addOrEdit = "edited";
+                confirmationToast(addOrEdit, name);
+                finish();
+                return;
+            } else if (checkFoodPinion != null) {
+                checkFoodPinion.editFoodPinion(name, restaurant, comment, rating);
+                addOrEdit = "edited";
+            } else {
+                User.addFoodPinion(foodPinion);
+            }
+            confirmationToast(addOrEdit, name);
+            clearFoodPinionActivity(addOrEdit, name);
         }
+    }
+
+    private void confirmationToast(String addOrEdit, String name) {
+        Toast.makeText(
+                getApplicationContext(),
+                String.format("FoodPinion \"%s\" %s", name, addOrEdit),
+                Toast.LENGTH_SHORT).show();
+    }
+
+    private void clearFoodPinionActivity(String addOrEdit, String name) {
+        clearFields();
+        nameEditText.requestFocus();
     }
 
     void showError(EditText editText) {
@@ -109,16 +131,6 @@ public class EditFoodPinionActivity extends AppCompatActivity {
         editText.startAnimation(shake);
         editText.setError("Field is empty");
     }
-
-//    private boolean checkFieldsAreValidOnPress() {
-//        boolean returnValue = true;
-//        for (EditText editTextField : editTextFields)
-//            if (editTextField.getText().toString().isEmpty()) {
-//                showError(editTextField);
-//                returnValue = false;
-//            }
-//        return returnValue;
-//    }
 
     private boolean checkFieldsAreValid() {
         boolean returnValue = true;
