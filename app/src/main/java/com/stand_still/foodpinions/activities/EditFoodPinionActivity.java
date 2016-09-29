@@ -30,6 +30,7 @@ public class EditFoodPinionActivity extends AppCompatActivity {
     Button createFoodPinionButton;
     final float RATING_DEFAULT = 2.5f;
     FoodPinion currentFoodPinion;
+    boolean editOnly;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,13 +50,17 @@ public class EditFoodPinionActivity extends AppCompatActivity {
         ImageView editIcon = (ImageView) findViewById(R.id.editButtonImageView);
         editIcon.setVisibility(View.INVISIBLE);
         currentFoodPinion = null;
+        editOnly = false;
 
         if (alreadyExists) {
             editIcon.setVisibility(View.VISIBLE);
             currentFoodPinion = User.getFoodPinionByPair(nameString, restaurantString);
+            editOnly = true;
             nameEditText.setText(currentFoodPinion.getName());
             commentEditText.setText(currentFoodPinion.getComment());
             ratingRatingBar.setRating(currentFoodPinion.getRating());
+
+            createFoodPinionButton.setText("Edit FoodPinion");
         } else nameEditText.requestFocus();
     }
 
@@ -89,8 +94,6 @@ public class EditFoodPinionActivity extends AppCompatActivity {
         String restaurant = restaurantEditText.getText().toString();
         String comment = commentEditText.getText().toString();
         float rating = ratingRatingBar.getRating();
-
-        boolean editOnly = currentFoodPinion != null;
 
         foodPinion = new FoodPinion(name, restaurant, comment, rating);
 
@@ -168,6 +171,11 @@ public class EditFoodPinionActivity extends AppCompatActivity {
             if (checkFieldsAreValid())
                 createFoodPinionButton.setEnabled(true);
             else createFoodPinionButton.setEnabled(false);
+            if (!editOnly){
+                if (User.getFoodPinionByPair(nameEditText.getText().toString(), restaurantEditText.getText().toString()) == null){
+                    createFoodPinionButton.setText("Create FoodPinion");
+                } else createFoodPinionButton.setText("Edit FoodPinion");
+            }
         }
     };
 }
