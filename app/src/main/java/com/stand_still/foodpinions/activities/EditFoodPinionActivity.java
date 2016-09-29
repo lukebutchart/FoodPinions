@@ -60,7 +60,7 @@ public class EditFoodPinionActivity extends AppCompatActivity {
             commentEditText.setText(currentFoodPinion.getComment());
             ratingRatingBar.setRating(currentFoodPinion.getRating());
 
-            createFoodPinionButton.setText("Edit FoodPinion");
+            createFoodPinionButton.setText(getResources().getString(R.string.editFoodPinion_newFoodPinion_button)); // make this local
         } else nameEditText.requestFocus();
     }
 
@@ -173,8 +173,8 @@ public class EditFoodPinionActivity extends AppCompatActivity {
             else createFoodPinionButton.setEnabled(false);
             if (!editOnly){
                 if (User.getFoodPinionByPair(nameEditText.getText().toString(), restaurantEditText.getText().toString()) == null){
-                    createFoodPinionButton.setText("Create FoodPinion");
-                } else createFoodPinionButton.setText("Edit FoodPinion");
+                    createFoodPinionButton.setText(getResources().getString(R.string.createFoodPinion_newFoodPinion_button)); //"Create FoodPinion");
+                } else createFoodPinionButton.setText(getResources().getString(R.string.editFoodPinion_newFoodPinion_button));
             }
         }
     };
