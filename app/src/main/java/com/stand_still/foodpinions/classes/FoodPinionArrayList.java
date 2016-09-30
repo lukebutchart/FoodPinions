@@ -1,9 +1,7 @@
 package com.stand_still.foodpinions.classes;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Comparator;
-import java.util.Date;
 
 public class FoodPinionArrayList extends ArrayList<FoodPinion> implements Comparator<FoodPinion> {
     ArrayList<String> names;
@@ -12,7 +10,7 @@ public class FoodPinionArrayList extends ArrayList<FoodPinion> implements Compar
     public ArrayList<String> getNames() {
         names = new ArrayList<>();
         for (FoodPinion foodPinion : this)
-            names.add(foodPinion.getName());
+            names.add(foodPinion.getDishName());
         return names;
     }
 
@@ -20,7 +18,7 @@ public class FoodPinionArrayList extends ArrayList<FoodPinion> implements Compar
     public int compare(FoodPinion x, FoodPinion y) {
         int timeComparison = x.getDate().compareTo(y.getDate());
         return timeComparison != 0 ? timeComparison
-                : x.getName().compareTo(y.getName());
+                : x.getDishName().compareTo(y.getDishName());
     }
 
     public boolean containsWithName(String nameString) {
@@ -29,7 +27,7 @@ public class FoodPinionArrayList extends ArrayList<FoodPinion> implements Compar
 
     public FoodPinion getByName(String name) {
         for (FoodPinion foodPinion : this)
-            if (foodPinion.getName().equals(name))
+            if (foodPinion.getDishName().equals(name))
                 return foodPinion;
         return null;
     }
@@ -55,7 +53,7 @@ public class FoodPinionArrayList extends ArrayList<FoodPinion> implements Compar
     public FoodPinionArrayList getFoodPinionsWithName(String name){
         FoodPinionArrayList foodPinionArrayList = new FoodPinionArrayList();
         for (FoodPinion foodPinion : this)
-            if (foodPinion.getName().equals(name))
+            if (foodPinion.getDishName().equals(name))
                 foodPinionArrayList.add(foodPinion);
         return foodPinionArrayList;
     }

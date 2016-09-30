@@ -17,8 +17,6 @@ import com.stand_still.foodpinions.classes.FoodPinion;
 import com.stand_still.foodpinions.classes.User;
 import com.stand_still.foodpinions.classes.ViewFoodPinionsArrayAdapter;
 
-import java.util.Date;
-
 public class MainActivity extends AppCompatActivity {
 
     public static final String EXTRA_RESTAURANT_VALUE = "com.stand_still.foodpinions.RESTAURANT_VALUE";
@@ -60,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     private void moveToEditFoodPinion(FoodPinion foodPinion) {
         Intent intent = new Intent(this, EditFoodPinionActivity.class);
         intent.putExtra(EXTRA_RESTAURANT_VALUE, foodPinion.getRestaurant());
-        intent.putExtra(EXTRA_NAME_VALUE, foodPinion.getName());
+        intent.putExtra(EXTRA_NAME_VALUE, foodPinion.getDishName());
         startActivity(intent);
     }
 

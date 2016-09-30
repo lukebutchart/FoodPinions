@@ -11,19 +11,18 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.Toast;
 
 import com.stand_still.foodpinions.R;
+import com.stand_still.foodpinions.classes.Dish;
 import com.stand_still.foodpinions.classes.FoodPinion;
+import com.stand_still.foodpinions.classes.Restaurant;
 import com.stand_still.foodpinions.classes.Settings;
 import com.stand_still.foodpinions.classes.User;
 
-import java.util.ArrayList;
-
 public class EditFoodPinionActivity extends AppCompatActivity {
 
-    EditText nameEditText;
+    EditText dishNameEditText;
     EditText restaurantEditText;
     EditText commentEditText;
 //    RatingBar ratingRatingBar;
@@ -56,12 +55,12 @@ public class EditFoodPinionActivity extends AppCompatActivity {
             editIcon.setVisibility(View.VISIBLE);
             currentFoodPinion = User.getFoodPinionByPair(nameString, restaurantString);
             editOnly = true;
-            nameEditText.setText(currentFoodPinion.getName());
+            dishNameEditText.setText(currentFoodPinion.getDishName());
             commentEditText.setText(currentFoodPinion.getComment());
 //            ratingRatingBar.setRating(currentFoodPinion.getRating());
 
             createFoodPinionButton.setText(getResources().getString(R.string.editFoodPinion_newFoodPinion_button)); // make this local
-        } else nameEditText.requestFocus();
+        } else dishNameEditText.requestFocus();
     }
 
     private void setDefaultValues(String restaurantString) {
@@ -73,47 +72,49 @@ public class EditFoodPinionActivity extends AppCompatActivity {
         if (Settings.isRestaurantMandatory())
             restaurantEditText.addTextChangedListener(newFoodPinionTextWatcher);
         if (Settings.isNameMandatory())
-            nameEditText.addTextChangedListener(newFoodPinionTextWatcher);
+            dishNameEditText.addTextChangedListener(newFoodPinionTextWatcher);
         if (Settings.isCommentMandatory())
             commentEditText.addTextChangedListener(newFoodPinionTextWatcher);
     }
 
     private void findAndSetViews() {
         restaurantEditText = (EditText) findViewById(R.id.restaurant_newFoodPinion_editText);
-        nameEditText = (EditText) findViewById(R.id.name_newFoodPinion_editText);
+        dishNameEditText = (EditText) findViewById(R.id.name_newFoodPinion_editText);
         commentEditText = (EditText) findViewById(R.id.comment_newFoodPinion_editText);
 //        ratingRatingBar = (RatingBar) findViewById(R.id.rating_newFoodPinion_ratingBar);
         createFoodPinionButton = (Button) findViewById(R.id.createFoodPinion_newFoodPinion_button);
     }
 
     public void confirmFoodPinion(View view) {
-        FoodPinion foodPinion;
+
         String addOrEdit = "added";
 
-        String name = nameEditText.getText().toString();
-        String restaurant = restaurantEditText.getText().toString();
+        String dishName = dishNameEditText.getText().toString();
+        String restaurantName = restaurantEditText.getText().toString();
         String comment = commentEditText.getText().toString();
 //        float rating = ratingRatingBar.getRating();
 
-        foodPinion = new FoodPinion(name, restaurant, comment/*, rating*/);
+        Restaurant restaurant = new Restaurant(restaurantName);
+        Dish dish = new Dish(dishName, restaurant);
+        FoodPinion foodPinion = new FoodPinion(dish, comment);
 
         if (checkFieldsAreValid()) {
-            FoodPinion checkFoodPinion = User.getFoodPinionByPair(name, restaurant);
+            FoodPinion checkFoodPinion = User.getFoodPinionByPair(dishName, restaurantName);
 
             if (editOnly) {
-                currentFoodPinion.editFoodPinion(name, restaurant, comment/*, rating*/);
+                currentFoodPinion.editFoodPinion(dishName, restaurantName, comment/*, rating*/);
                 addOrEdit = "edited";
-                confirmationToast(addOrEdit, name);
+                confirmationToast(addOrEdit, dishName);
                 finish();
                 return;
             } else if (checkFoodPinion != null) {
-                checkFoodPinion.editFoodPinion(name, restaurant, comment/*, rating*/);
+                checkFoodPinion.editFoodPinion(dishName, restaurantName, comment/*, rating*/);
                 addOrEdit = "edited";
             } else {
                 User.addFoodPinion(foodPinion);
             }
-            confirmationToast(addOrEdit, name);
-            clearFoodPinionActivity(addOrEdit, name);
+            confirmationToast(addOrEdit, dishName);
+            clearFoodPinionActivity(addOrEdit, dishName);
         }
     }
 
@@ -126,7 +127,7 @@ public class EditFoodPinionActivity extends AppCompatActivity {
 
     private void clearFoodPinionActivity(String addOrEdit, String name) {
         clearFields();
-        nameEditText.requestFocus();
+        dishNameEditText.requestFocus();
     }
 
     void showError(EditText editText) {
@@ -137,7 +138,7 @@ public class EditFoodPinionActivity extends AppCompatActivity {
 
     private boolean checkFieldsAreValid() {
         boolean returnValue = true;
-        if (nameEditText.getText().toString().isEmpty()
+        if (dishNameEditText.getText().toString().isEmpty()
                 && Settings.isNameMandatory())
             returnValue = false;
         if (restaurantEditText.getText().toString().isEmpty()
@@ -150,7 +151,7 @@ public class EditFoodPinionActivity extends AppCompatActivity {
     }
 
     private void clearFields() {
-        nameEditText.getText().clear();
+        dishNameEditText.getText().clear();
         commentEditText.getText().clear();
     }
 
@@ -172,7 +173,7 @@ public class EditFoodPinionActivity extends AppCompatActivity {
                 createFoodPinionButton.setEnabled(true);
             else createFoodPinionButton.setEnabled(false);
             if (!editOnly){
-                if (User.getFoodPinionByPair(nameEditText.getText().toString(), restaurantEditText.getText().toString()) == null){
+                if (User.getFoodPinionByPair(dishNameEditText.getText().toString(), restaurantEditText.getText().toString()) == null){
                     createFoodPinionButton.setText(getResources().getString(R.string.createFoodPinion_newFoodPinion_button)); //"Create FoodPinion");
                 } else createFoodPinionButton.setText(getResources().getString(R.string.editFoodPinion_newFoodPinion_button));
             }

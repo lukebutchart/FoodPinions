@@ -5,12 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.stand_still.foodpinions.R;
-
-import java.util.ArrayList;
 
 public class ViewFoodPinionsArrayAdapter extends ArrayAdapter {
     private final Context context;
@@ -28,7 +25,7 @@ public class ViewFoodPinionsArrayAdapter extends ArrayAdapter {
         View rowView = inflater.inflate(R.layout.list_view_food_pinions, parent, false);
         TextView nameColumn = (TextView) rowView.findViewById(R.id.name_foodpinion_column);
         TextView restaurantColumn = (TextView) rowView.findViewById(R.id.restaurant_foodpinion_column);
-        nameColumn.setText(foodPinionsList.get(position).getName());
+        nameColumn.setText(foodPinionsList.get(position).getDishName());
         restaurantColumn.setText(foodPinionsList.get(position).getRestaurant());
         return rowView;
     }

@@ -24,7 +24,7 @@ public class User {
             public int compare(FoodPinion x, FoodPinion y) {
                 int timeComparison = y.getDate().compareTo(x.getDate());
                 return timeComparison != 0 ? timeComparison
-                        : x.getName().compareTo(y.getName());
+                        : x.getDishName().compareTo(y.getDishName());
             }
         });
         return foodPinions;
@@ -54,6 +54,6 @@ public class User {
 
     public static boolean foodPinionExists(FoodPinion foodPinion) {
         // Todo: Make this correct (react correctly if more than one FoodPinion)
-         return getFoodPinionByPair(foodPinion.getName(), foodPinion.getRestaurant()) != null;
+         return getFoodPinionByPair(foodPinion.getDishName(), foodPinion.getRestaurant()) != null;
     }
 }
