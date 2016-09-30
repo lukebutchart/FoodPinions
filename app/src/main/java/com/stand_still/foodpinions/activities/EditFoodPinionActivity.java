@@ -26,9 +26,9 @@ public class EditFoodPinionActivity extends AppCompatActivity {
     EditText nameEditText;
     EditText restaurantEditText;
     EditText commentEditText;
-    RatingBar ratingRatingBar;
+//    RatingBar ratingRatingBar;
     Button createFoodPinionButton;
-    final float RATING_DEFAULT = 2.5f;
+//    final float RATING_DEFAULT = 2.5f;
     FoodPinion currentFoodPinion;
     boolean editOnly;
 
@@ -58,7 +58,7 @@ public class EditFoodPinionActivity extends AppCompatActivity {
             editOnly = true;
             nameEditText.setText(currentFoodPinion.getName());
             commentEditText.setText(currentFoodPinion.getComment());
-            ratingRatingBar.setRating(currentFoodPinion.getRating());
+//            ratingRatingBar.setRating(currentFoodPinion.getRating());
 
             createFoodPinionButton.setText(getResources().getString(R.string.editFoodPinion_newFoodPinion_button)); // make this local
         } else nameEditText.requestFocus();
@@ -66,7 +66,7 @@ public class EditFoodPinionActivity extends AppCompatActivity {
 
     private void setDefaultValues(String restaurantString) {
         restaurantEditText.setText(restaurantString);
-        ratingRatingBar.setRating(RATING_DEFAULT);
+//        ratingRatingBar.setRating(RATING_DEFAULT);
     }
 
     private void addTextChangedListeners() {
@@ -82,7 +82,7 @@ public class EditFoodPinionActivity extends AppCompatActivity {
         restaurantEditText = (EditText) findViewById(R.id.restaurant_newFoodPinion_editText);
         nameEditText = (EditText) findViewById(R.id.name_newFoodPinion_editText);
         commentEditText = (EditText) findViewById(R.id.comment_newFoodPinion_editText);
-        ratingRatingBar = (RatingBar) findViewById(R.id.rating_newFoodPinion_ratingBar);
+//        ratingRatingBar = (RatingBar) findViewById(R.id.rating_newFoodPinion_ratingBar);
         createFoodPinionButton = (Button) findViewById(R.id.createFoodPinion_newFoodPinion_button);
     }
 
@@ -93,21 +93,21 @@ public class EditFoodPinionActivity extends AppCompatActivity {
         String name = nameEditText.getText().toString();
         String restaurant = restaurantEditText.getText().toString();
         String comment = commentEditText.getText().toString();
-        float rating = ratingRatingBar.getRating();
+//        float rating = ratingRatingBar.getRating();
 
-        foodPinion = new FoodPinion(name, restaurant, comment, rating);
+        foodPinion = new FoodPinion(name, restaurant, comment/*, rating*/);
 
         if (checkFieldsAreValid()) {
             FoodPinion checkFoodPinion = User.getFoodPinionByPair(name, restaurant);
 
             if (editOnly) {
-                currentFoodPinion.editFoodPinion(name, restaurant, comment, rating);
+                currentFoodPinion.editFoodPinion(name, restaurant, comment/*, rating*/);
                 addOrEdit = "edited";
                 confirmationToast(addOrEdit, name);
                 finish();
                 return;
             } else if (checkFoodPinion != null) {
-                checkFoodPinion.editFoodPinion(name, restaurant, comment, rating);
+                checkFoodPinion.editFoodPinion(name, restaurant, comment/*, rating*/);
                 addOrEdit = "edited";
             } else {
                 User.addFoodPinion(foodPinion);

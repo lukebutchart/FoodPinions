@@ -6,18 +6,18 @@ public class FoodPinion {
     String name;
     String restaurant;
     String comment;
-    float rating;
+//    float rating;
     Date date;
 
-    public FoodPinion(String name, String restaurant, String comment, float rating) {
-        editFoodPinion(name, restaurant, comment, rating);
+    public FoodPinion(String name, String restaurant, String comment/*, float rating*/) {
+        editFoodPinion(name, restaurant, comment/*, rating*/);
     }
 
-    public void editFoodPinion(String name, String restaurant, String comment, float rating) {
+    public void editFoodPinion(String name, String restaurant, String comment/*, float rating*/) {
         this.name = name;
         this.restaurant = restaurant;
         this.comment = comment;
-        this.rating = rating;
+//        this.rating = rating;
         date = new Date();
     }
 
@@ -25,9 +25,9 @@ public class FoodPinion {
         return name;
     }
 
-    public float getRating() {
-        return rating;
-    }
+//    public float getRating() {
+//        return rating;
+//    }
 
     public Date getDate() {
         return date;
@@ -53,7 +53,7 @@ public class FoodPinion {
         this.comment = comment;
     }
 
-    public void setRating(float rating) {
-        this.rating = rating;
-    }
+//    public void setRating(float rating) {
+//        this.rating = rating;
+//    }
 }
