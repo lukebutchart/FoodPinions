@@ -92,6 +92,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (cursor != null)
             cursor.moveToFirst();
 
+        // Todo: Deal with errors (out of bounds)
+
         Restaurant restaurant = new Restaurant(Integer.parseInt(cursor.getString(0)), cursor.getString(1));
 
         return restaurant;
@@ -157,6 +159,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         // TODO: CHECK FOR RESTAURANT join?
+        Restaurant checkRestaurant = getRestaurant(dish.getRestaurant().getID());
+        if (checkRestaurant == null){
+            addRestaurant(dish.getRestaurant());
+        } else {
+            // ?
+        }
         // TODO: ADD DISH
     }
 
@@ -164,29 +172,44 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public Dish getDish(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_DISHES, new String[]{KEY_ID, DISH, RESTAURANT_ID}, KEY_ID + "=?",
-                new String[]{String.valueOf(id)}, null, null, null, null);
-        if (cursor != null)
-            cursor.moveToFirst();
+//        Cursor cursor1 = db.query(TABLE_DISHES, new String[]{KEY_ID, DISH, RESTAURANT_ID}, KEY_ID + "=?",
+//                new String[]{String.valueOf(id)}, null, null, null, null);
+//        if (cursor1 != null)
+//            cursor1.moveToFirst();
 
-        String GET_DISH_RESTAURANT_QUERY = "SELECT A." + KEY_ID + ", A." + DISH + ", B." + KEY_ID
-                + ", B." + RESTAURANT + " FROM " + TABLE_DISHES + " A INNER JOIN "
-                + TABLE_RESTAURANTS + " B ON A." + RESTAURANT_ID + "= B." + KEY_ID
-                + " WHERE A." + KEY_ID + "=?";
+//        String GET_DISH_RESTAURANT_QUERY = "SELECT A." + KEY_ID + ", A." + DISH + ", B." + KEY_ID
+//                + ", B." + RESTAURANT + " FROM " + TABLE_DISHES + " A INNER JOIN "
+//                + TABLE_RESTAURANTS + " B ON A." + RESTAURANT_ID + "= B." + KEY_ID
+//                + " WHERE A." + KEY_ID + "=?";
 
-        Cursor cursor1 = db.rawQuery(GET_DISH_RESTAURANT_QUERY, new String[]{String.valueOf(id)});
-
-//        Dish dish = new Dish(Integer.parseInt(cursor.getString(0)),
-//                cursor.getString(1),
-//                getRestaurant(Integer.parseInt(cursor.getString(2)))
+        //        Dish dish = new Dish(Integer.parseInt(cursor1.getString(0)),
+//                cursor1.getString(1),
+//                getRestaurant(Integer.parseInt(cursor1.getString(2)))
 //        );
 
-        Restaurant restaurant = new Restaurant(Integer.parseInt(cursor1.getString(2)),
-                cursor1.getString(3)
+        String GET_DISH_RESTAURANT_QUERY = String.format(
+                "SELECT A.%s, A.%s, B.%s, B.%s FROM %s A INNER JOIN %s B ON A.%s = B.%s WHERE A.%s = ?",
+                KEY_ID, // 0
+                DISH, // 1
+                KEY_ID,
+                RESTAURANT, // 3
+                TABLE_DISHES,
+                TABLE_RESTAURANTS,
+                RESTAURANT_ID, // 2
+                KEY_ID,
+                KEY_ID
         );
 
-        Dish dish = new Dish(Integer.parseInt(cursor1.getString(0)),
-                cursor1.getString(1),
+        Cursor cursor = db.rawQuery(GET_DISH_RESTAURANT_QUERY, new String[]{String.valueOf(id)});
+
+        Restaurant restaurant = new Restaurant(
+                Integer.parseInt(cursor.getString(2)),
+                cursor.getString(3)
+        );
+
+        Dish dish = new Dish(
+                Integer.parseInt(cursor.getString(0)),
+                cursor.getString(1),
                 restaurant
         );
 
@@ -194,7 +217,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     // Getting all Dishes
-    public List<Dish> getAllDishs() {
+    public List<Dish> getAllDishes() {
         List<Dish> dishList = new ArrayList<>();
         // Select All query
         String selectQuery = "SELECT * FROM " + TABLE_DISHES;
@@ -262,16 +285,51 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public FoodPinion getFoodPinion(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_FOOD_PINIONS,
-                new String[]{KEY_ID, DISH_ID, COMMENT, DATE_TIME}, KEY_ID + "=?",
-                new String[]{String.valueOf(id)}, null, null, null, null);
-        if (cursor != null)
-            cursor.moveToFirst();
+//        Cursor cursor1 = db.query(TABLE_FOOD_PINIONS,
+//                new String[]{KEY_ID, DISH_ID, COMMENT, DATE_TIME}, KEY_ID + "=?",
+//                new String[]{String.valueOf(id)}, null, null, null, null);
+//        if (cursor1 != null)
+//            cursor1.moveToFirst();
+
+        String GET_DISH_RESTAURANT_QUERY = String.format(
+                "SELECT A.%s, A.%s, A.%s, B.%s, B.%s, C.%s, C.%s " +
+                        "FROM %s A INNER JOIN %s B INNER JOIN %s C " +
+                        "ON A.%s = B.%s AND B.%s = C.%s " +
+                        "WHERE A.%s = ?",
+                KEY_ID, // 0
+                COMMENT, // 1
+                DATE_TIME, // 2
+                KEY_ID,
+                DISH, // 4
+                KEY_ID,
+                RESTAURANT, // 6
+                TABLE_FOOD_PINIONS,
+                TABLE_DISHES,
+                TABLE_RESTAURANTS,
+                DISH_ID, // 3
+                KEY_ID,
+                RESTAURANT_ID, // 5
+                KEY_ID,
+                KEY_ID
+        );
+
+        Cursor cursor = db.rawQuery(GET_DISH_RESTAURANT_QUERY, new String[]{String.valueOf(id)});
+
+        Restaurant restaurant = new Restaurant(
+                Integer.parseInt(cursor.getString(5)),
+                cursor.getString(6)
+        );
+
+        Dish dish = new Dish(
+                Integer.parseInt(cursor.getString(3)),
+                cursor.getString(4),
+                restaurant
+        );
 
         FoodPinion foodPinion = new FoodPinion(Integer.parseInt(cursor.getString(0)),
-                getDish(Integer.parseInt(cursor.getString(1))),
-                cursor.getString(2),
-                cursor.getString(3)
+                dish,
+                cursor.getString(1),
+                cursor.getString(2)
         );
 
         return foodPinion;
@@ -291,7 +349,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             do {
                 FoodPinion foodPinion = new FoodPinion();
                 foodPinion.setID(Integer.parseInt(cursor.getString(0)));
-                foodPinion.setDish(getDish(Integer.parseInt(cursor.getString(1))));
+                foodPinion.setDish(getDish(Integer.parseInt(cursor.getString(1)))); // Todo: Replace getDish call with SQL command
                 foodPinion.setComment(cursor.getString(2));
                 foodPinion.setDateTime(cursor.getString(3));
                 // Add to list

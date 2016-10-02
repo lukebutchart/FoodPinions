@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.stand_still.foodpinions.R;
+import com.stand_still.foodpinions.classes.DatabaseHandler;
 import com.stand_still.foodpinions.classes.Dish;
 import com.stand_still.foodpinions.classes.FoodPinion;
 import com.stand_still.foodpinions.classes.Restaurant;
@@ -92,7 +93,6 @@ public class EditFoodPinionActivity extends AppCompatActivity {
         String dishName = dishNameEditText.getText().toString();
         String restaurantName = restaurantEditText.getText().toString();
         String comment = commentEditText.getText().toString();
-//        float rating = ratingRatingBar.getRating();
 
         Restaurant restaurant = new Restaurant(restaurantName);
         Dish dish = new Dish(dishName, restaurant);
@@ -100,6 +100,13 @@ public class EditFoodPinionActivity extends AppCompatActivity {
 
         if (checkFieldsAreValid()) {
             FoodPinion checkFoodPinion = User.getFoodPinionByPair(dishName, restaurantName);
+
+            // Todo: TESTING!
+            DatabaseHandler databaseHandler = new DatabaseHandler(this);
+            databaseHandler.addRestaurant(restaurant);
+//            Restaurant restaurant0 = databaseHandler.getRestaurant(0);
+            Restaurant restaurant1 = databaseHandler.getRestaurant(10);
+            // =============
 
             if (editOnly) {
                 currentFoodPinion.editFoodPinion(dishName, restaurantName, comment/*, rating*/);
