@@ -13,9 +13,14 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.stand_still.foodpinions.R;
+import com.stand_still.foodpinions.classes.DatabaseHandler;
+import com.stand_still.foodpinions.classes.Dish;
 import com.stand_still.foodpinions.classes.FoodPinion;
+import com.stand_still.foodpinions.classes.Restaurant;
 import com.stand_still.foodpinions.classes.User;
 import com.stand_still.foodpinions.classes.ViewFoodPinionsArrayAdapter;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,6 +37,28 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // ================= TEST SECTION =================
+        DatabaseHandler dbHandler = new DatabaseHandler(this);
+        int dishCount = dbHandler.getDishesCount();
+        int restaurantCount = dbHandler.getRestaurantsCount();
+        int foodPinionsCount = dbHandler.getFoodPinionsCount();
+
+        Restaurant restaurant = new Restaurant("Nandos");
+        dbHandler.addRestaurant(restaurant); // Finished    // Does nothing if restaurant already exists
+        restaurant = dbHandler.getRestaurantByName(restaurant.getName());   // perhaps implement some way of doing this automatically
+        List<Restaurant> restaurants = dbHandler.getAllRestaurants();
+
+        Dish dish = new Dish("Chips", restaurant);
+        dbHandler.addDish(dish); // Uncertain
+        List<Dish> dishes = dbHandler.getAllDishes();
+
+        FoodPinion foodPinion = new FoodPinion(dish, "Yummy!");
+        dbHandler.addFoodPinion(foodPinion); // Unfinished
+        List<FoodPinion> foodPinions = dbHandler.getAllFoodPinions();
+
+        int one = 1;
+        // ================================================
 
         listHeadersLinearLayout = (LinearLayout) findViewById(R.id.list_headers_linearLayout);
         searchEditText = (EditText) findViewById(R.id.search_editText);

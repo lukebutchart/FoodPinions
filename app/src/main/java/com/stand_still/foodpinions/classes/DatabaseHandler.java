@@ -13,7 +13,7 @@ import java.util.List;
 public class DatabaseHandler extends SQLiteOpenHelper {
     // All static variables
     // Database version
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 13;
 
     // Database name
     private static final String DATABASE_NAME = "foodPinionsManager";
@@ -33,6 +33,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String RESTAURANT_ID = "restaurantID";
     private static final String DISH_ID = "dishID";
     private static final String USER_NAME = "userName";
+    private static final String CONSTRAINT = "myConstraint";
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -47,23 +48,44 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + ")";
         db.execSQL(CREATE_RESTAURANTS_TABLE);
 
-        String CREATE_DISHES_TABLE = "CREATE TABLE " + TABLE_DISHES + "("
+//        String CREATE_DISHES_TABLE = "CREATE TABLE " + TABLE_DISHES + "("
 //                + KEY_ID + " INTEGER PRIMARY KEY,"
-                + "CONSTRAINT " + KEY_ID + " PRIMARY KEY (" + DISH + "," + RESTAURANT_ID + "),"
+////                + "CONSTRAINT " + KEY_ID + " PRIMARY KEY (" + DISH + "," + RESTAURANT_ID + "),"
+//                + DISH + " TEXT NOT NULL,"
+//                + RESTAURANT_ID + " INTEGER NOT NULL,CONSTRAINT "
+//                + CONSTRAINT + " NOT NULL UNIQUE (" + DISH + "," + RESTAURANT_ID + ")"
+//                + ")";
+//        db.execSQL(CREATE_DISHES_TABLE);
+
+        String CREATE_DISHES_TABLE = "CREATE TABLE " + TABLE_DISHES + "("
+                + KEY_ID + " INTEGER PRIMARY KEY,"
                 + DISH + " TEXT NOT NULL,"
-                + RESTAURANT_ID + " INTEGER NOT NULL"
-                + ")";
+                + RESTAURANT_ID + " INTEGER NOT NULL,"
+                + "FOREIGN KEY (" + RESTAURANT_ID + ") REFERENCES " + TABLE_RESTAURANTS + "(" + KEY_ID + "),"
+                + "UNIQUE (" + DISH + "," + RESTAURANT_ID + ")"     // Don't use "ON CONFLICT REPLACE" to specify conflict behaviour. Should find a way that actually makes sense
+                + ")";                                              // ON CONFLICT {ROLLBACK, ABORT, FAIL, IGNORE}
         db.execSQL(CREATE_DISHES_TABLE);
 
-        String CREATE_FOOD_PINIONS_TABLE = "CREATE TABLE " + TABLE_FOOD_PINIONS + "("
-//                + KEY_ID + " INTEGER PRIMARY KEY,"
-                + "CONSTRAINT " + KEY_ID + " PRIMARY KEY (" + DISH_ID + "," + USER_NAME + "),"
+        String CREATE_FOOD_PINIONS_TABLE = "CREATE TABLE " + TABLE_FOOD_PINIONS + "("   // Todo: Finish this
+                + KEY_ID + " INTEGER PRIMARY KEY,"
                 + DISH_ID + " INTEGER UNIQUE NOT NULL,"
                 + COMMENT + " TEXT,"
                 + DATE_TIME + " TEXT NOT NULL,"
-                + USER_NAME + " TEXT NOT NULL"
+                + USER_NAME + " TEXT NOT NULL,"
+                + "CONSTRAINT " + KEY_ID + " PRIMARY KEY (" + DISH_ID + "," + USER_NAME + ")"
                 + ")";
         db.execSQL(CREATE_FOOD_PINIONS_TABLE);
+
+//        String CREATE_FOOD_PINIONS_TABLE = "CREATE TABLE " + TABLE_FOOD_PINIONS + "("
+////                + KEY_ID + " INTEGER PRIMARY KEY,"
+////                + "CONSTRAINT " + KEY_ID + " PRIMARY KEY (" + DISH_ID + "," + USER_NAME + "),"
+//                + DISH_ID + " INTEGER UNIQUE NOT NULL,"
+//                + COMMENT + " TEXT,"
+//                + DATE_TIME + " TEXT NOT NULL,"
+//                + USER_NAME + " TEXT NOT NULL" +
+//                "," + "CONSTRAINT " + KEY_ID + " PRIMARY KEY (" + DISH_ID + "," + USER_NAME + ")"
+//                + ")";
+//        db.execSQL(CREATE_FOOD_PINIONS_TABLE);
     }
 
     // Upgrading database
@@ -109,6 +131,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return restaurant;
     }
 
+    // Getting single Restaurant by name
+    public Restaurant getRestaurantByName(String name) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_RESTAURANTS, new String[]{KEY_ID, RESTAURANT}, RESTAURANT + "=?",
+                new String[]{String.valueOf(name)}, null, null, null, null);
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        Restaurant restaurant;
+        try {
+            restaurant = new Restaurant(Integer.parseInt(cursor.getString(0)), cursor.getString(1));
+        } catch (CursorIndexOutOfBoundsException e) {
+            restaurant = null;
+        }
+        return restaurant;
+    }
+
     // Getting all Restaurants
     public List<Restaurant> getAllRestaurants() {
         List<Restaurant> restaurantList = new ArrayList<>();
@@ -137,9 +177,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String countQuery = "SELECT * FROM " + TABLE_RESTAURANTS;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
+        int count = cursor.getCount();
         cursor.close();
-
-        return cursor.getCount();
+        return count;
     }
 
     // Updating single Restaurant
@@ -168,14 +208,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        // TODO: CHECK FOR RESTAURANT join?
+        // Todo: CHECK FOR RESTAURANT join?
         Restaurant checkRestaurant = getRestaurant(dish.getRestaurant().getID());
         if (checkRestaurant == null) {
             addRestaurant(dish.getRestaurant());
         } else {
-            // ?
+            // Todo: ???
         }
-        // TODO: ADD DISH
+        // Todo: ADD DISH
+
+        values.put(DISH, dish.getName());
+        values.put(RESTAURANT_ID, dish.getRestaurant().getID());
+
+        // Inserting row
+        db.insert(TABLE_DISHES, null, values);
+        db.close(); // Closing database connection
     }
 
     // Getting single Dish
@@ -242,6 +289,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         // Looping through all rows and adding to the list
         if (cursor.moveToFirst()) {
+//        cursor.moveToFirst();
             do {
                 Dish dish = new Dish();
                 dish.setID(Integer.parseInt(cursor.getString(0)));
@@ -260,9 +308,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String countQuery = "SELECT * FROM " + TABLE_DISHES;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
+        int count = cursor.getCount();
         cursor.close();
-
-        return cursor.getCount();
+        return count;
     }
 
     // Updating single Dish
@@ -440,9 +488,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String countQuery = "SELECT * FROM " + TABLE_FOOD_PINIONS;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
+        int count = cursor.getCount();
         cursor.close();
-
-        return cursor.getCount();
+        return count;
     }
 
     // Updating single FoodPinion
