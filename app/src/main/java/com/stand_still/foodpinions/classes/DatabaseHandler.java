@@ -3,6 +3,7 @@ package com.stand_still.foodpinions.classes;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -12,7 +13,7 @@ import java.util.List;
 public class DatabaseHandler extends SQLiteOpenHelper {
     // All static variables
     // Database version
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 4;
 
     // Database name
     private static final String DATABASE_NAME = "foodPinionsManager";
@@ -31,6 +32,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String DATE_TIME = "dateTime";
     private static final String RESTAURANT_ID = "restaurantID";
     private static final String DISH_ID = "dishID";
+    private static final String USER_NAME = "userName";
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -41,20 +43,26 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_RESTAURANTS_TABLE = "CREATE TABLE " + TABLE_RESTAURANTS + "("
                 + KEY_ID + " INTEGER PRIMARY KEY,"
-                + RESTAURANT + " TEXT" + ")";
+                + RESTAURANT + " TEXT NOT NULL UNIQUE"
+                + ")";
         db.execSQL(CREATE_RESTAURANTS_TABLE);
 
         String CREATE_DISHES_TABLE = "CREATE TABLE " + TABLE_DISHES + "("
-                + KEY_ID + " INTEGER PRIMARY KEY,"
-                + DISH + " TEXT,"
-                + RESTAURANT_ID + " INTEGER" + ")";
+//                + KEY_ID + " INTEGER PRIMARY KEY,"
+                + "CONSTRAINT " + KEY_ID + " PRIMARY KEY (" + DISH + "," + RESTAURANT_ID + "),"
+                + DISH + " TEXT NOT NULL,"
+                + RESTAURANT_ID + " INTEGER NOT NULL"
+                + ")";
         db.execSQL(CREATE_DISHES_TABLE);
 
         String CREATE_FOOD_PINIONS_TABLE = "CREATE TABLE " + TABLE_FOOD_PINIONS + "("
-                + KEY_ID + " INTEGER PRIMARY KEY,"
-                + DISH_ID + " INTEGER,"
+//                + KEY_ID + " INTEGER PRIMARY KEY,"
+                + "CONSTRAINT " + KEY_ID + " PRIMARY KEY (" + DISH_ID + "," + USER_NAME + "),"
+                + DISH_ID + " INTEGER UNIQUE NOT NULL,"
                 + COMMENT + " TEXT,"
-                + DATE_TIME + " TEXT" + ")";
+                + DATE_TIME + " TEXT NOT NULL,"
+                + USER_NAME + " TEXT NOT NULL"
+                + ")";
         db.execSQL(CREATE_FOOD_PINIONS_TABLE);
     }
 
@@ -92,10 +100,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (cursor != null)
             cursor.moveToFirst();
 
-        // Todo: Deal with errors (out of bounds)
-
-        Restaurant restaurant = new Restaurant(Integer.parseInt(cursor.getString(0)), cursor.getString(1));
-
+        Restaurant restaurant;
+        try {
+            restaurant = new Restaurant(Integer.parseInt(cursor.getString(0)), cursor.getString(1));
+        } catch (CursorIndexOutOfBoundsException e) {
+            restaurant = null;
+        }
         return restaurant;
     }
 
@@ -160,7 +170,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         // TODO: CHECK FOR RESTAURANT join?
         Restaurant checkRestaurant = getRestaurant(dish.getRestaurant().getID());
-        if (checkRestaurant == null){
+        if (checkRestaurant == null) {
             addRestaurant(dish.getRestaurant());
         } else {
             // ?
@@ -202,16 +212,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         Cursor cursor = db.rawQuery(GET_DISH_RESTAURANT_QUERY, new String[]{String.valueOf(id)});
 
-        Restaurant restaurant = new Restaurant(
-                Integer.parseInt(cursor.getString(2)),
-                cursor.getString(3)
-        );
+        Dish dish;
+        try {
+            Restaurant restaurant = new Restaurant(
+                    Integer.parseInt(cursor.getString(2)),
+                    cursor.getString(3)
+            );
 
-        Dish dish = new Dish(
-                Integer.parseInt(cursor.getString(0)),
-                cursor.getString(1),
-                restaurant
-        );
+            dish = new Dish(
+                    Integer.parseInt(cursor.getString(0)),
+                    cursor.getString(1),
+                    restaurant
+            );
+        } catch (CursorIndexOutOfBoundsException e) {
+            dish = null;
+        }
 
         return dish;
     }
@@ -292,6 +307,61 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 //            cursor1.moveToFirst();
 
         String GET_DISH_RESTAURANT_QUERY = String.format(
+                "SELECT A.%s, A.%s, A.%s, A.%s, B.%s, B.%s, C.%s, C.%s " +
+                        "FROM %s A INNER JOIN %s B INNER JOIN %s C " +
+                        "ON A.%s = B.%s AND B.%s = C.%s " +
+                        "WHERE A.%s = ?",
+                KEY_ID, // 0
+                COMMENT, // 1
+                DATE_TIME, // 2
+                    USER_NAME, // 3
+                KEY_ID,
+                DISH, // 5
+                KEY_ID,
+                RESTAURANT, // 7
+                TABLE_FOOD_PINIONS,
+                TABLE_DISHES,
+                TABLE_RESTAURANTS,
+                DISH_ID, // 4
+                KEY_ID,
+                RESTAURANT_ID, // 6
+                KEY_ID,
+                KEY_ID
+        );
+
+        Cursor cursor = db.rawQuery(GET_DISH_RESTAURANT_QUERY, new String[]{String.valueOf(id)});
+
+        FoodPinion foodPinion;
+
+        try {
+            Restaurant restaurant = new Restaurant(
+                    Integer.parseInt(cursor.getString(6)),
+                    cursor.getString(7)
+            );
+
+            Dish dish = new Dish(
+                    Integer.parseInt(cursor.getString(4)),
+                    cursor.getString(5),
+                    restaurant
+            );
+
+            foodPinion = new FoodPinion(Integer.parseInt(cursor.getString(0)),
+                    dish,
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getString(3)
+            );
+        } catch (CursorIndexOutOfBoundsException e) {
+            foodPinion = null;
+        }
+        return foodPinion;
+    }
+
+    // Getting single FoodPinion by pair strings
+    public FoodPinion getFoodPinionByPair(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String GET_DISH_RESTAURANT_QUERY = String.format(
                 "SELECT A.%s, A.%s, A.%s, B.%s, B.%s, C.%s, C.%s " +
                         "FROM %s A INNER JOIN %s B INNER JOIN %s C " +
                         "ON A.%s = B.%s AND B.%s = C.%s " +
@@ -315,23 +385,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         Cursor cursor = db.rawQuery(GET_DISH_RESTAURANT_QUERY, new String[]{String.valueOf(id)});
 
-        Restaurant restaurant = new Restaurant(
-                Integer.parseInt(cursor.getString(5)),
-                cursor.getString(6)
-        );
+        FoodPinion foodPinion;
 
-        Dish dish = new Dish(
-                Integer.parseInt(cursor.getString(3)),
-                cursor.getString(4),
-                restaurant
-        );
+        try {
+            Restaurant restaurant = new Restaurant(
+                    Integer.parseInt(cursor.getString(5)),
+                    cursor.getString(6)
+            );
 
-        FoodPinion foodPinion = new FoodPinion(Integer.parseInt(cursor.getString(0)),
-                dish,
-                cursor.getString(1),
-                cursor.getString(2)
-        );
+            Dish dish = new Dish(
+                    Integer.parseInt(cursor.getString(3)),
+                    cursor.getString(4),
+                    restaurant
+            );
 
+            foodPinion = new FoodPinion(Integer.parseInt(cursor.getString(0)),
+                    dish,
+                    cursor.getString(1),
+                    cursor.getString(2)
+            );
+        } catch (CursorIndexOutOfBoundsException e) {
+            foodPinion = null;
+        }
         return foodPinion;
     }
 

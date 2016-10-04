@@ -10,22 +10,13 @@ public class FoodPinion {
     Dish dish;
     String comment;
     Date date;
+    String userName = Settings.getUserName();
 
-    //    int dishID;
     Restaurant restaurant;
-    //    int restaurantID;
     DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
 
-//    // Used outside of dbhandler
-//    public FoodPinion(Dish dish, String comment, String dateTimeString) {
-//        this.dish = dish;
-//        this.comment = comment;
-//        try {
-//            this.date = dateFormat.parse(dateTimeString);
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    public FoodPinion() {
+    }
 
     public FoodPinion(Dish dish, String comment) {
         this.dish = dish;
@@ -35,6 +26,15 @@ public class FoodPinion {
 
     // Only used in DbHandler
     public FoodPinion(int id, Dish dish, String comment, String dateTimeString) {
+        setFields(id, dish, comment, dateTimeString);
+    }
+
+    public FoodPinion(int id, Dish dish, String comment, String dateTimeString, String userName) {
+        setFields(id, dish, comment, dateTimeString);
+        this.userName = userName;
+    }
+
+    private void setFields(int id, Dish dish, String comment, String dateTimeString) {
         this.id = id;
         this.dish = dish;
         this.comment = comment;
@@ -45,23 +45,7 @@ public class FoodPinion {
         }
     }
 
-//    public FoodPinion(int id, int dishID /*String name, String restaurant*/, String comment/*, float rating*/) {
-//        DatabaseHandler databaseHandler = new DatabaseHandler();
-//        Dish dish = databaseHandler.getDish(dishID);
-//        editFoodPinion(dish.getName(), dish.getRestaurant(), comment/*, rating*/);
-//    }
-//
-//    public FoodPinion(int id, int dishID, String comment, String dateTimeString) {
-//        DatabaseHandler databaseHandler = new DatabaseHandler();
-//        Dish dish = databaseHandler.getDish(dishID);
-//        editFoodPinion(dish.getName(), dish.getRestaurant(), comment/*, rating*/);
-//    }
-
-    public FoodPinion() {
-
-    }
-
-    public void editFoodPinion(String name, String restaurant, String comment/*, float rating*/) {
+    public void editFoodPinion(String name, String restaurant, String comment) {
         editFoodPinion(name, restaurant, comment, new Date().toString());
     }
 
@@ -116,10 +100,6 @@ public class FoodPinion {
         }
     }
 
-//    public void setDishID(int dishID) {
-//        this.name = getDish(dishID);
-//    }
-
     public String getDateTimeString() {
         return date.toString();
     }
@@ -131,8 +111,4 @@ public class FoodPinion {
     public void setDish(Dish dish) {
         this.dish = dish;
     }
-
-//    public void setRating(float rating) {
-//        this.rating = rating;
-//    }
 }

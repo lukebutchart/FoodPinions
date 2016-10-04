@@ -6,6 +6,7 @@ public class Settings {
     static boolean COMMENT_IS_MANDATORY = false;
     static boolean RATING_IS_MANDATORY = true;
 
+    static String USER_NAME = "Luke";
 
     public static boolean isCommentMandatory() {
         return COMMENT_IS_MANDATORY;
@@ -17,5 +18,9 @@ public class Settings {
 
     public static boolean isNameMandatory() {
         return NAME_IS_MANDATORY;
+    }
+
+    public static String getUserName() {
+        return USER_NAME;
     }
 }

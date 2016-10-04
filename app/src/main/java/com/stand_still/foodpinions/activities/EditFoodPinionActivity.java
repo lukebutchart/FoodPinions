@@ -103,7 +103,7 @@ public class EditFoodPinionActivity extends AppCompatActivity {
 
             // Todo: TESTING!
             DatabaseHandler databaseHandler = new DatabaseHandler(this);
-            databaseHandler.addRestaurant(restaurant);
+//            databaseHandler.addRestaurant(restaurant);
 //            Restaurant restaurant0 = databaseHandler.getRestaurant(0);
             Restaurant restaurant1 = databaseHandler.getRestaurant(10);
             // =============
