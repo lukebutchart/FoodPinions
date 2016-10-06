@@ -1,5 +1,7 @@
 package com.stand_still.foodpinions.classes;
 
+import android.content.Context;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -10,7 +12,7 @@ public class FoodPinion {
     Dish dish;
     String comment;
     Date date;
-    String userName = Settings.getUserName();
+    User user;
 
     Restaurant restaurant;
     DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
@@ -18,20 +20,17 @@ public class FoodPinion {
     public FoodPinion() {
     }
 
-    public FoodPinion(Dish dish, String comment) {
+    public FoodPinion(Dish dish, String comment, Context context) {
         this.dish = dish;
         this.comment = comment;
         this.date = new Date();
+        this.user = Settings.getUser(context);
     }
 
     // Only used in DbHandler
-    public FoodPinion(int id, Dish dish, String comment, String dateTimeString) {
+    public FoodPinion(int id, Dish dish, String comment, String dateTimeString, User user) {
         setFields(id, dish, comment, dateTimeString);
-    }
-
-    public FoodPinion(int id, Dish dish, String comment, String dateTimeString, String userName) {
-        setFields(id, dish, comment, dateTimeString);
-        this.userName = userName;
+        this.user = user;
     }
 
     private void setFields(int id, Dish dish, String comment, String dateTimeString) {
@@ -110,5 +109,17 @@ public class FoodPinion {
 
     public void setDish(Dish dish) {
         this.dish = dish;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public Dish getDish() {
+        return dish;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -96,7 +96,7 @@ public class EditFoodPinionActivity extends AppCompatActivity {
 
         Restaurant restaurant = new Restaurant(restaurantName);
         Dish dish = new Dish(dishName, restaurant);
-        FoodPinion foodPinion = new FoodPinion(dish, comment);
+        FoodPinion foodPinion = new FoodPinion(dish, comment, this);
 
         if (checkFieldsAreValid()) {
             FoodPinion checkFoodPinion = User.getFoodPinionByPair(dishName, restaurantName);

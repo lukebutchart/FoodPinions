@@ -7,12 +7,18 @@ import java.util.Comparator;
 
 public class User {
     protected static String name;
+    int id;
 
     public User(String name){
         User.name = name;
     }
 
     static FoodPinionArrayList foodPinions = new FoodPinionArrayList();
+
+    public User(int id, String userName) {
+        this.id = id;
+        this.name = userName;
+    }
 
     public static void addFoodPinion(FoodPinion foodPinion){
         foodPinions.add(foodPinion);
@@ -55,5 +61,13 @@ public class User {
     public static boolean foodPinionExists(FoodPinion foodPinion) {
         // Todo: Make this correct (react correctly if more than one FoodPinion)
          return getFoodPinionByPair(foodPinion.getDishName(), foodPinion.getRestaurant()) != null;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getID() {
+        return id;
     }
 }

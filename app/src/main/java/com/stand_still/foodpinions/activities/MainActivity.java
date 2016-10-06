@@ -16,6 +16,7 @@ import com.stand_still.foodpinions.R;
 import com.stand_still.foodpinions.classes.DatabaseHandler;
 import com.stand_still.foodpinions.classes.Dish;
 import com.stand_still.foodpinions.classes.FoodPinion;
+import com.stand_still.foodpinions.classes.MyDatabase;
 import com.stand_still.foodpinions.classes.Restaurant;
 import com.stand_still.foodpinions.classes.User;
 import com.stand_still.foodpinions.classes.ViewFoodPinionsArrayAdapter;
@@ -45,16 +46,22 @@ public class MainActivity extends AppCompatActivity {
         int foodPinionsCount = dbHandler.getFoodPinionsCount();
 
         Restaurant restaurant = new Restaurant("Nandos");
-        dbHandler.addRestaurant(restaurant); // Finished    // Does nothing if restaurant already exists
+        MyDatabase.addRestaurant(restaurant, this);
+//        dbHandler.addRestaurant(restaurant); // Finished    // Does nothing if restaurant already exists
         restaurant = dbHandler.getRestaurantByName(restaurant.getName());   // perhaps implement some way of doing this automatically
         List<Restaurant> restaurants = dbHandler.getAllRestaurants();
 
         Dish dish = new Dish("Chips", restaurant);
-        dbHandler.addDish(dish); // Uncertain
+        MyDatabase.addDish(dish, this);
+//        dbHandler.addDish(dish); // Finished    // Todo: Implement a AppState.addDish(context) method that updates the dish with its new id (+ restaurant & fp)
         List<Dish> dishes = dbHandler.getAllDishes();
 
-        FoodPinion foodPinion = new FoodPinion(dish, "Yummy!");
-        dbHandler.addFoodPinion(foodPinion); // Unfinished
+//        dbHandler.getDish(1);
+
+        FoodPinion foodPinion = new FoodPinion(dish, "Yummy!", this);
+        String name = foodPinion.getUser().getName();
+        MyDatabase.addFoodPinion(foodPinion, this);
+//        dbHandler.addFoodPinion(foodPinion); // Uncertain
         List<FoodPinion> foodPinions = dbHandler.getAllFoodPinions();
 
         int one = 1;
