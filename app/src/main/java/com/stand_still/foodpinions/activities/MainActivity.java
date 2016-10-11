@@ -45,26 +45,19 @@ public class MainActivity extends AppCompatActivity {
         int restaurantCount = dbHandler.getRestaurantsCount();
         int foodPinionsCount = dbHandler.getFoodPinionsCount();
 
-        Restaurant restaurant = new Restaurant("Nandos");
-        MyDatabase.addRestaurant(restaurant, this);
-//        dbHandler.addRestaurant(restaurant); // Finished    // Does nothing if restaurant already exists
-        restaurant = dbHandler.getRestaurantByName(restaurant.getName());   // perhaps implement some way of doing this automatically
+        Restaurant restaurant = new Restaurant("Byron");
         List<Restaurant> restaurants = dbHandler.getAllRestaurants();
 
-        Dish dish = new Dish("Chips", restaurant);
-        MyDatabase.addDish(dish, this);
-//        dbHandler.addDish(dish); // Finished    // Todo: Implement a AppState.addDish(context) method that updates the dish with its new id (+ restaurant & fp)
+        Dish dish = new Dish("Salad", restaurant);
         List<Dish> dishes = dbHandler.getAllDishes();
 
-//        dbHandler.getDish(1);
-
-        FoodPinion foodPinion = new FoodPinion(dish, "Yummy!", this);
-        String name = foodPinion.getUser().getName();
-        MyDatabase.addFoodPinion(foodPinion, this);
-//        dbHandler.addFoodPinion(foodPinion); // Uncertain
+        FoodPinion foodPinion = new FoodPinion(dish, "Top Byron", this);
         List<FoodPinion> foodPinions = dbHandler.getAllFoodPinions();
 
-        int one = 1;
+        MyDatabase.addFoodPinion(foodPinion, this); // Todo: Fix user being null
+        foodPinions = dbHandler.getAllFoodPinions();
+
+        // Todo: Test remaining DatabaseHandler methods
         // ================================================
 
         listHeadersLinearLayout = (LinearLayout) findViewById(R.id.list_headers_linearLayout);

@@ -2,6 +2,8 @@ package com.stand_still.foodpinions.classes;
 
 import android.content.Context;
 
+import java.util.List;
+
 public class MyDatabase {
     public static void addRestaurant(Restaurant restaurant, Context context){
         DatabaseHandler dbHandler = new DatabaseHandler(context);
@@ -20,7 +22,15 @@ public class MyDatabase {
     public static void addFoodPinion(FoodPinion foodPinion, Context context){
         DatabaseHandler dbHandler = new DatabaseHandler(context);
         dbHandler.addFoodPinion(foodPinion);
-        FoodPinion addedFoodPinion = dbHandler.getFoodPinionByPair(foodPinion.getDish(), foodPinion.getUser());
+
+        List<Restaurant> restaurants = dbHandler.getAllRestaurants();
+        List<Dish> dishes = dbHandler.getAllDishes();
+        List<FoodPinion> foodPinions = dbHandler.getAllFoodPinions(); // Todo: Fix this returning null
+
+        FoodPinion addedFoodPinion = dbHandler.getFoodPinionByPair(
+                foodPinion.getDish(),
+                foodPinion.getUser()
+        );
         foodPinion.setID(addedFoodPinion.getID());
     }
 }
