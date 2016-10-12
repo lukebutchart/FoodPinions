@@ -40,22 +40,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // ================= TEST SECTION =================
-        DatabaseHandler dbHandler = new DatabaseHandler(this);
-        int dishCount = dbHandler.getDishesCount();
-        int restaurantCount = dbHandler.getRestaurantsCount();
-        int foodPinionsCount = dbHandler.getFoodPinionsCount();
+        int dishCount = MyDatabase.getDishCount(this);
+        int restaurantCount = MyDatabase.getRestaurantCount(this);
+        int foodPinionsCount = MyDatabase.getFoodPinionCount(this);
 
         Restaurant restaurant = new Restaurant("Byron");
-        List<Restaurant> restaurants = dbHandler.getAllRestaurants();
+        List<Restaurant> restaurants = MyDatabase.getAllRestaurants(this);
 
         Dish dish = new Dish("Salad", restaurant);
-        List<Dish> dishes = dbHandler.getAllDishes();
+        List<Dish> dishes = MyDatabase.getAllDishes(this);
 
         FoodPinion foodPinion = new FoodPinion(dish, "Top Byron", this);
-        List<FoodPinion> foodPinions = dbHandler.getAllFoodPinions();
+        List<FoodPinion> foodPinions = MyDatabase.getAllFoodPinions(this);
 
-        MyDatabase.addFoodPinion(foodPinion, this); // Todo: Fix user being null
-        foodPinions = dbHandler.getAllFoodPinions();
+        MyDatabase.addFoodPinion(foodPinion, this);
+        foodPinions = MyDatabase.getAllFoodPinions(this);
 
         // Todo: Test remaining DatabaseHandler methods
         // ================================================

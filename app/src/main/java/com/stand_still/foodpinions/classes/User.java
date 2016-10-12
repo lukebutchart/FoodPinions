@@ -70,4 +70,8 @@ public class User {
     public int getID() {
         return id;
     }
+
+    public void setID(int ID) {
+        this.id = ID;
+    }
 }

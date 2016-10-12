@@ -15,7 +15,7 @@ import java.util.List;
 public class DatabaseHandler extends SQLiteOpenHelper {
     // All static variables
     // Database version
-    private static final int DATABASE_VERSION = 48;
+    private static final int DATABASE_VERSION = 52;
 
     // Database name
     private static final String DATABASE_NAME = "foodPinionsManager";
@@ -56,15 +56,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + ")";
         db.execSQL(CREATE_RESTAURANTS_TABLE);
 
-//        String CREATE_DISHES_TABLE = "CREATE TABLE " + TABLE_DISHES + "("
-//                + KEY_ID + " INTEGER PRIMARY KEY,"
-////                + "CONSTRAINT " + KEY_ID + " PRIMARY KEY (" + DISH + "," + RESTAURANT_ID + "),"
-//                + DISH + " TEXT NOT NULL,"
-//                + RESTAURANT_ID + " INTEGER NOT NULL,CONSTRAINT "
-//                + CONSTRAINT + " NOT NULL UNIQUE (" + DISH + "," + RESTAURANT_ID + ")"
-//                + ")";
-//        db.execSQL(CREATE_DISHES_TABLE);
-
         String CREATE_DISHES_TABLE = "CREATE TABLE " + TABLE_DISHES + "("
                 + KEY_ID + " INTEGER PRIMARY KEY,"
                 + DISH + " TEXT NOT NULL,"
@@ -84,6 +75,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + "FOREIGN KEY (" + DISH_ID + ") REFERENCES " + TABLE_DISHES + "(" + KEY_ID + "),"
                 + "FOREIGN KEY (" + USER_ID + ") REFERENCES " + TABLE_USERS + "(" + KEY_ID + ")"
 //                + ",UNIQUE (" + DISH_ID + "," + USER_ID + ")"
+//                + ", PRIMARY KEY (" + DISH_ID + "," + USER_ID + ")"
                 // Todo: Find way of doing what was trying to do above. Namely, ensure that a pair of column values together is unique
                 + ")";
         db.execSQL(CREATE_FOOD_PINIONS_TABLE);
@@ -223,7 +215,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // Adding new Dish
     public void addDish(Dish dish) {
         ContentValues values = new ContentValues();
-        // Todo: CHECK FOR RESTAURANT join?
         Restaurant checkRestaurant = getRestaurantByName(
                 dish.getRestaurant().getName()
         );
@@ -232,8 +223,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             dish.setRestaurant(getRestaurantByName(
                     dish.getRestaurant().getName()
             ));
-        } else {
-            // Todo: ???
         }
 
         values.put(DISH, dish.getName());
@@ -265,7 +254,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         Dish dish;
         try {
-            if (cursor.moveToFirst()) { // Todo: ALWAYS ALWAYS ALWAYS moveToFirst before checking cursor results
+            if (cursor.moveToFirst()) { // ALWAYS ALWAYS ALWAYS moveToFirst before checking cursor results
                 Restaurant restaurant = new Restaurant(
                         Integer.parseInt(cursor.getString(2)),
                         cursor.getString(3)
@@ -287,7 +276,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     public Dish getDishByPair(String dishName, Restaurant checkRestaurant) {
-        if (checkRestaurant.getID() < 1) {  // Todo: Make more efficient
+        if (checkRestaurant.getID() < 1) {
             Restaurant restaurantByName = getRestaurantByName(checkRestaurant.getName());
             if (restaurantByName == null) {
                 addRestaurant(checkRestaurant);
@@ -338,12 +327,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // Select All query
         String selectQuery = "SELECT * FROM " + TABLE_DISHES + " WHERE " + RESTAURANT_ID + "=?";
 
-        SQLiteDatabase db = this.getWritableDatabase(); //Todo: Make this actually work
+        SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(restaurant.getID())});
 
         // Looping through all rows and adding to the list
         if (cursor.moveToFirst()) {
-//        cursor.moveToFirst();
             do {
                 Dish dish = new Dish();
                 dish.setID(Integer.parseInt(cursor.getString(0)));
@@ -395,7 +383,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // Adding new FoodPinion
     public void addFoodPinion(FoodPinion foodPinion) {
         ContentValues values = new ContentValues();
-        // TODO: CHECK FOR DISH join?
         Dish checkDish = getDishByPair(
                 foodPinion.getDish().getName(),
                 foodPinion.getDish().getRestaurant()
@@ -406,8 +393,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     foodPinion.getDish().getName(),
                     foodPinion.getDish().getRestaurant()
             ));
-        } else {
-            // Todo: ???
         }
 
         values.put(DISH_ID, foodPinion.getDish().getID());
@@ -475,7 +460,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                         restaurant
                 );
 
-                User user = getUser(Integer.parseInt(cursor.getString(3))); // Todo: Fix user being null
+                User user = getUser(Integer.parseInt(cursor.getString(3)));
 
                 foodPinion = new FoodPinion(
                         Integer.parseInt(cursor.getString(0)),
@@ -518,33 +503,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             }
         }
         return null;
-
-//        if (checkRestaurant.getID() == 0){  // Todo: Make more efficient
-//            Restaurant restaurantByName = getRestaurantByName(checkRestaurant.getName());
-//            if (restaurantByName == null){
-//                addRestaurant(checkRestaurant);
-//                restaurantByName = getRestaurantByName(checkRestaurant.getName());
-//            }
-//            checkRestaurant.setID(restaurantByName.getID());
-//        }
-//
-//        int restaurantId = checkRestaurant.getID();
-//
-//        List<Dish> dishesFromRestaurant = getDishesFromRestaurant(checkRestaurant);
-//
-//        for (Dish dish :
-//                dishesFromRestaurant) {
-//            if (dish.getName().equals(dishName))
-//                return dish;
-//        }
-//        return null;
     }
 
     private List<FoodPinion> getFoodPinionsByDish(Dish checkDish) {
         List<FoodPinion> foodPinionList = new ArrayList<>();
-        // Select All query
-        String selectQuery = "SELECT * FROM " + TABLE_FOOD_PINIONS + " WHERE " + DISH_ID + "=?";
-
         String GET_FOOD_PINION_DISH_QUERY = String.format(
                 "SELECT A.%s, A.%s, A.%s, A.%s, " +
                         "B.%s, B.%s, " +
@@ -574,9 +536,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 KEY_ID
         );
 
-        SQLiteDatabase db = this.getReadableDatabase/*Writable*/(); //Todo: Make this actually work
+        SQLiteDatabase db = this.getReadableDatabase();
         String dishID = String.valueOf(checkDish.getID());
-//        Cursor cursor = db.rawQuery(selectQuery, new String[]{dishID});
         Cursor cursor = db.rawQuery(GET_FOOD_PINION_DISH_QUERY, new String[]{dishID});
 
         // Looping through all rows and adding to the list
@@ -607,13 +568,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 );
 
                 foodPinion.setUser(getUser(Integer.parseInt(cursor.getString(4))));
-
-//                FoodPinion foodPinion = new FoodPinion();
-//                foodPinion.setID(Integer.parseInt(cursor.getString(0)));
-//                foodPinion.setDish(getDish(Integer.parseInt(cursor.getString(1))));
-//                foodPinion.setComment(cursor.getString(2));
-//                foodPinion.setDateTime(cursor.getString(3));
-//                foodPinion.setUser(getUser(Integer.parseInt(cursor.getString(4))));
                 // Add to list
                 foodPinionList.add(foodPinion);
             } while (cursor.moveToNext());
@@ -646,7 +600,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     );
                     if (dish == null)
                         throw new FoodPinionDishIsNullException();
-                    foodPinion.setDish(dish); // Todo: Replace getDish call with SQL command
+                    foodPinion.setDish(dish);
 
                     foodPinion.setComment(cursor.getString(2));
                     foodPinion.setDateTime(cursor.getString(3));
@@ -751,5 +705,58 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return user;
+    }
+
+    public int getUserCount() {
+        String countQuery = "SELECT * FROM " + TABLE_USERS;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        int count = cursor.getCount();
+        cursor.close();
+        db.close();
+        return count;
+    }
+
+    public List<User> getAllUsers() {
+        List<User> userList = new ArrayList<>();
+        // Select All query
+        String selectQuery = "SELECT * FROM " + TABLE_USERS;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // Looping through all rows and adding to the list
+        if (cursor.moveToFirst()) {
+            do {
+                User user = new User(
+                        cursor.getString(1)
+                );
+                user.setID(Integer.parseInt(cursor.getString(0)));
+                // Add to list
+                userList.add(user);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return userList;
+    }
+
+    public int updateUser(User user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(USER_NAME, user.getName());
+
+        // Updating row
+        return db.update(TABLE_USERS, values, KEY_ID + " = ?",
+                new String[]{String.valueOf(user.getID())});
+    }
+
+    public void deleteUser(User user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_USERS, KEY_ID + " = ?",
+                new String[]{String.valueOf(user.getID())});
+        db.close();
     }
 }
