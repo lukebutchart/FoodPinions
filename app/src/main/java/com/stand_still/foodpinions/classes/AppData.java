@@ -7,7 +7,7 @@ import android.widget.LinearLayout;
 import java.net.PortUnreachableException;
 import java.util.List;
 
-public class MyDatabase {
+public class AppData {
 
     // === Add ===
 

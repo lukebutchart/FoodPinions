@@ -13,10 +13,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.stand_still.foodpinions.R;
-import com.stand_still.foodpinions.classes.DatabaseHandler;
 import com.stand_still.foodpinions.classes.Dish;
 import com.stand_still.foodpinions.classes.FoodPinion;
-import com.stand_still.foodpinions.classes.MyDatabase;
+import com.stand_still.foodpinions.classes.AppData;
 import com.stand_still.foodpinions.classes.Restaurant;
 import com.stand_still.foodpinions.classes.User;
 import com.stand_still.foodpinions.classes.ViewFoodPinionsArrayAdapter;
@@ -38,26 +37,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // ================= TEST SECTION =================
-        int dishCount = MyDatabase.getDishCount(this);
-        int restaurantCount = MyDatabase.getRestaurantCount(this);
-        int foodPinionsCount = MyDatabase.getFoodPinionCount(this);
-
-        Restaurant restaurant = new Restaurant("Byron");
-        List<Restaurant> restaurants = MyDatabase.getAllRestaurants(this);
-
-        Dish dish = new Dish("Salad", restaurant);
-        List<Dish> dishes = MyDatabase.getAllDishes(this);
-
-        FoodPinion foodPinion = new FoodPinion(dish, "Top Byron", this);
-        List<FoodPinion> foodPinions = MyDatabase.getAllFoodPinions(this);
-
-        MyDatabase.addFoodPinion(foodPinion, this);
-        foodPinions = MyDatabase.getAllFoodPinions(this);
-
-        // Todo: Test remaining DatabaseHandler methods
-        // ================================================
 
         listHeadersLinearLayout = (LinearLayout) findViewById(R.id.list_headers_linearLayout);
         searchEditText = (EditText) findViewById(R.id.search_editText);
