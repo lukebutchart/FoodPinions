@@ -15,7 +15,7 @@ import java.util.List;
 public class DatabaseHandler extends SQLiteOpenHelper {
     // All static variables
     // Database version
-    private static final int DATABASE_VERSION = 53;
+    private static final int DATABASE_VERSION = 58;
 
     // Database name
     private static final String DATABASE_NAME = "foodPinionsManager";
@@ -387,7 +387,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 foodPinion.getDish().getName(),
                 foodPinion.getDish().getRestaurant()
         );
-        if (checkDish == null) {
+        if (checkDish == null) {    // Todo: Check issue here with second add
             addDish(foodPinion.getDish());
             foodPinion.setDish(getDishByPair(
                     foodPinion.getDish().getName(),
