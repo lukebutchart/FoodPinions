@@ -15,7 +15,7 @@ import java.util.List;
 public class DatabaseHandler extends SQLiteOpenHelper {
     // All static variables
     // Database version
-    private static final int DATABASE_VERSION = 58;
+    private static final int DATABASE_VERSION = 59;
 
     // Database name
     private static final String DATABASE_NAME = "foodPinionsManager";
@@ -498,7 +498,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         for (FoodPinion foodPinion :
                 foodPinionsByDish) {
-            if (foodPinion.getUser().getID() == user.getID()) {
+            if (foodPinion.getUser().getID() == user.getID()) {     // Throws nullpointerexception because foodPinion.user is null
                 return foodPinion;
             }
         }
@@ -554,11 +554,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 );
                 User user = getUser(Integer.parseInt(cursor.getString(3)));
 
-//                        new User(
-//                        Integer.parseInt(cursor.getString(3)),   // id
-//                        "Luke" //cursor.getString()                      // name
-//                );
-
                 FoodPinion foodPinion = new FoodPinion(
                         Integer.parseInt(cursor.getString(0)),  // id
                         dish,
@@ -567,7 +562,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                         user
                 );
 
-                foodPinion.setUser(getUser(Integer.parseInt(cursor.getString(4))));
+                foodPinion.setUser(user);
                 // Add to list
                 foodPinionList.add(foodPinion);
             } while (cursor.moveToNext());
@@ -577,7 +572,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
         return foodPinionList;
     }
-
 
     // Getting all FoodPinions
     public List<FoodPinion> getAllFoodPinions() {

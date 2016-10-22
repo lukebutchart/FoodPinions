@@ -29,10 +29,6 @@ public class AppData {
         DatabaseHandler dbHandler = new DatabaseHandler(context);
         dbHandler.addFoodPinion(foodPinion);
 
-        List<Restaurant> restaurants = dbHandler.getAllRestaurants();
-        List<Dish> dishes = dbHandler.getAllDishes();
-        List<FoodPinion> foodPinions = dbHandler.getAllFoodPinions(); // Todo: Fix this returning null
-
         FoodPinion addedFoodPinion = dbHandler.getFoodPinionByPair(
                 foodPinion.getDish(),
                 foodPinion.getUser()
