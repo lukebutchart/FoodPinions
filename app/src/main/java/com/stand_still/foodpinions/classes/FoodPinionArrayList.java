@@ -34,7 +34,7 @@ public class FoodPinionArrayList extends ArrayList<FoodPinion> implements Compar
 
     public FoodPinion getByRestaurant(String restaurant) {
         for (FoodPinion foodPinion : this)
-            if (foodPinion.getRestaurant().equals(restaurant))
+            if (foodPinion.getRestaurantName().equals(restaurant))
                 return foodPinion;
         return null;
     }
@@ -46,7 +46,7 @@ public class FoodPinionArrayList extends ArrayList<FoodPinion> implements Compar
     public ArrayList<String> getRestaurants() {
         restaurants = new ArrayList<>();
         for (FoodPinion foodPinion : this)
-            restaurants.add(foodPinion.getRestaurant());
+            restaurants.add(foodPinion.getRestaurantName());
         return restaurants;
     }
 
@@ -61,7 +61,7 @@ public class FoodPinionArrayList extends ArrayList<FoodPinion> implements Compar
     public FoodPinionArrayList getFoodPinionsWithRestaurant(String restaurant){
         FoodPinionArrayList foodPinionArrayList = new FoodPinionArrayList();
         for (FoodPinion foodPinion : this)
-            if (foodPinion.getRestaurant().equals(restaurant))
+            if (foodPinion.getRestaurantName().equals(restaurant))
                 foodPinionArrayList.add(foodPinion);
         return foodPinionArrayList;
     }

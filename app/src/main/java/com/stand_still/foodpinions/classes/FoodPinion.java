@@ -14,7 +14,6 @@ public class FoodPinion {
     Date date;
     User user;
 
-    Restaurant restaurant;
     DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
 
     public FoodPinion() {
@@ -48,9 +47,9 @@ public class FoodPinion {
         editFoodPinion(name, restaurant, comment, new Date().toString());
     }
 
-    public void editFoodPinion(String name, String restaurant, String comment, String dateTimeString) {
-        this.dish.setName(name);
-        this.restaurant.setName(restaurant);
+    public void editFoodPinion(String dishName, String restaurantName, String comment, String dateTimeString) {
+        this.dish.setName(dishName);
+        this.dish.getRestaurant().setName(restaurantName);
         this.comment = comment;
         try {
             date = dateFormat.parse(dateTimeString);
@@ -63,24 +62,16 @@ public class FoodPinion {
         return dish.getName();
     }
 
-//    public float getRating() {
-//        return rating;
-//    }
-
     public Date getDate() {
         return date;
     }
 
-    public String getRestaurant() {
-        return restaurant.getName();
+    public String getRestaurantName() {
+        return dish.getRestaurant().getName();
     }
 
     public String getComment() {
         return comment;
-    }
-
-    public void setRestaurant(String restaurant) {
-        this.restaurant.setName(restaurant);
     }
 
     public void setComment(String comment) {

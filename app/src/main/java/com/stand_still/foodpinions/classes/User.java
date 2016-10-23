@@ -60,7 +60,7 @@ public class User {
 
     public static boolean foodPinionExists(FoodPinion foodPinion) {
         // Todo: Make this correct (react correctly if more than one FoodPinion)
-         return getFoodPinionByPair(foodPinion.getDishName(), foodPinion.getRestaurant()) != null;
+         return getFoodPinionByPair(foodPinion.getDishName(), foodPinion.getRestaurantName()) != null;
     }
 
     public String getName() {

@@ -16,6 +16,7 @@ import com.stand_still.foodpinions.R;
 import com.stand_still.foodpinions.classes.Dish;
 import com.stand_still.foodpinions.classes.FoodPinion;
 import com.stand_still.foodpinions.classes.AppData;
+import com.stand_still.foodpinions.classes.FoodPinionArrayList;
 import com.stand_still.foodpinions.classes.Restaurant;
 import com.stand_still.foodpinions.classes.User;
 import com.stand_still.foodpinions.classes.ViewFoodPinionsArrayAdapter;
@@ -56,8 +57,8 @@ public class MainActivity extends AppCompatActivity {
 
         List<FoodPinion> foodPinions2 = AppData.getAllFoodPinions(this);
 
-        Restaurant restaurant2 = new Restaurant("GBK");
-        Dish dish2 = new Dish("Burger", restaurant2);
+        Restaurant restaurant2 = new Restaurant("McDonalds");   // Todo: Test what happens when the restaurant and dish are the same
+        Dish dish2 = new Dish("Big Mac", restaurant2);
         FoodPinion foodPinion2 = new FoodPinion(dish2, "com2", this);
         AppData.addFoodPinion(foodPinion2, this);
 
@@ -71,9 +72,14 @@ public class MainActivity extends AppCompatActivity {
         newFoodPinionButton = (Button) findViewById(R.id.newFoodPinion_button);
         foodPinionsListView = (ListView) findViewById(R.id.foodPinions_list);
 
+        // Collect data
+//        List<FoodPinion> foodPinionList = AppData.getAllFoodPinions(this);
+        FoodPinionArrayList foodPinionArrayList = AppData.getAllFoodPinionsArrayList(this); // Todo: Check why the list doesn't appear in the app
+                                                                                            // Todo: Check why sometimes (after running the app more than once) one of the dish ids is null
+
         // Modify views
         searchEditText.addTextChangedListener(searchTextWatcher);
-        foodPinionsArrayAdapter = new ViewFoodPinionsArrayAdapter(this, User.getFoodPinions());
+        foodPinionsArrayAdapter = new ViewFoodPinionsArrayAdapter(this, foodPinionArrayList); //User.getFoodPinions());
         foodPinionsListView.setAdapter(foodPinionsArrayAdapter);
 
         hideButton();
@@ -92,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void moveToEditFoodPinion(FoodPinion foodPinion) {
         Intent intent = new Intent(this, EditFoodPinionActivity.class);
-        intent.putExtra(EXTRA_RESTAURANT_VALUE, foodPinion.getRestaurant());
+        intent.putExtra(EXTRA_RESTAURANT_VALUE, foodPinion.getRestaurantName());
         intent.putExtra(EXTRA_NAME_VALUE, foodPinion.getDishName());
         startActivity(intent);
     }

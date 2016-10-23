@@ -80,6 +80,11 @@ public class AppData {
         return dbHandler.getAllFoodPinions();
     }
 
+    public static FoodPinionArrayList getAllFoodPinionsArrayList(Context context){
+        DatabaseHandler dbHandler = new DatabaseHandler(context);
+        return dbHandler.getAllFoodPinionsArrayList();
+    }
+
     public static List<User> getAllUsers(Context context){
         DatabaseHandler dbHandler = new DatabaseHandler(context);
         return dbHandler.getAllUsers();

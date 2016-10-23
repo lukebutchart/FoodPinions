@@ -15,7 +15,7 @@ import java.util.List;
 public class DatabaseHandler extends SQLiteOpenHelper {
     // All static variables
     // Database version
-    private static final int DATABASE_VERSION = 59;
+    private static final int DATABASE_VERSION = 65;
 
     // Database name
     private static final String DATABASE_NAME = "foodPinionsManager";
@@ -609,6 +609,44 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return foodPinionList;
+    }
+
+    // Getting all FoodPinions as FoodPinionArrayList       Todo: try and combine this with getAllFoodPinions()
+    public FoodPinionArrayList getAllFoodPinionsArrayList() {
+        FoodPinionArrayList foodPinionArrayList = new FoodPinionArrayList();
+        // Select All query
+        String selectQuery = "SELECT * FROM " + TABLE_FOOD_PINIONS;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // Looping through all rows and adding to the list
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    FoodPinion foodPinion = new FoodPinion();
+                    foodPinion.setID(Integer.parseInt(cursor.getString(0)));
+
+                    Dish dish = getDish(
+                            Integer.parseInt(cursor.getString(1))
+                    );
+                    if (dish == null)
+                        throw new FoodPinionDishIsNullException();
+                    foodPinion.setDish(dish);
+
+                    foodPinion.setComment(cursor.getString(2));
+                    foodPinion.setDateTime(cursor.getString(3));
+                    // Add to list
+                    foodPinionArrayList.add(foodPinion);
+                } while (cursor.moveToNext());
+            }
+        } catch (FoodPinionDishIsNullException e) {
+            foodPinionArrayList = null;
+        }
+
+        cursor.close();
+        db.close();
+        return foodPinionArrayList;
     }
 
     // Getting FoodPinion Count

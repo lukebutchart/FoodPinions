@@ -23,10 +23,15 @@ public class ViewFoodPinionsArrayAdapter extends ArrayAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.list_view_food_pinions, parent, false);
-        TextView nameColumn = (TextView) rowView.findViewById(R.id.name_foodpinion_column);
-        TextView restaurantColumn = (TextView) rowView.findViewById(R.id.restaurant_foodpinion_column);
-        nameColumn.setText(foodPinionsList.get(position).getDishName());
-        restaurantColumn.setText(foodPinionsList.get(position).getRestaurant());
+
+        // Find views
+        TextView dishNameColumn = (TextView) rowView.findViewById(R.id.name_foodpinion_column);
+        TextView restaurantNameColumn = (TextView) rowView.findViewById(R.id.restaurant_foodpinion_column);
+
+        // Set values
+        dishNameColumn.setText(foodPinionsList.get(position).getDishName());
+        restaurantNameColumn.setText(foodPinionsList.get(position).getRestaurantName());
+
         return rowView;
     }
 }
