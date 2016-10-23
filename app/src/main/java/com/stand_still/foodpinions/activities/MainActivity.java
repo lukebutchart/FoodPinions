@@ -65,11 +65,14 @@ public class MainActivity extends AppCompatActivity {
 
         // ===== TEST END
 
+        // Find views
         listHeadersLinearLayout = (LinearLayout) findViewById(R.id.list_headers_linearLayout);
         searchEditText = (EditText) findViewById(R.id.search_editText);
         newFoodPinionButton = (Button) findViewById(R.id.newFoodPinion_button);
-        searchEditText.addTextChangedListener(searchTextWatcher);
         foodPinionsListView = (ListView) findViewById(R.id.foodPinions_list);
+
+        // Modify views
+        searchEditText.addTextChangedListener(searchTextWatcher);
         foodPinionsArrayAdapter = new ViewFoodPinionsArrayAdapter(this, User.getFoodPinions());
         foodPinionsListView.setAdapter(foodPinionsArrayAdapter);
 
