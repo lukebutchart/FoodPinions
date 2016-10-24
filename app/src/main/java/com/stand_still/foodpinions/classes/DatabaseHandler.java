@@ -15,7 +15,7 @@ import java.util.List;
 public class DatabaseHandler extends SQLiteOpenHelper {
     // All static variables
     // Database version
-    private static final int DATABASE_VERSION = 67;
+    private static final int DATABASE_VERSION = 68;
 
     // Database name
     private static final String DATABASE_NAME = "foodPinionsManager";
@@ -381,13 +381,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     // ================================= FoodPinion methods ===================================
     // Adding new FoodPinion
-    public void addFoodPinion(FoodPinion foodPinion) {
+    public void addFoodPinion(FoodPinion foodPinion) { // Todo: Fix issue with adding same FoodPinion multiple times and them being treated separately (because of timestamp)
         ContentValues values = new ContentValues();
         Dish checkDish = getDishByPair(
                 foodPinion.getDish().getName(),
                 foodPinion.getDish().getRestaurant()
         );
-        if (checkDish == null) {    // Todo: Check issue here with second add. Duplicate Foodpinions are being added but with null dishes
+        if (checkDish == null) {
             addDish(foodPinion.getDish());
         }
 

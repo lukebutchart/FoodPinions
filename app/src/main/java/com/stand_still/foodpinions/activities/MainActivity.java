@@ -76,6 +76,9 @@ public class MainActivity extends AppCompatActivity {
 //        List<FoodPinion> foodPinionList = AppData.getAllFoodPinions(this);
         FoodPinionArrayList foodPinionArrayList = AppData.getAllFoodPinionsArrayList(this); // Todo: Check why the list doesn't appear in the app
 
+        FoodPinionArrayList foodPinionArrayList1 = new FoodPinionArrayList();
+        foodPinionArrayList1.add(foodPinion1);
+
         // Modify views
         searchEditText.addTextChangedListener(searchTextWatcher);
         foodPinionsArrayAdapter = new ViewFoodPinionsArrayAdapter(this, foodPinionArrayList);
@@ -111,7 +114,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        foodPinionsArrayAdapter = new ViewFoodPinionsArrayAdapter(this, User.getFoodPinions());
+
+        // =================== TEST
+
+//        Restaurant restaurant1 = new Restaurant("GBK");
+//        Dish dish1 = new Dish("Burger", restaurant1);
+//        FoodPinion foodPinion1 = new FoodPinion(dish1, "com1", this);
+//        AppData.addFoodPinion(foodPinion1, this);
+//
+//        FoodPinionArrayList foodPinionArrayList1 = new FoodPinionArrayList();
+//        foodPinionArrayList1.add(foodPinion1);
+
+        FoodPinionArrayList foodPinionArrayList = AppData.getAllFoodPinionsArrayList(this);
+
+        // ===================  END TEST
+
+        foodPinionsArrayAdapter = new ViewFoodPinionsArrayAdapter(this, foodPinionArrayList);
         foodPinionsListView.setAdapter(foodPinionsArrayAdapter);
         decideHeadersVisible();
     }
