@@ -11,7 +11,7 @@ public class FoodPinion {
     int id;
     Dish dish;
     String comment;
-    Date date;
+    Date date;  // Todo: Store date in DB as number instead of string
     User user;
 
     DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");

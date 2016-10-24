@@ -15,7 +15,7 @@ import java.util.List;
 public class DatabaseHandler extends SQLiteOpenHelper {
     // All static variables
     // Database version
-    private static final int DATABASE_VERSION = 65;
+    private static final int DATABASE_VERSION = 67;
 
     // Database name
     private static final String DATABASE_NAME = "foodPinionsManager";
@@ -220,10 +220,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         );
         if (checkRestaurant == null) {
             addRestaurant(dish.getRestaurant());
-            dish.setRestaurant(getRestaurantByName(
-                    dish.getRestaurant().getName()
-            ));
         }
+        dish.setRestaurant(getRestaurantByName(
+                dish.getRestaurant().getName()
+        ));
 
         values.put(DISH, dish.getName());
         values.put(RESTAURANT_ID, dish.getRestaurant().getID());
@@ -387,13 +387,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 foodPinion.getDish().getName(),
                 foodPinion.getDish().getRestaurant()
         );
-        if (checkDish == null) {    // Todo: Check issue here with second add
+        if (checkDish == null) {    // Todo: Check issue here with second add. Duplicate Foodpinions are being added but with null dishes
             addDish(foodPinion.getDish());
-            foodPinion.setDish(getDishByPair(
-                    foodPinion.getDish().getName(),
-                    foodPinion.getDish().getRestaurant()
-            ));
         }
+
+        foodPinion.setDish(getDishByPair(
+                foodPinion.getDish().getName(),
+                foodPinion.getDish().getRestaurant()
+        ));
 
         values.put(DISH_ID, foodPinion.getDish().getID());
         values.put(COMMENT, foodPinion.getComment());

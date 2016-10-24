@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
         // ===== TEST
 
-        List<FoodPinion> foodPinions = AppData.getAllFoodPinions(this);
+//        List<FoodPinion> foodPinions = AppData.getAllFoodPinions(this);
 
         Restaurant restaurant = new Restaurant("Nandos");
         Dish dish = new Dish("Chips", restaurant);
@@ -75,11 +75,10 @@ public class MainActivity extends AppCompatActivity {
         // Collect data
 //        List<FoodPinion> foodPinionList = AppData.getAllFoodPinions(this);
         FoodPinionArrayList foodPinionArrayList = AppData.getAllFoodPinionsArrayList(this); // Todo: Check why the list doesn't appear in the app
-                                                                                            // Todo: Check why sometimes (after running the app more than once) one of the dish ids is null
 
         // Modify views
         searchEditText.addTextChangedListener(searchTextWatcher);
-        foodPinionsArrayAdapter = new ViewFoodPinionsArrayAdapter(this, foodPinionArrayList); //User.getFoodPinions());
+        foodPinionsArrayAdapter = new ViewFoodPinionsArrayAdapter(this, foodPinionArrayList);
         foodPinionsListView.setAdapter(foodPinionsArrayAdapter);
 
         hideButton();
