@@ -1,10 +1,11 @@
 package com.stand_still.foodpinions.classes;
 
 public class FoodPinionProperty {
-    int id;
-    String name;
+    protected int id;
+    protected String name;
 
-    public FoodPinionProperty(){}
+    public FoodPinionProperty() {
+    }
 
     public FoodPinionProperty(int id, String name) {
         this.id = id;

@@ -8,11 +8,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class FoodPinion {
-    int id;
-    Dish dish;
-    String comment;
-    Date date;  // Todo: Store date in DB as number instead of string
-    User user;
+    private int id;
+    private Dish dish;
+    private String comment;
+    private Date date;  // Todo: Store date in DB as number instead of string
+    private User user;
 
     DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
 

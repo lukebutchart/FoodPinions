@@ -6,10 +6,10 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class User {
-    protected static String name;
-    int id;
+    private static String name;
+    private int id;
 
-    public User(String name){
+    public User(String name) {
         User.name = name;
     }
 
@@ -20,7 +20,7 @@ public class User {
         this.name = userName;
     }
 
-    public static void addFoodPinion(FoodPinion foodPinion){
+    public static void addFoodPinion(FoodPinion foodPinion) {
         foodPinions.add(foodPinion);
     }
 
@@ -36,15 +36,15 @@ public class User {
         return foodPinions;
     }
 
-    public static FoodPinionArrayList getFoodPinionByName(String name){
+    public static FoodPinionArrayList getFoodPinionByName(String name) {
         return getFoodPinions().getFoodPinionsWithName(name);
     }
 
-    public static FoodPinionArrayList getFoodPinionByRestaurant(String restaurant){
+    public static FoodPinionArrayList getFoodPinionByRestaurant(String restaurant) {
         return getFoodPinions().getFoodPinionsWithRestaurant(restaurant);
     }
 
-    public static FoodPinion getFoodPinionByPair(String nameString, String restaurantString){
+    public static FoodPinion getFoodPinionByPair(String nameString, String restaurantString) {
         FoodPinionArrayList doubleFilteredList = getFoodPinions().getFoodPinionsWithName(nameString).getFoodPinionsWithRestaurant(restaurantString);
         if (doubleFilteredList.size() > 1)
             try {
@@ -60,7 +60,7 @@ public class User {
 
     public static boolean foodPinionExists(FoodPinion foodPinion) {
         // Todo: Make this correct (react correctly if more than one FoodPinion)
-         return getFoodPinionByPair(foodPinion.getDishName(), foodPinion.getRestaurantName()) != null;
+        return getFoodPinionByPair(foodPinion.getDishName(), foodPinion.getRestaurantName()) != null;
     }
 
     public String getName() {

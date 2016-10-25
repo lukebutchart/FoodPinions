@@ -903,9 +903,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         int userID = user.getID();
         String userName = user.getName();
 
-        if (userID < 1){
+        if (userID < 1) {
             User userByName = getUserByName(userName);
-            if (userByName == null){
+            if (userByName == null) {
                 addUser(user);
                 userByName = getUserByName(userName);
             }

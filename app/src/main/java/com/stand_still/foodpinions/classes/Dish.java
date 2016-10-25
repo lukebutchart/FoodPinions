@@ -1,17 +1,15 @@
 package com.stand_still.foodpinions.classes;
 
 public class Dish extends FoodPinionProperty {
-    Restaurant restaurant;
+    private Restaurant restaurant;
 
-//    int restaurantID;
+    public Dish() {
+        super();
+    }
 
     public Dish(int id, String name, Restaurant restaurant) {
         super(id, name);
         this.restaurant = restaurant;
-    }
-
-    public Dish(){
-        super();
     }
 
     public Dish(String dishName, Restaurant restaurant) {
@@ -27,12 +25,4 @@ public class Dish extends FoodPinionProperty {
     public Restaurant getRestaurant() {
         return restaurant;
     }
-
-//    public void setRestaurantID(int restaurantID) {
-//        this.restaurantID = restaurantID;
-//    }
-//
-//    public int getRestaurantID() {
-//        return restaurantID;
-//    }
 }
