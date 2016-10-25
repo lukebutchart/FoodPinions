@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.stand_still.foodpinions.exceptions.DishInDatabaseHasInvalidIDException;
 import com.stand_still.foodpinions.exceptions.FoodPinionDishIsNullException;
 import com.stand_still.foodpinions.exceptions.FoodPinionInDatabaseHasInvalidIDException;
+import com.stand_still.foodpinions.exceptions.FoodPinionUserIsNullException;
 import com.stand_still.foodpinions.exceptions.RestaurantInDatabaseHasInvalidIDException;
 import com.stand_still.foodpinions.exceptions.UserInDatabaseHasInvalidIDException;
 
@@ -19,7 +20,7 @@ import java.util.List;
 public class DatabaseHandler extends SQLiteOpenHelper {
     // All static variables
     // Database version
-    private static final int DATABASE_VERSION = 70;
+    private static final int DATABASE_VERSION = 72;
 
     // Database name
     private static final String DATABASE_NAME = "foodPinionsManager";
@@ -663,11 +664,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
                     foodPinion.setComment(cursor.getString(2));
                     foodPinion.setDateTime(cursor.getString(3));
+
+                    User user = getUser(Integer.parseInt(cursor.getString(4)));
+                    if (user == null)
+                        throw new FoodPinionUserIsNullException();
+                    foodPinion.setUser(user);
+
                     // Add to list
                     foodPinionList.add(foodPinion);
                 } while (cursor.moveToNext());
             }
-        } catch (FoodPinionDishIsNullException e) {
+        } catch (FoodPinionDishIsNullException | FoodPinionUserIsNullException e) {
             foodPinionList = null;
         }
 
@@ -680,7 +687,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public FoodPinionArrayList getAllFoodPinionsArrayList() {
         FoodPinionArrayList foodPinionArrayList = new FoodPinionArrayList();
         // Select All query
-        String selectQuery = "SELECT * FROM " + TABLE_FOOD_PINIONS;
+        String selectQuery = "SELECT * FROM " + TABLE_FOOD_PINIONS + " ORDER BY " + DATE_TIME
+                + " DESC"; // Newest at top
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -701,11 +709,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
                     foodPinion.setComment(cursor.getString(2));
                     foodPinion.setDateTime(cursor.getString(3));
+
+                    User user = getUser(Integer.parseInt(cursor.getString(4)));
+                    if (user == null)
+                        throw new FoodPinionUserIsNullException();
+                    foodPinion.setUser(user);
+
                     // Add to list
                     foodPinionArrayList.add(foodPinion);
                 } while (cursor.moveToNext());
             }
-        } catch (FoodPinionDishIsNullException e) {
+        } catch (FoodPinionDishIsNullException | FoodPinionUserIsNullException e) {
             foodPinionArrayList = null;
         }
 

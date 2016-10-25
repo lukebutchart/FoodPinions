@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String EXTRA_RESTAURANT_VALUE = "com.stand_still.foodpinions.RESTAURANT_VALUE";
     public static final String EXTRA_NAME_VALUE = "com.stand_still.foodpinions.NAME_VALUE";
+    public static final String EXTRA_USER_ID_VALUE = "com.stand_still.foodpinions.USER_ID_VALUE";
 
     EditText searchEditText;
     Button newFoodPinionButton;
@@ -41,28 +42,25 @@ public class MainActivity extends AppCompatActivity {
 
         // ===== TEST
 
-//        List<FoodPinion> foodPinions = AppData.getAllFoodPinions(this);
-
         Restaurant restaurant = new Restaurant("Nandos");
         Dish dish = new Dish("Chips", restaurant);
         FoodPinion foodPinion = new FoodPinion(dish, "com", this);
         AppData.addFoodPinion(foodPinion, this);
-
-//        List<FoodPinion> foodPinions1 = AppData.getAllFoodPinions(this);
 
         Restaurant restaurant1 = new Restaurant("GBK");
         Dish dish1 = new Dish("Burger", restaurant1);
         FoodPinion foodPinion1 = new FoodPinion(dish1, "com1", this);
         AppData.addFoodPinion(foodPinion1, this);
 
-//        List<FoodPinion> foodPinions2 = AppData.getAllFoodPinions(this);
-
-        Restaurant restaurant2 = new Restaurant("McDonalds");   // Todo: Test what happens when the restaurant and dish are the same
+        Restaurant restaurant2 = new Restaurant("McDonalds");
         Dish dish2 = new Dish("Big Mac", restaurant2);
         FoodPinion foodPinion2 = new FoodPinion(dish2, "com2", this);
         AppData.addFoodPinion(foodPinion2, this);
-
-//        List<FoodPinion> foodPinions3 = AppData.getAllFoodPinions(this);
+//
+//        Restaurant restaurant3 = new Restaurant("Nandos");
+//        Dish dish3 = new Dish("Chips", restaurant3);
+//        FoodPinion foodPinion3 = new FoodPinion(dish3, "com", this);
+//        AppData.addFoodPinion(foodPinion3, this);
 
         // ===== TEST END
 
@@ -73,11 +71,7 @@ public class MainActivity extends AppCompatActivity {
         foodPinionsListView = (ListView) findViewById(R.id.foodPinions_list);
 
         // Collect data
-//        List<FoodPinion> foodPinionList = AppData.getAllFoodPinions(this);
-        FoodPinionArrayList foodPinionArrayList = AppData.getAllFoodPinionsArrayList(this); // Todo: Check why the list doesn't appear in the app
-
-        FoodPinionArrayList foodPinionArrayList1 = new FoodPinionArrayList();
-        foodPinionArrayList1.add(foodPinion1);
+        final FoodPinionArrayList foodPinionArrayList = AppData.getAllFoodPinionsArrayList(this); // Todo: Check why the list doesn't appear in the app
 
         // Modify views
         searchEditText.addTextChangedListener(searchTextWatcher);
@@ -91,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 String itemName = (String) foodPinionsListView.getItemAtPosition(position);
-                FoodPinion foodPinion = User.getFoodPinions().get(position);
+                FoodPinion foodPinion = foodPinionArrayList.get(position); //User.getFoodPinions().get(position);
 
                 moveToEditFoodPinion(foodPinion);
             }
@@ -102,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, EditFoodPinionActivity.class);
         intent.putExtra(EXTRA_RESTAURANT_VALUE, foodPinion.getRestaurantName());
         intent.putExtra(EXTRA_NAME_VALUE, foodPinion.getDishName());
+        intent.putExtra(EXTRA_USER_ID_VALUE, foodPinion.getUser().getID());
         startActivity(intent);
     }
 
