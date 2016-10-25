@@ -63,9 +63,9 @@ public class EditFoodPinionActivity extends AppCompatActivity {
                 if (userID < 1)
                     throw new NoUserIDPassedToEditException();
                 User user = AppData.getUser(userID, this);
-                currentFoodPinion = AppData.getFoodPinion(dish, user, this); //User.getFoodPinionByPair(nameString, restaurantString);
+                currentFoodPinion = AppData.getFoodPinion(dish, user, this);
                 editOnly = true;
-                dishNameEditText.setText(currentFoodPinion.getDish().getName()); //getDishName());
+                dishNameEditText.setText(currentFoodPinion.getDish().getName());
                 commentEditText.setText(currentFoodPinion.getComment());
 
                 createFoodPinionButton.setText(getResources().getString(R.string.editFoodPinion_newFoodPinion_button)); // make this local
