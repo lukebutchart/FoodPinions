@@ -48,21 +48,21 @@ public class MainActivity extends AppCompatActivity {
         FoodPinion foodPinion = new FoodPinion(dish, "com", this);
         AppData.addFoodPinion(foodPinion, this);
 
-        List<FoodPinion> foodPinions1 = AppData.getAllFoodPinions(this);
+//        List<FoodPinion> foodPinions1 = AppData.getAllFoodPinions(this);
 
         Restaurant restaurant1 = new Restaurant("GBK");
         Dish dish1 = new Dish("Burger", restaurant1);
         FoodPinion foodPinion1 = new FoodPinion(dish1, "com1", this);
         AppData.addFoodPinion(foodPinion1, this);
 
-        List<FoodPinion> foodPinions2 = AppData.getAllFoodPinions(this);
+//        List<FoodPinion> foodPinions2 = AppData.getAllFoodPinions(this);
 
         Restaurant restaurant2 = new Restaurant("McDonalds");   // Todo: Test what happens when the restaurant and dish are the same
         Dish dish2 = new Dish("Big Mac", restaurant2);
         FoodPinion foodPinion2 = new FoodPinion(dish2, "com2", this);
         AppData.addFoodPinion(foodPinion2, this);
 
-        List<FoodPinion> foodPinions3 = AppData.getAllFoodPinions(this);
+//        List<FoodPinion> foodPinions3 = AppData.getAllFoodPinions(this);
 
         // ===== TEST END
 

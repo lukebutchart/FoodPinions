@@ -7,7 +7,11 @@ import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.stand_still.foodpinions.exceptions.DishInDatabaseHasInvalidIDException;
 import com.stand_still.foodpinions.exceptions.FoodPinionDishIsNullException;
+import com.stand_still.foodpinions.exceptions.FoodPinionInDatabaseHasInvalidIDException;
+import com.stand_still.foodpinions.exceptions.RestaurantInDatabaseHasInvalidIDException;
+import com.stand_still.foodpinions.exceptions.UserInDatabaseHasInvalidIDException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +19,7 @@ import java.util.List;
 public class DatabaseHandler extends SQLiteOpenHelper {
     // All static variables
     // Database version
-    private static final int DATABASE_VERSION = 68;
+    private static final int DATABASE_VERSION = 70;
 
     // Database name
     private static final String DATABASE_NAME = "foodPinionsManager";
@@ -193,14 +197,34 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     // Updating single Restaurant
     public int updateRestaurant(Restaurant restaurant) {
+        int restaurantID = restaurant.getID();
+
         SQLiteDatabase db = this.getWritableDatabase();
+
+        // Ensure restaurantID is not null
+        try {
+            if (restaurantID < 1) {
+                Restaurant restaurantByName = getRestaurantByName(restaurant.getName());
+                if (restaurantByName == null) {
+                    addRestaurant(restaurant);
+                    restaurantByName = getRestaurantByName(restaurant.getName());
+                }
+                if (restaurantByName.getID() > 0) {
+                    restaurant.setID(restaurantByName.getID());
+                    restaurantID = restaurant.getID();
+                } else throw new RestaurantInDatabaseHasInvalidIDException();
+            }
+        } catch (RestaurantInDatabaseHasInvalidIDException e) {
+            // this should never happen
+            return -1;
+        }
 
         ContentValues values = new ContentValues();
         values.put(RESTAURANT, restaurant.getName());
 
         // Updating row
         return db.update(TABLE_RESTAURANTS, values, KEY_ID + " = ?",
-                new String[]{String.valueOf(restaurant.getID())});
+                new String[]{String.valueOf(restaurantID)});
     }
 
     // Deleting single Restaurant
@@ -360,15 +384,55 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     // Updating single Dish
     public int updateDish(Dish dish) {
+        int dishID = dish.getID();
+        Restaurant restaurant = dish.getRestaurant();
+        int restaurantID = restaurant.getID();
+
         SQLiteDatabase db = this.getWritableDatabase();
+
+        // Ensure dishId is not null
+        try {
+            if (dishID < 1) {
+                Dish dishByPair = getDishByPair(dish.getName(), restaurant);
+                if (dishByPair == null) {
+                    addDish(dish);
+                    dishByPair = getDishByPair(dish.getName(), restaurant);
+                }
+                if (dishByPair.getID() > 0) {
+                    dish.setID(dishByPair.getID());
+                    dishID = dish.getID();
+                } else throw new DishInDatabaseHasInvalidIDException();
+            }
+        } catch (DishInDatabaseHasInvalidIDException e) {
+            // this should never happen
+            return -1;
+        }
+        // Ensure restaurantID is not null
+        try {
+            if (restaurantID < 1) {
+                Restaurant restaurantByName = getRestaurantByName(restaurant.getName());
+                if (restaurantByName == null) {
+                    addRestaurant(restaurant);
+                    restaurantByName = getRestaurantByName(restaurant.getName());
+                }
+                if (restaurantByName.getID() > 0) {
+                    restaurant.setID(restaurantByName.getID());
+                    restaurantID = restaurant.getID();
+                } else throw new RestaurantInDatabaseHasInvalidIDException();
+            }
+        } catch (RestaurantInDatabaseHasInvalidIDException e) {
+            // this should never happen
+            return -1;
+        }
 
         ContentValues values = new ContentValues();
         values.put(DISH, dish.getName());
-        values.put(RESTAURANT_ID, dish.getRestaurant().getID());
+
+        values.put(RESTAURANT_ID, restaurantID);
 
         // Updating row
         return db.update(TABLE_DISHES, values, KEY_ID + " = ?",
-                new String[]{String.valueOf(dish.getID())});
+                new String[]{String.valueOf(dishID)});
     }
 
     // Deleting single Dish
@@ -663,16 +727,76 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     // Updating single FoodPinion
     public int updateFoodPinion(FoodPinion foodPinion) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        Dish dish = foodPinion.getDish();
+        int dishId = dish.getID();
+        User user = foodPinion.getUser();
+        int userId = user.getID();
+        int foodPinionID = foodPinion.getID();
 
+        // Ensure dishId is not null
+        try {
+            if (dishId < 1) {
+                Dish dishByPair = getDishByPair(dish.getName(), dish.getRestaurant());
+                if (dishByPair == null) {
+                    addDish(dish);
+                    dishByPair = getDishByPair(dish.getName(), dish.getRestaurant());
+                }
+                if (dishByPair.getID() > 0) {
+                    dish.setID(dishByPair.getID());
+                    dishId = dish.getID();
+                } else throw new DishInDatabaseHasInvalidIDException();
+            }
+        } catch (DishInDatabaseHasInvalidIDException e) {
+            // this should never happen
+            return -1;
+        }
+        // Ensure userId is not null
+        try {
+            if (userId < 1) {
+                User userByName = getUserByName(user.getName());
+                if (userByName == null) {
+                    addUser(user);
+                    userByName = getUserByName(user.getName());
+                }
+                if (userByName.getID() > 0) {
+                    user.setID(userByName.getID());
+                    userId = user.getID();
+                } else throw new UserInDatabaseHasInvalidIDException();
+            }
+        } catch (UserInDatabaseHasInvalidIDException e) {
+            // this should never happen
+            return -1;
+        }
+        // Ensure foodPinionId is not null
+        try {
+            if (foodPinionID < 1) {
+                FoodPinion foodPinionByPair = getFoodPinionByPair(dish, user);
+                if (foodPinionByPair == null) {
+                    addFoodPinion(foodPinion);
+                    foodPinionByPair = getFoodPinionByPair(dish, user);
+                }
+                if (foodPinionByPair.getID() > 0) {
+                    foodPinion.setID(foodPinionByPair.getID());
+                    foodPinionID = foodPinion.getID();
+                } else throw new FoodPinionInDatabaseHasInvalidIDException();
+            }
+        } catch (FoodPinionInDatabaseHasInvalidIDException e) {
+            // this should never happen
+            return -1;
+        }
+
+        SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(DISH_ID, foodPinion.getDishName());
+        values.put(DISH_ID, dishId);
         values.put(COMMENT, foodPinion.getComment());
         values.put(DATE_TIME, foodPinion.getDateTimeString());
+        values.put(USER_ID, userId);
 
         // Updating row
+
         return db.update(TABLE_FOOD_PINIONS, values, KEY_ID + " = ?",
-                new String[]{String.valueOf(foodPinion.getID())});
+                new String[]{String.valueOf(foodPinionID)}
+        );
     }
 
     // Deleting single FoodPinion
@@ -776,14 +900,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     public int updateUser(User user) {
+        int userID = user.getID();
+        String userName = user.getName();
+
+        if (userID < 1){
+            User userByName = getUserByName(userName);
+            if (userByName == null){
+                addUser(user);
+                userByName = getUserByName(userName);
+            }
+            user.setID(userByName.getID());
+            userID = user.getID();
+        }
+
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(USER_NAME, user.getName());
+        values.put(USER_NAME, userName);
 
         // Updating row
         return db.update(TABLE_USERS, values, KEY_ID + " = ?",
-                new String[]{String.valueOf(user.getID())});
+                new String[]{String.valueOf(userID)});
     }
 
     public void deleteUser(User user) {
