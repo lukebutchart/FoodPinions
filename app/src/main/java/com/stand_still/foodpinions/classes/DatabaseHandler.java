@@ -547,17 +547,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-    public FoodPinion getFoodPinionByPair(Dish checkDish, User user) {
-        if (checkDish.getID() < 1) {
-            Dish dishByPair = getDishByPair(checkDish.getName(), checkDish.getRestaurant());
+    public FoodPinion getFoodPinionByPair(Dish dish, User user) {
+        if (dish.getID() < 1) {
+            Dish dishByPair = getDishByPair(dish.getName(), dish.getRestaurant());
             if (dishByPair == null) {
-                addDish(checkDish);
-                dishByPair = getDishByPair(checkDish.getName(), checkDish.getRestaurant());
+                addDish(dish);
+                dishByPair = getDishByPair(dish.getName(), dish.getRestaurant());
             }
-            checkDish.setID(dishByPair.getID());
+            dish.setID(dishByPair.getID());
         }
 
-        List<FoodPinion> foodPinionsByDish = getFoodPinionsByDish(checkDish);
+        List<FoodPinion> foodPinionsByDish = getFoodPinionsByDish(dish);
         if (foodPinionsByDish.size() < 1) {
 //            throw new NoFoodPinionsForDishException();
         }

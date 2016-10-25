@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import com.stand_still.foodpinions.R;
 import com.stand_still.foodpinions.classes.AppData;
-import com.stand_still.foodpinions.classes.DatabaseHandler;
 import com.stand_still.foodpinions.classes.Dish;
 import com.stand_still.foodpinions.classes.FoodPinion;
 import com.stand_still.foodpinions.classes.Restaurant;
@@ -93,13 +92,12 @@ public class EditFoodPinionActivity extends AppCompatActivity {
         restaurantEditText = (EditText) findViewById(R.id.restaurant_newFoodPinion_editText);
         dishNameEditText = (EditText) findViewById(R.id.name_newFoodPinion_editText);
         commentEditText = (EditText) findViewById(R.id.comment_newFoodPinion_editText);
-//        ratingRatingBar = (RatingBar) findViewById(R.id.rating_newFoodPinion_ratingBar);
         createFoodPinionButton = (Button) findViewById(R.id.createFoodPinion_newFoodPinion_button);
     }
 
     public void confirmFoodPinion(View view) {
 
-        String addOrEdit = "added";
+        String addOrEditString = "added";
 
         String dishName = dishNameEditText.getText().toString();
         String restaurantName = restaurantEditText.getText().toString();
@@ -110,29 +108,25 @@ public class EditFoodPinionActivity extends AppCompatActivity {
         FoodPinion foodPinion = new FoodPinion(dish, comment, this);
 
         if (checkFieldsAreValid()) {
-            FoodPinion checkFoodPinion = User.getFoodPinionByPair(dishName, restaurantName);
-
-            // Todo: TESTING!
-            DatabaseHandler databaseHandler = new DatabaseHandler(this);
-//            databaseHandler.addRestaurant(restaurant);
-//            Restaurant restaurant0 = databaseHandler.getRestaurant(0);
-            Restaurant restaurant1 = databaseHandler.getRestaurant(10);
-            // =============
+            User user = Settings.getUser(this);
+            FoodPinion checkFoodPinion = AppData.getFoodPinion(dish, user, this); //User.getFoodPinionByPair(dishName, restaurantName);
 
             if (editOnly) {
-                currentFoodPinion.editFoodPinion(dishName, restaurantName, comment/*, rating*/);
-                addOrEdit = "edited";
-                confirmationToast(addOrEdit, dishName);
+                currentFoodPinion.editFoodPinion(dishName, restaurantName, comment);
+                addOrEditString = "edited";
+                AppData.updateFoodPinion(currentFoodPinion, this);
+                confirmationToast(addOrEditString, dishName);
                 finish();
                 return;
             } else if (checkFoodPinion != null) {
-                checkFoodPinion.editFoodPinion(dishName, restaurantName, comment/*, rating*/);
-                addOrEdit = "edited";
+                checkFoodPinion.editFoodPinion(dishName, restaurantName, comment);
+                AppData.updateFoodPinion(checkFoodPinion, this);
+                addOrEditString = "edited";
             } else {
-                User.addFoodPinion(foodPinion);
+                AppData.addFoodPinion(foodPinion, this); //User.addFoodPinion(foodPinion);
             }
-            confirmationToast(addOrEdit, dishName);
-            clearFoodPinionActivity(addOrEdit, dishName);
+            confirmationToast(addOrEditString, dishName);
+            clearFoodPinionActivity(addOrEditString, dishName);
         }
     }
 

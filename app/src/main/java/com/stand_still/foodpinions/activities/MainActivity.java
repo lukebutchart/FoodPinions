@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         foodPinionsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                String itemName = (String) foodPinionsListView.getItemAtPosition(position);
+                String itemName = (String) foodPinionsListView.getItemAtPosition(position); // Todo: get this to return both values, so that the FoodPinion can be found in EditFoodPinionActivity
                 FoodPinion foodPinion = foodPinionArrayList.get(position);
 
                 moveToEditFoodPinion(foodPinion);
