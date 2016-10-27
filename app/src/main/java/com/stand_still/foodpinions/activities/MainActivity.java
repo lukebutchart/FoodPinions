@@ -107,9 +107,16 @@ public class MainActivity extends AppCompatActivity {
         foodPinionsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
-                int pos = position + 1;
-                foodPinionsListView.getItemAtPosition(position);
-                Toast.makeText(MainActivity.this, Integer.toString(pos) + " Clicked", Toast.LENGTH_SHORT).show();
+
+//                FoodPinion listFoodPinion =
+
+                // Todo: Make sure checks are done for this
+                HashMap<String, String> foodPinionHashMap = (HashMap<String, String>) foodPinionsListView.getItemAtPosition(position);
+
+                FoodPinion listFoodPinion = AppData.getFoodPinionFromHashMap(foodPinionHashMap);
+
+//                int pos = position + 1;
+//                Toast.makeText(MainActivity.this, Integer.toString(pos) + " Clicked", Toast.LENGTH_SHORT).show();
             }
 
         });
@@ -147,10 +154,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        FoodPinionArrayList foodPinionArrayList = AppData.getAllFoodPinionsArrayList(this);
+//        FoodPinionArrayList foodPinionArrayList = AppData.getAllFoodPinionsArrayList(this);
 
 //        foodPinionsArrayAdapter = new ViewFoodPinionsArrayAdapter(this, foodPinionArrayList);
 //        foodPinionsListView.setAdapter(foodPinionsArrayAdapter);
+
+        ArrayList<HashMap<String, String>> foodPinionsHashMapList =  AppData.getAllFoodPinionsHashMapList(this);
+
+        ListViewAdapter adapter = new ListViewAdapter(this, foodPinionsHashMapList);
+        foodPinionsListView.setAdapter(adapter);
 
         decideHeadersVisible();
     }

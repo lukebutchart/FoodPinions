@@ -5,11 +5,18 @@ import android.content.Context;
 import android.widget.LinearLayout;
 
 import com.stand_still.foodpinions.activities.MainActivity;
+import com.stand_still.foodpinions.exceptions.IncompleteFoodPinionHashMapException;
 
 import java.net.PortUnreachableException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static com.stand_still.foodpinions.classes.Constants.COMMENT_COLUMN;
+import static com.stand_still.foodpinions.classes.Constants.DATE_TIME_COLUMN;
+import static com.stand_still.foodpinions.classes.Constants.DISH_NAME_COLUMN;
+import static com.stand_still.foodpinions.classes.Constants.RESTAURANT_NAME_COLUMN;
+import static com.stand_still.foodpinions.classes.Constants.USER_NAME_COLUMN;
 
 public class AppData {
 
@@ -174,6 +181,21 @@ public class AppData {
     public static FoodPinion getFoodPinion(Dish dish, User user, Context context) {
         DatabaseHandler dbHandler = new DatabaseHandler(context);
         return dbHandler.getFoodPinionByPair(dish, user);
+    }
+
+    public static FoodPinion getFoodPinion(HashMap<String, String> foodPinionHashMap, Context context) {
+        String dishName = foodPinionHashMap.get(DISH_NAME_COLUMN);
+        String restaurantName = foodPinionHashMap.get(RESTAURANT_NAME_COLUMN);
+        String comment = foodPinionHashMap.get(COMMENT_COLUMN);
+        String dateTime = foodPinionHashMap.get(DATE_TIME_COLUMN);
+        String userName = foodPinionHashMap.get(USER_NAME_COLUMN);
+
+        if (dishName == null || restaurantName == null || comment == null
+                || dateTime == null || userName == null){
+            throw new IncompleteFoodPinionHashMapException();
+        }
+
+        // Todo: IMPLEMENT
     }
 
     public static User getUser(int id, Context context) {
