@@ -58,10 +58,9 @@ public class User {
         else return doubleFilteredList.get(0);
     }
 
-    public static boolean foodPinionExists(FoodPinion foodPinion) {
-        // Todo: Make this correct (react correctly if more than one FoodPinion)
-        return getFoodPinionByPair(foodPinion.getDishName(), foodPinion.getRestaurantName()) != null;
-    }
+//    public static boolean foodPinionExists(FoodPinion foodPinion) {
+//        return getFoodPinionByPair(foodPinion.getDishName(), foodPinion.getRestaurantName()) != null;
+//    }
 
     public String getName() {
         return name;

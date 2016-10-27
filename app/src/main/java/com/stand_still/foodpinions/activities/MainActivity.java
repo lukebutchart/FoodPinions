@@ -42,20 +42,20 @@ public class MainActivity extends AppCompatActivity {
 
         // ===== TEST
 
-//        Restaurant restaurant = new Restaurant("Nandos");
-//        Dish dish = new Dish("Chips", restaurant);
-//        FoodPinion foodPinion = new FoodPinion(dish, "com", this);
-//        AppData.addFoodPinion(foodPinion, this);
-//
-//        Restaurant restaurant1 = new Restaurant("GBK");
-//        Dish dish1 = new Dish("Burger", restaurant1);
-//        FoodPinion foodPinion1 = new FoodPinion(dish1, "com1", this);
-//        AppData.addFoodPinion(foodPinion1, this);
-//
-//        Restaurant restaurant2 = new Restaurant("McDonalds");
-//        Dish dish2 = new Dish("Big Mac", restaurant2);
-//        FoodPinion foodPinion2 = new FoodPinion(dish2, "com2", this);
-//        AppData.addFoodPinion(foodPinion2, this);
+        Restaurant restaurant = new Restaurant("Nandos");
+        Dish dish = new Dish("Chips", restaurant);
+        FoodPinion foodPinion = new FoodPinion(dish, "com", this);
+        AppData.addFoodPinion(foodPinion, this);
+
+        Restaurant restaurant1 = new Restaurant("GBK");
+        Dish dish1 = new Dish("Burger", restaurant1);
+        FoodPinion foodPinion1 = new FoodPinion(dish1, "com1", this);
+        AppData.addFoodPinion(foodPinion1, this);
+
+        Restaurant restaurant2 = new Restaurant("McDonalds");
+        Dish dish2 = new Dish("Big Mac", restaurant2);
+        FoodPinion foodPinion2 = new FoodPinion(dish2, "com2", this);
+        AppData.addFoodPinion(foodPinion2, this);
 
         // ===== TEST END
 
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void moveToEditFoodPinion(FoodPinion foodPinion) {
+    private void moveToEditFoodPinion(FoodPinion foodPinion) {  // Todo: Fix so that changing the non-comment fields actually updates
         Intent intent = new Intent(this, EditFoodPinionActivity.class);
         intent.putExtra(EXTRA_RESTAURANT_VALUE, foodPinion.getRestaurantName());
         intent.putExtra(EXTRA_NAME_VALUE, foodPinion.getDishName());

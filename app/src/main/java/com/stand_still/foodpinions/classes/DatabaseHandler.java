@@ -446,7 +446,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     // ================================= FoodPinion methods ===================================
     // Adding new FoodPinion
-    public void addFoodPinion(FoodPinion foodPinion) { // Todo: Fix issue with adding same FoodPinion multiple times and them being treated separately (because of timestamp)
+    public void addFoodPinion(FoodPinion foodPinion) {
         ContentValues values = new ContentValues();
         Dish checkDish = getDishByPair(
                 foodPinion.getDish().getName(),

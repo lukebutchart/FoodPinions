@@ -13,7 +13,7 @@ public class ViewFoodPinionsArrayAdapter extends ArrayAdapter {
     private final Context context;
     private final FoodPinionArrayList foodPinionsList;
 
-    public ViewFoodPinionsArrayAdapter(Context context, FoodPinionArrayList foodPinions) {
+    public ViewFoodPinionsArrayAdapter(Context context, FoodPinionArrayList foodPinions) {  // Todo: Recreate so that an array is returned onClick
         super(context, R.layout.list_view_food_pinions, foodPinions.getNames());
         this.context = context;
         this.foodPinionsList = foodPinions;
