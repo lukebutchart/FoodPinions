@@ -14,7 +14,10 @@ import com.stand_still.foodpinions.exceptions.FoodPinionUserIsNullException;
 import com.stand_still.foodpinions.exceptions.RestaurantInDatabaseHasInvalidIDException;
 import com.stand_still.foodpinions.exceptions.UserInDatabaseHasInvalidIDException;
 
+import static com.stand_still.foodpinions.classes.Constants.*;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
@@ -726,6 +729,59 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return foodPinionArrayList;
+    }
+
+    public ArrayList<HashMap<String, String>> getAllFoodPinionsHashMapList() {  // Todo: Combine with the other get alls
+//        FoodPinionArrayList foodPinionArrayList = new FoodPinionArrayList();
+        ArrayList<HashMap<String,String>> foodPinionHashMapList = new ArrayList<>();
+        // Select All query
+        String selectQuery = "SELECT * FROM " + TABLE_FOOD_PINIONS + " ORDER BY " + DATE_TIME
+                + " DESC"; // Newest at top
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // Looping through all rows and adding to the list
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    FoodPinion foodPinion = new FoodPinion();
+                    foodPinion.setID(Integer.parseInt(cursor.getString(0)));
+
+                    Dish dish = getDish(
+                            Integer.parseInt(cursor.getString(1))
+                    );
+                    if (dish == null)
+                        throw new FoodPinionDishIsNullException();
+                    foodPinion.setDish(dish);
+
+                    foodPinion.setComment(cursor.getString(2));
+                    foodPinion.setDateTime(cursor.getString(3));
+
+                    User user = getUser(Integer.parseInt(cursor.getString(4)));
+                    if (user == null)
+                        throw new FoodPinionUserIsNullException();
+                    foodPinion.setUser(user);
+
+
+
+
+                    HashMap<String, String> temp = new HashMap<>();
+                    temp.put(DISH_NAME_COLUMN, foodPinion.getDish().getName());
+                    temp.put(RESTAURANT_NAME_COLUMN, foodPinion.getDish().getRestaurant().getName());
+                    temp.put(COMMENT_COLUMN, foodPinion.getComment());
+                    temp.put(DATE_TIME_COLUMN, foodPinion.getDateTimeString());
+                    temp.put(USER_NAME_COLUMN, foodPinion.getUser().getName());
+                    foodPinionHashMapList.add(temp);
+                } while (cursor.moveToNext());
+            }
+        } catch (FoodPinionDishIsNullException | FoodPinionUserIsNullException e) {
+            foodPinionHashMapList = null;
+        }
+
+        cursor.close();
+        db.close();
+        return foodPinionHashMapList;
     }
 
     // Getting FoodPinion Count

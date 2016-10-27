@@ -4,7 +4,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.widget.LinearLayout;
 
+import com.stand_still.foodpinions.activities.MainActivity;
+
 import java.net.PortUnreachableException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class AppData {
@@ -128,6 +132,11 @@ public class AppData {
     public static FoodPinionArrayList getAllFoodPinionsArrayList(Context context) {
         DatabaseHandler dbHandler = new DatabaseHandler(context);
         return dbHandler.getAllFoodPinionsArrayList();
+    }
+
+    public static ArrayList<HashMap<String, String>> getAllFoodPinionsHashMapList(Context context) {
+        DatabaseHandler dbHandler = new DatabaseHandler(context);
+        return dbHandler.getAllFoodPinionsHashMapList();
     }
 
     public static List<User> getAllUsers(Context context) {

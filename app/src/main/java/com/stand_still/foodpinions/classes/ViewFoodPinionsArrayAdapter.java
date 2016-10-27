@@ -34,4 +34,9 @@ public class ViewFoodPinionsArrayAdapter extends ArrayAdapter {
 
         return rowView;
     }
+
+    @Override
+    public Object getItem(int i){
+        return super.getItem(i);
+    }
 }

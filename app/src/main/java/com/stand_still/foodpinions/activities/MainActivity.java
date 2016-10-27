@@ -11,16 +11,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.stand_still.foodpinions.R;
 import com.stand_still.foodpinions.classes.Dish;
 import com.stand_still.foodpinions.classes.FoodPinion;
 import com.stand_still.foodpinions.classes.AppData;
 import com.stand_still.foodpinions.classes.FoodPinionArrayList;
+import com.stand_still.foodpinions.classes.ListViewAdapter;
 import com.stand_still.foodpinions.classes.Restaurant;
 import com.stand_still.foodpinions.classes.User;
 import com.stand_still.foodpinions.classes.ViewFoodPinionsArrayAdapter;
 
+import static com.stand_still.foodpinions.classes.Constants.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -70,21 +76,57 @@ public class MainActivity extends AppCompatActivity {
 
         // Modify views
         searchEditText.addTextChangedListener(searchTextWatcher);
-        foodPinionsArrayAdapter = new ViewFoodPinionsArrayAdapter(this, foodPinionArrayList);
-        foodPinionsListView.setAdapter(foodPinionsArrayAdapter);
+//        foodPinionsArrayAdapter = new ViewFoodPinionsArrayAdapter(this, foodPinionArrayList);
+//        foodPinionsListView.setAdapter(foodPinionsArrayAdapter);
+
+
+//        ArrayList<HashMap<String, String>> list = new ArrayList<>();
+//        HashMap<String, String> temp = new HashMap<>();
+//        temp.put(FIRST_COLUMN, "Ankit Karia");
+//        temp.put(SECOND_COLUMN, "Male");
+//        temp.put(THIRD_COLUMN, "22");
+//        temp.put(FOURTH_COLUMN, "Unmarried");
+//        list.add(temp);
+//        HashMap<String, String> temp2 = new HashMap<>();
+//        temp2.put(FIRST_COLUMN, "Rajat Ghai");
+//        temp2.put(SECOND_COLUMN, "Male");
+//        temp2.put(THIRD_COLUMN, "25");
+//        temp2.put(FOURTH_COLUMN, "Unmarried");
+//        list.add(temp2);
+//        HashMap<String, String> temp3 = new HashMap<>();
+//        temp3.put(FIRST_COLUMN, "Karina Kaif");
+//        temp3.put(SECOND_COLUMN, "Female");
+//        temp3.put(THIRD_COLUMN, "31");
+//        temp3.put(FOURTH_COLUMN, "Unmarried");
+//        list.add(temp3);
+
+        ArrayList<HashMap<String, String>> list =  AppData.getAllFoodPinionsHashMapList(this);
+
+        ListViewAdapter adapter = new ListViewAdapter(this, list);
+        foodPinionsListView.setAdapter(adapter);
+        foodPinionsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
+                int pos = position + 1;
+                foodPinionsListView.getItemAtPosition(position);
+                Toast.makeText(MainActivity.this, Integer.toString(pos) + " Clicked", Toast.LENGTH_SHORT).show();
+            }
+
+        });
+
 
         hideButton();
         decideHeadersVisible();
 
-        foodPinionsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                String itemName = (String) foodPinionsListView.getItemAtPosition(position); // Todo: get this to return both values, so that the FoodPinion can be found in EditFoodPinionActivity
-                FoodPinion foodPinion = foodPinionArrayList.get(position);
-
-                moveToEditFoodPinion(foodPinion);
-            }
-        });
+//        foodPinionsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+//                String itemName = (String) foodPinionsListView.getItemAtPosition(position); // Todo: get this to return both values, so that the FoodPinion can be found in EditFoodPinionActivity
+//                FoodPinion foodPinion = foodPinionArrayList.get(position);
+//
+//                moveToEditFoodPinion(foodPinion);
+//            }
+//        });
     }
 
     private void moveToEditFoodPinion(FoodPinion foodPinion) {  // Todo: Fix so that changing the non-comment fields actually updates
@@ -107,8 +149,9 @@ public class MainActivity extends AppCompatActivity {
 
         FoodPinionArrayList foodPinionArrayList = AppData.getAllFoodPinionsArrayList(this);
 
-        foodPinionsArrayAdapter = new ViewFoodPinionsArrayAdapter(this, foodPinionArrayList);
-        foodPinionsListView.setAdapter(foodPinionsArrayAdapter);
+//        foodPinionsArrayAdapter = new ViewFoodPinionsArrayAdapter(this, foodPinionArrayList);
+//        foodPinionsListView.setAdapter(foodPinionsArrayAdapter);
+
         decideHeadersVisible();
     }
 
