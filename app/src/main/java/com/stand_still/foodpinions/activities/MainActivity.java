@@ -1,5 +1,6 @@
 package com.stand_still.foodpinions.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import com.stand_still.foodpinions.classes.ListViewAdapter;
 import com.stand_still.foodpinions.classes.Restaurant;
 import com.stand_still.foodpinions.classes.User;
 import com.stand_still.foodpinions.classes.ViewFoodPinionsArrayAdapter;
+import com.stand_still.foodpinions.exceptions.IncompleteFoodPinionHashMapException;
 
 import static com.stand_still.foodpinions.classes.Constants.*;
 
@@ -104,6 +106,9 @@ public class MainActivity extends AppCompatActivity {
 
         ListViewAdapter adapter = new ListViewAdapter(this, list);
         foodPinionsListView.setAdapter(adapter);
+
+        final Context context = this;
+
         foodPinionsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
@@ -113,7 +118,12 @@ public class MainActivity extends AppCompatActivity {
                 // Todo: Make sure checks are done for this
                 HashMap<String, String> foodPinionHashMap = (HashMap<String, String>) foodPinionsListView.getItemAtPosition(position);
 
-                FoodPinion listFoodPinion = AppData.getFoodPinionFromHashMap(foodPinionHashMap);
+                try {
+                    FoodPinion listFoodPinion = AppData.getFoodPinion(foodPinionHashMap, context);
+                    moveToEditFoodPinion(listFoodPinion);
+                } catch (IncompleteFoodPinionHashMapException e) {
+                    e.printStackTrace();
+                }
 
 //                int pos = position + 1;
 //                Toast.makeText(MainActivity.this, Integer.toString(pos) + " Clicked", Toast.LENGTH_SHORT).show();

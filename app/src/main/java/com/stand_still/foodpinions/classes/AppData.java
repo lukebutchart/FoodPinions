@@ -183,17 +183,24 @@ public class AppData {
         return dbHandler.getFoodPinionByPair(dish, user);
     }
 
-    public static FoodPinion getFoodPinion(HashMap<String, String> foodPinionHashMap, Context context) {
+    public static FoodPinion getFoodPinion(HashMap<String, String> foodPinionHashMap, Context context) throws IncompleteFoodPinionHashMapException {
         String dishName = foodPinionHashMap.get(DISH_NAME_COLUMN);
         String restaurantName = foodPinionHashMap.get(RESTAURANT_NAME_COLUMN);
         String comment = foodPinionHashMap.get(COMMENT_COLUMN);
         String dateTime = foodPinionHashMap.get(DATE_TIME_COLUMN);
         String userName = foodPinionHashMap.get(USER_NAME_COLUMN);
-
+        // Todo: Should probably be able to hold the IDs in hashmap
         if (dishName == null || restaurantName == null || comment == null
                 || dateTime == null || userName == null){
             throw new IncompleteFoodPinionHashMapException();
         }
+
+        DatabaseHandler dbHandler = new DatabaseHandler(context);
+
+        Restaurant restaurant = dbHandler.getRestaurantByName(restaurantName);
+        Dish dish = dbHandler.getDishByPair(dishName, restaurant);
+        User user = dbHandler.getUserByName(userName);
+        return dbHandler.getFoodPinionByPair(dish, user);
 
         // Todo: IMPLEMENT
     }
