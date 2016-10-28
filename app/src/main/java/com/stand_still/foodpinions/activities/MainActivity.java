@@ -66,29 +66,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Modify views
         searchEditText.addTextChangedListener(searchTextWatcher);
-//        foodPinionsArrayAdapter = new ViewFoodPinionsArrayAdapter(this, foodPinionArrayList);
-//        foodPinionsListView.setAdapter(foodPinionsArrayAdapter);
-
-
-//        ArrayList<HashMap<String, String>> list = new ArrayList<>();
-//        HashMap<String, String> temp = new HashMap<>();
-//        temp.put(FIRST_COLUMN, "Ankit Karia");
-//        temp.put(SECOND_COLUMN, "Male");
-//        temp.put(THIRD_COLUMN, "22");
-//        temp.put(FOURTH_COLUMN, "Unmarried");
-//        list.add(temp);
-//        HashMap<String, String> temp2 = new HashMap<>();
-//        temp2.put(FIRST_COLUMN, "Rajat Ghai");
-//        temp2.put(SECOND_COLUMN, "Male");
-//        temp2.put(THIRD_COLUMN, "25");
-//        temp2.put(FOURTH_COLUMN, "Unmarried");
-//        list.add(temp2);
-//        HashMap<String, String> temp3 = new HashMap<>();
-//        temp3.put(FIRST_COLUMN, "Karina Kaif");
-//        temp3.put(SECOND_COLUMN, "Female");
-//        temp3.put(THIRD_COLUMN, "31");
-//        temp3.put(FOURTH_COLUMN, "Unmarried");
-//        list.add(temp3);
 
         ArrayList<HashMap<String, String>> list = AppData.getAllFoodPinionsHashMapList(this);
 
@@ -100,9 +77,6 @@ public class MainActivity extends AppCompatActivity {
         foodPinionsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
-
-//                FoodPinion listFoodPinion =
-
                 // Todo: Make sure checks are done for this
                 HashMap<String, String> foodPinionHashMap = (HashMap<String, String>) foodPinionsListView.getItemAtPosition(position);
 
@@ -112,26 +86,11 @@ public class MainActivity extends AppCompatActivity {
                 } catch (IncompleteFoodPinionHashMapException e) {
                     e.printStackTrace();
                 }
-
-//                int pos = position + 1;
-//                Toast.makeText(MainActivity.this, Integer.toString(pos) + " Clicked", Toast.LENGTH_SHORT).show();
             }
 
         });
-
-
         hideButton();
         decideHeadersVisible();
-
-//        foodPinionsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-//                String itemName = (String) foodPinionsListView.getItemAtPosition(position); // Todo: get this to return both values, so that the FoodPinion can be found in EditFoodPinionActivity
-//                FoodPinion foodPinion = foodPinionArrayList.get(position);
-//
-//                moveToEditFoodPinion(foodPinion);
-//            }
-//        });
     }
 
     private void establishDataBase() {
@@ -168,11 +127,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-//        FoodPinionArrayList foodPinionArrayList = AppData.getAllFoodPinionsArrayList(this);
-
-//        foodPinionsArrayAdapter = new ViewFoodPinionsArrayAdapter(this, foodPinionArrayList);
-//        foodPinionsListView.setAdapter(foodPinionsArrayAdapter);
 
         ArrayList<HashMap<String, String>> foodPinionsHashMapList = AppData.getAllFoodPinionsHashMapList(this);
 

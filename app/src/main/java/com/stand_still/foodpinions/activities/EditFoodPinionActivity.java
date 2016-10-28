@@ -29,9 +29,7 @@ public class EditFoodPinionActivity extends AppCompatActivity {
     EditText dishNameEditText;
     EditText restaurantEditText;
     EditText commentEditText;
-    //    RatingBar ratingRatingBar;
     Button createFoodPinionButton;
-    //    final float RATING_DEFAULT = 2.5f;
     FoodPinion passedInFoodPinion;
     boolean editOnly;
 
@@ -118,18 +116,6 @@ public class EditFoodPinionActivity extends AppCompatActivity {
 
         if (checkFieldsAreValid()) {
             User user = Settings.getUser(this);
-            FoodPinion checkFoodPinion = AppData.getFoodPinion(dish, user, this); // If not null, FoodPinion is still fundamentally the same
-
-//            if (checkFoodPinion != null){
-//                checkFoodPinion.editFoodPinion(dishName, restaurantName, comment);
-//                AppData.updateFoodPinion(checkFoodPinion, this);
-//                addOrEditString = "edited";
-//            } else { // FoodPinion
-//
-//            }
-
-
-//            if (editOnly) {
             // Just change the FoodPinion
             Restaurant newRestaurant = AppData.getRestaurant(restaurantName, this);
 
@@ -202,7 +188,7 @@ public class EditFoodPinionActivity extends AppCompatActivity {
 //                AppData.addFoodPinion(foodPinion, this); //User.addFoodPinion(foodPinion);
 //            }
 //            confirmationToast(addOrEditString, dishName);
-//            clearFoodPinionActivity(addOrEditString, dishName);
+//            clearFoodPinionActivity(addOrEditString, dishName); Todo: Bring this back
         }
     }
 
