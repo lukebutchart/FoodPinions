@@ -23,7 +23,7 @@ import java.util.List;
 public class DatabaseHandler extends SQLiteOpenHelper {
     // All static variables
     // Database version
-    private static final int DATABASE_VERSION = 72;
+    private static final int DATABASE_VERSION = 79;
 
     // Database name
     private static final String DATABASE_NAME = "foodPinionsManager";
@@ -313,7 +313,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             checkRestaurant.setID(restaurantByName.getID());
         }
 
-        List<Dish> dishesFromRestaurant = getDishesFromRestaurant(checkRestaurant);
+        List<Dish> dishesFromRestaurant = getAllDishesWithRestaurant(checkRestaurant);
 
         for (Dish dish : dishesFromRestaurant) {
             if (dish.getName().equals(dishName))
@@ -349,14 +349,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return dishList;
     }
 
-    // Getting all Dishes
-    public List<Dish> getDishesFromRestaurant(Restaurant restaurant) {
+    public List<Dish> getAllDishesWithRestaurant(int restaurantID) {
         List<Dish> dishList = new ArrayList<>();
         // Select All query
         String selectQuery = "SELECT * FROM " + TABLE_DISHES + " WHERE " + RESTAURANT_ID + "=?";
 
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(restaurant.getID())});
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(restaurantID)});
 
         // Looping through all rows and adding to the list
         if (cursor.moveToFirst()) {
@@ -373,6 +372,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return dishList;
+    }
+
+    // Getting all Dishes
+    public List<Dish> getAllDishesWithRestaurant(Restaurant restaurant) {
+        return getAllDishesWithRestaurant(restaurant.getID());
     }
 
     // Getting Dish Count
@@ -733,7 +737,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public ArrayList<HashMap<String, String>> getAllFoodPinionsHashMapList() {  // Todo: Combine with the other get alls
 //        FoodPinionArrayList foodPinionArrayList = new FoodPinionArrayList();
-        ArrayList<HashMap<String,String>> foodPinionHashMapList = new ArrayList<>();
+        ArrayList<HashMap<String, String>> foodPinionHashMapList = new ArrayList<>();
         // Select All query
         String selectQuery = "SELECT * FROM " + TABLE_FOOD_PINIONS + " ORDER BY " + DATE_TIME
                 + " DESC"; // Newest at top
@@ -764,8 +768,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     foodPinion.setUser(user);
 
 
-
-
                     HashMap<String, String> temp = new HashMap<>();
                     temp.put(DISH_NAME_COLUMN, foodPinion.getDish().getName());
                     temp.put(RESTAURANT_NAME_COLUMN, foodPinion.getDish().getRestaurant().getName());
@@ -782,6 +784,51 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return foodPinionHashMapList;
+    }
+
+
+    public FoodPinionArrayList getAllFoodPinionsWithDish(int dishID) {
+        FoodPinionArrayList foodPinionArrayList = new FoodPinionArrayList();
+        // Select All query
+        String selectQuery = "SELECT * FROM " + TABLE_FOOD_PINIONS + " WHERE " + DISH_ID + "="
+                + dishID + " ORDER BY " + DATE_TIME + " DESC"; // Newest at top
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // Looping through all rows and adding to the list
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    FoodPinion foodPinion = new FoodPinion();
+                    foodPinion.setID(Integer.parseInt(cursor.getString(0)));
+
+                    Dish dish = getDish(
+                            Integer.parseInt(cursor.getString(1))
+                    );
+                    if (dish == null)
+                        throw new FoodPinionDishIsNullException();
+                    foodPinion.setDish(dish);
+
+                    foodPinion.setComment(cursor.getString(2));
+                    foodPinion.setDateTime(cursor.getString(3));
+
+                    User user = getUser(Integer.parseInt(cursor.getString(4)));
+                    if (user == null)
+                        throw new FoodPinionUserIsNullException();
+                    foodPinion.setUser(user);
+
+                    // Add to list
+                    foodPinionArrayList.add(foodPinion);
+                } while (cursor.moveToNext());
+            }
+        } catch (FoodPinionDishIsNullException | FoodPinionUserIsNullException e) {
+            foodPinionArrayList = null;
+        }
+
+        cursor.close();
+        db.close();
+        return foodPinionArrayList;
     }
 
     // Getting FoodPinion Count

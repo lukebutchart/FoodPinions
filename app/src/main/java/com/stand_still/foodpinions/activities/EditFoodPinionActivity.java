@@ -22,6 +22,8 @@ import com.stand_still.foodpinions.classes.Settings;
 import com.stand_still.foodpinions.classes.User;
 import com.stand_still.foodpinions.exceptions.NoUserIDPassedToEditException;
 
+import java.util.List;
+
 public class EditFoodPinionActivity extends AppCompatActivity {
 
     EditText dishNameEditText;
@@ -30,8 +32,11 @@ public class EditFoodPinionActivity extends AppCompatActivity {
     //    RatingBar ratingRatingBar;
     Button createFoodPinionButton;
     //    final float RATING_DEFAULT = 2.5f;
-    FoodPinion currentFoodPinion;
+    FoodPinion passedInFoodPinion;
     boolean editOnly;
+
+    static final String ADDED = "added";
+    static final String EDITED = "edited";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +56,7 @@ public class EditFoodPinionActivity extends AppCompatActivity {
 
         ImageView editIcon = (ImageView) findViewById(R.id.editButtonImageView);
         editIcon.setVisibility(View.INVISIBLE);
-        currentFoodPinion = null;
+        passedInFoodPinion = null;
         editOnly = false;
 
         try {
@@ -62,15 +67,19 @@ public class EditFoodPinionActivity extends AppCompatActivity {
                 if (userID < 1)
                     throw new NoUserIDPassedToEditException();
                 User user = AppData.getUser(userID, this);
-                currentFoodPinion = AppData.getFoodPinion(dish, user, this);
+                passedInFoodPinion = AppData.getFoodPinion(dish, user, this);
                 editOnly = true;
-                dishNameEditText.setText(currentFoodPinion.getDish().getName());
-                commentEditText.setText(currentFoodPinion.getComment());
+                dishNameEditText.setText(passedInFoodPinion.getDish().getName());
+                commentEditText.setText(passedInFoodPinion.getComment());
 
                 createFoodPinionButton.setText(getResources().getString(R.string.editFoodPinion_newFoodPinion_button)); // make this local
             } else dishNameEditText.requestFocus();
-        } catch (NoUserIDPassedToEditException e){
+        } catch (NoUserIDPassedToEditException e) {
             // Hopefully won't happen...
+            Toast.makeText(
+                    getApplicationContext(),
+                    String.format("NoUserIDPassedToEditException"),
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -97,7 +106,7 @@ public class EditFoodPinionActivity extends AppCompatActivity {
 
     public void confirmFoodPinion(View view) {
 
-        String addOrEditString = "added";
+        String addOrEditString = ADDED;
 
         String dishName = dishNameEditText.getText().toString();
         String restaurantName = restaurantEditText.getText().toString();
@@ -109,24 +118,91 @@ public class EditFoodPinionActivity extends AppCompatActivity {
 
         if (checkFieldsAreValid()) {
             User user = Settings.getUser(this);
-            FoodPinion checkFoodPinion = AppData.getFoodPinion(dish, user, this); //User.getFoodPinionByPair(dishName, restaurantName);
+            FoodPinion checkFoodPinion = AppData.getFoodPinion(dish, user, this); // If not null, FoodPinion is still fundamentally the same
 
-            if (editOnly) {
-                currentFoodPinion.editFoodPinion(dishName, restaurantName, comment);
-                addOrEditString = "edited";
-                AppData.updateFoodPinion(currentFoodPinion, this);
-                confirmationToast(addOrEditString, dishName);
-                finish();
-                return;
-            } else if (checkFoodPinion != null) {
-                checkFoodPinion.editFoodPinion(dishName, restaurantName, comment);
-                AppData.updateFoodPinion(checkFoodPinion, this);
-                addOrEditString = "edited";
-            } else {
-                AppData.addFoodPinion(foodPinion, this); //User.addFoodPinion(foodPinion);
+//            if (checkFoodPinion != null){
+//                checkFoodPinion.editFoodPinion(dishName, restaurantName, comment);
+//                AppData.updateFoodPinion(checkFoodPinion, this);
+//                addOrEditString = "edited";
+//            } else { // FoodPinion
+//
+//            }
+
+
+//            if (editOnly) {
+            // Just change the FoodPinion
+            Restaurant newRestaurant = AppData.getRestaurant(restaurantName, this);
+
+            if (newRestaurant == null) {
+                newRestaurant = new Restaurant(restaurantName);
+                AppData.addRestaurant(newRestaurant, this);
             }
+
+            Dish newDish = AppData.getDish(dishName, restaurant, this);
+
+            if (newDish == null) {
+                newDish = new Dish(dishName, restaurant);
+                AppData.addDish(newDish, this);
+            }
+
+            FoodPinion newFoodPinion = AppData.getFoodPinion(dish, user, this);
+
+            if (newFoodPinion == null) {
+                newFoodPinion = new FoodPinion(dish, comment, this);
+                AppData.addFoodPinion(newFoodPinion, this);
+
+                addOrEditString = ADDED;
+            } else {
+                newFoodPinion.setComment(comment);
+                AppData.updateFoodPinion(newFoodPinion, this);
+                addOrEditString = EDITED;
+            }
+
+
+            if (passedInFoodPinion != null) { // Then MAY need to delete it from the DB
+                // First: Check whether it may be obsolete
+                int passedInRestaurantID = passedInFoodPinion.getDish().getRestaurant().getID();
+                int passedInDishID = passedInFoodPinion.getDish().getID();
+                int passedInUserID = passedInFoodPinion.getUser().getID();
+
+                int newRestaurantID = newFoodPinion.getDish().getRestaurant().getID();
+                int newDishID = newFoodPinion.getDish().getID();
+                int newUserID = newFoodPinion.getUser().getID();
+
+                boolean equalRestaurantIDs = passedInRestaurantID == newRestaurantID;
+                boolean equalDishIDs = passedInDishID == newDishID;
+                boolean equalUserIDs = passedInUserID == newUserID;
+
+                if (!equalDishIDs) { // MAY be obsolete
+                    // Second: Check whether dish in use elsewhere
+                    if (AppData.getAllFoodPinionsWithDish(passedInDishID, this).size() == 1) {
+                        AppData.deleteFoodPinion(passedInFoodPinion, this);
+                        AppData.deleteDish(passedInFoodPinion.getDish(), this);
+                        if (AppData.getAllDishesWithRestaurant(passedInRestaurantID, this).size() == 0) {
+                            AppData.deleteRestaurant(passedInFoodPinion.getDish().getRestaurant(), this);
+                        }
+                    }
+                }
+            }
+
+            List<FoodPinion> fl = AppData.getAllFoodPinions(this);
+            List<Restaurant> rl = AppData.getAllRestaurants(this);
+            List<Dish> dl = AppData.getAllDishes(this);
+
+//                passedInFoodPinion.editFoodPinion(dishName, restaurantName, comment);
+//                AppData.updateFoodPinion(passedInFoodPinion, this);
             confirmationToast(addOrEditString, dishName);
-            clearFoodPinionActivity(addOrEditString, dishName);
+            finish();
+            return;
+//            } else if (checkFoodPinion != null) {
+//                checkFoodPinion.editFoodPinion(dishName, restaurantName, comment);
+//                AppData.updateFoodPinion(checkFoodPinion, this);
+//                addOrEditString = "edited";
+//            } else {
+//                AppData.addFoodPinion(foodPinion, this); //User.addFoodPinion(foodPinion);
+//            }
+//            confirmationToast(addOrEditString, dishName);
+//            clearFoodPinionActivity(addOrEditString, dishName);
         }
     }
 

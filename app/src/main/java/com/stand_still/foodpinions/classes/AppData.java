@@ -4,11 +4,13 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.widget.LinearLayout;
 
+import com.stand_still.foodpinions.activities.EditFoodPinionActivity;
 import com.stand_still.foodpinions.activities.MainActivity;
 import com.stand_still.foodpinions.exceptions.IncompleteFoodPinionHashMapException;
 
 import java.net.PortUnreachableException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -131,6 +133,11 @@ public class AppData {
         return dbHandler.getAllDishes();
     }
 
+    public static List<Dish> getAllDishesWithRestaurant(int restaurantID, Context context) {
+        DatabaseHandler dbHandler = new DatabaseHandler(context);
+        return dbHandler.getAllDishesWithRestaurant(restaurantID);
+    }
+
     public static List<FoodPinion> getAllFoodPinions(Context context) {
         DatabaseHandler dbHandler = new DatabaseHandler(context);
         return dbHandler.getAllFoodPinions();
@@ -144,6 +151,11 @@ public class AppData {
     public static ArrayList<HashMap<String, String>> getAllFoodPinionsHashMapList(Context context) {
         DatabaseHandler dbHandler = new DatabaseHandler(context);
         return dbHandler.getAllFoodPinionsHashMapList();
+    }
+
+    public static FoodPinionArrayList getAllFoodPinionsWithDish(int dishID, Context context) {
+        DatabaseHandler dbHandler = new DatabaseHandler(context);
+        return dbHandler.getAllFoodPinionsWithDish(dishID);
     }
 
     public static List<User> getAllUsers(Context context) {
@@ -191,7 +203,7 @@ public class AppData {
         String userName = foodPinionHashMap.get(USER_NAME_COLUMN);
         // Todo: Should probably be able to hold the IDs in hashmap
         if (dishName == null || restaurantName == null || comment == null
-                || dateTime == null || userName == null){
+                || dateTime == null || userName == null) {
             throw new IncompleteFoodPinionHashMapException();
         }
 
@@ -228,6 +240,8 @@ public class AppData {
     }
 
     public static int updateFoodPinion(FoodPinion foodPinion, Context context) {
+        String dateTime = new Date().toString();
+        foodPinion.setDateTime(dateTime);
         DatabaseHandler dbHandler = new DatabaseHandler(context);
         return dbHandler.updateFoodPinion(foodPinion);
     }

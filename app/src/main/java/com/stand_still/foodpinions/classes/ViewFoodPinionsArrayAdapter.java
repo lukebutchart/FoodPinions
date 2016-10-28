@@ -36,7 +36,7 @@ public class ViewFoodPinionsArrayAdapter extends ArrayAdapter {
     }
 
     @Override
-    public Object getItem(int i){
+    public Object getItem(int i) {
         return super.getItem(i);
     }
 }
