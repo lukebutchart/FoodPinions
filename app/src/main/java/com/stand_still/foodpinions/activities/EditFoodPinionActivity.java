@@ -46,7 +46,7 @@ public class EditFoodPinionActivity extends AppCompatActivity {
         String nameString = intent.getStringExtra(MainActivity.EXTRA_NAME_VALUE);
         int userID = intent.getIntExtra(MainActivity.EXTRA_USER_ID_VALUE, 0);
 
-        boolean alreadyExists = nameString != null;
+        boolean passingIn = nameString != null;
         findAndSetViews();
         addTextChangedListeners();
         setDefaultValues(restaurantString);
@@ -58,7 +58,7 @@ public class EditFoodPinionActivity extends AppCompatActivity {
         editOnly = false;
 
         try {
-            if (alreadyExists) {
+            if (passingIn) {
                 editIcon.setVisibility(View.VISIBLE);
                 Restaurant restaurant = AppData.getRestaurant(restaurantString, this);
                 Dish dish = AppData.getDish(nameString, restaurant, this);
@@ -83,7 +83,6 @@ public class EditFoodPinionActivity extends AppCompatActivity {
 
     private void setDefaultValues(String restaurantString) {
         restaurantEditText.setText(restaurantString);
-//        ratingRatingBar.setRating(RATING_DEFAULT);
     }
 
     private void addTextChangedListeners() {
@@ -104,7 +103,7 @@ public class EditFoodPinionActivity extends AppCompatActivity {
 
     public void confirmFoodPinion(View view) {
 
-        String addOrEditString = ADDED;
+        String addOrEditString;
 
         String dishName = dishNameEditText.getText().toString();
         String restaurantName = restaurantEditText.getText().toString();
@@ -144,20 +143,12 @@ public class EditFoodPinionActivity extends AppCompatActivity {
                 addOrEditString = EDITED;
             }
 
-
             if (passedInFoodPinion != null) { // Then MAY need to delete it from the DB
                 // First: Check whether it may be obsolete
                 int passedInRestaurantID = passedInFoodPinion.getDish().getRestaurant().getID();
                 int passedInDishID = passedInFoodPinion.getDish().getID();
-                int passedInUserID = passedInFoodPinion.getUser().getID();
-
-                int newRestaurantID = newFoodPinion.getDish().getRestaurant().getID();
                 int newDishID = newFoodPinion.getDish().getID();
-                int newUserID = newFoodPinion.getUser().getID();
-
-                boolean equalRestaurantIDs = passedInRestaurantID == newRestaurantID;
                 boolean equalDishIDs = passedInDishID == newDishID;
-                boolean equalUserIDs = passedInUserID == newUserID;
 
                 if (!equalDishIDs) { // MAY be obsolete
                     // Second: Check whether dish in use elsewhere
@@ -170,25 +161,10 @@ public class EditFoodPinionActivity extends AppCompatActivity {
                     }
                 }
             }
-
-            List<FoodPinion> fl = AppData.getAllFoodPinions(this);
-            List<Restaurant> rl = AppData.getAllRestaurants(this);
-            List<Dish> dl = AppData.getAllDishes(this);
-
-//                passedInFoodPinion.editFoodPinion(dishName, restaurantName, comment);
-//                AppData.updateFoodPinion(passedInFoodPinion, this);
             confirmationToast(addOrEditString, dishName);
-            finish();
-            return;
-//            } else if (checkFoodPinion != null) {
-//                checkFoodPinion.editFoodPinion(dishName, restaurantName, comment);
-//                AppData.updateFoodPinion(checkFoodPinion, this);
-//                addOrEditString = "edited";
-//            } else {
-//                AppData.addFoodPinion(foodPinion, this); //User.addFoodPinion(foodPinion);
-//            }
-//            confirmationToast(addOrEditString, dishName);
-//            clearFoodPinionActivity(addOrEditString, dishName); Todo: Bring this back
+            if (editOnly)
+                finish();
+            else clearFoodPinionActivity();
         }
     }
 
@@ -199,7 +175,7 @@ public class EditFoodPinionActivity extends AppCompatActivity {
                 Toast.LENGTH_SHORT).show();
     }
 
-    private void clearFoodPinionActivity(String addOrEdit, String name) {
+    private void clearFoodPinionActivity() {
         clearFields();
         dishNameEditText.requestFocus();
     }
@@ -248,7 +224,7 @@ public class EditFoodPinionActivity extends AppCompatActivity {
             else createFoodPinionButton.setEnabled(false);
             if (!editOnly) {
                 if (User.getFoodPinionByPair(dishNameEditText.getText().toString(), restaurantEditText.getText().toString()) == null) {
-                    createFoodPinionButton.setText(getResources().getString(R.string.createFoodPinion_newFoodPinion_button)); //"Create FoodPinion");
+                    createFoodPinionButton.setText(getResources().getString(R.string.createFoodPinion_newFoodPinion_button));
                 } else
                     createFoodPinionButton.setText(getResources().getString(R.string.editFoodPinion_newFoodPinion_button));
             }
