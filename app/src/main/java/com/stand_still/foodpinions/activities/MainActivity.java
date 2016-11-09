@@ -29,6 +29,7 @@ import com.stand_still.foodpinions.exceptions.IncompleteFoodPinionHashMapExcepti
 
 import static com.stand_still.foodpinions.classes.Constants.*;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -103,9 +104,23 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUpAutoCompleteTextView() {
         String[] dishNames = AppData.getAllDishNames(this).toArray(new String[0]);
+        String[] restaurantNames = AppData.getAllRestaurantNames(this).toArray(new String[0]);
+        String[] autoCompleteArray =  concatenate(dishNames, restaurantNames);
         ArrayAdapter<String> autoCompleteAdapter = new ArrayAdapter<>
-                (this, android.R.layout.simple_list_item_1, dishNames);
+                (this, android.R.layout.simple_list_item_1, autoCompleteArray);
         autoCompleteTextView.setAdapter(autoCompleteAdapter);
+    }
+
+    public <T> T[] concatenate (T[] a, T[] b) {
+        int aLen = a.length;
+        int bLen = b.length;
+
+        @SuppressWarnings("unchecked")
+        T[] c = (T[]) Array.newInstance(a.getClass().getComponentType(), aLen+bLen);
+        System.arraycopy(a, 0, c, 0, aLen);
+        System.arraycopy(b, 0, c, aLen, bLen);
+
+        return c;
     }
 
     private void establishDataBase() {

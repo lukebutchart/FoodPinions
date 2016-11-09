@@ -188,6 +188,26 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return restaurantList;
     }
 
+    public List<String> getAllRestaurantNames() {
+        List<String> restaurantNameList = new ArrayList<>();
+        // Select All query
+        String selectQuery = "SELECT " + RESTAURANT + " FROM " + TABLE_RESTAURANTS;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // Looping through all rows and adding to the list
+        if (cursor.moveToFirst()) {
+            do {
+                restaurantNameList.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return restaurantNameList;
+    }
+
     // Getting Restaurant Count
     public int getRestaurantsCount() {
         String countQuery = "SELECT * FROM " + TABLE_RESTAURANTS;

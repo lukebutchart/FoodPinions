@@ -158,6 +158,11 @@ public class AppData {
         return dbHandler.getAllDishNames();
     }
 
+    public static List<String> getAllRestaurantNames(Context context) {
+        DatabaseHandler dbHandler = new DatabaseHandler(context);
+        return dbHandler.getAllRestaurantNames();
+    }
+
     public static FoodPinionArrayList getAllFoodPinionsWithDish(int dishID, Context context) {
         DatabaseHandler dbHandler = new DatabaseHandler(context);
         return dbHandler.getAllFoodPinionsWithDish(dishID);
