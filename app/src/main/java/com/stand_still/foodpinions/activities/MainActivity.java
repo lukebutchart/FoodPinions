@@ -8,6 +8,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -37,11 +39,12 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_NAME_VALUE = "com.stand_still.foodpinions.NAME_VALUE";
     public static final String EXTRA_USER_ID_VALUE = "com.stand_still.foodpinions.USER_ID_VALUE";
 
-    EditText searchEditText;
+//    EditText searchEditText;
     Button newFoodPinionButton;
     ListView foodPinionsListView;
     ViewFoodPinionsArrayAdapter foodPinionsArrayAdapter;
     LinearLayout listHeadersLinearLayout;
+    AutoCompleteTextView autoCompleteTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,25 +58,26 @@ public class MainActivity extends AppCompatActivity {
 
         // ===== TEST END
 
+        final Context context = this;
+
         // Find views
         listHeadersLinearLayout = (LinearLayout) findViewById(R.id.list_headers_linearLayout);
-        searchEditText = (EditText) findViewById(R.id.search_editText);
+//        searchEditText = (EditText) findViewById(R.id.search_editText);
         newFoodPinionButton = (Button) findViewById(R.id.newFoodPinion_button);
         foodPinionsListView = (ListView) findViewById(R.id.foodPinions_list);
+        autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView1);
 
         // Collect data
         final FoodPinionArrayList foodPinionArrayList = AppData.getAllFoodPinionsArrayList(this);
 
         // Modify views
-        searchEditText.addTextChangedListener(searchTextWatcher);
+//        searchEditText.addTextChangedListener(searchTextWatcher);
+        autoCompleteTextView.addTextChangedListener(searchTextWatcher);
 
-        ArrayList<HashMap<String, String>> list = AppData.getAllFoodPinionsHashMapList(this);
+        // Set up Most Recent list
+        setUpFoodPinionList();
 
-        ListViewAdapter adapter = new ListViewAdapter(this, list);
-        foodPinionsListView.setAdapter(adapter);
-
-        final Context context = this;
-
+        // Set onClick
         foodPinionsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
@@ -89,8 +93,19 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+
+        // Set up autoCompleteTextView
+        setUpAutoCompleteTextView();
+
         hideButton();
         decideHeadersVisible();
+    }
+
+    private void setUpAutoCompleteTextView() {
+        String[] dishNames = AppData.getAllDishNames(this).toArray(new String[0]);
+        ArrayAdapter<String> autoCompleteAdapter = new ArrayAdapter<>
+                (this, android.R.layout.simple_list_item_1, dishNames);
+        autoCompleteTextView.setAdapter(autoCompleteAdapter);
     }
 
     private void establishDataBase() {
@@ -128,12 +143,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        ArrayList<HashMap<String, String>> foodPinionsHashMapList = AppData.getAllFoodPinionsHashMapList(this);
+        setUpFoodPinionList();
 
-        ListViewAdapter adapter = new ListViewAdapter(this, foodPinionsHashMapList);
-        foodPinionsListView.setAdapter(adapter);
+        setUpAutoCompleteTextView();
 
         decideHeadersVisible();
+    }
+
+    private void setUpFoodPinionList() {
+        ArrayList<HashMap<String, String>> foodPinionsHashMapList = AppData.getAllFoodPinionsHashMapList(this);
+        ListViewAdapter adapter = new ListViewAdapter(this, foodPinionsHashMapList);
+        foodPinionsListView.setAdapter(adapter);
     }
 
     public void newFoodPinion(View view) {
@@ -142,7 +162,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void moveToNewFoodPinion() {
         Intent intent = new Intent(this, EditFoodPinionActivity.class);
-        String searchValue = searchEditText.getText().toString();
+//        String searchValue = searchEditText.getText().toString();
+        String searchValue = autoCompleteTextView.getText().toString();
         intent.putExtra(EXTRA_RESTAURANT_VALUE, searchValue);
         startActivity(intent);
     }

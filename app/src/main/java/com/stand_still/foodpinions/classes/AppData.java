@@ -153,6 +153,11 @@ public class AppData {
         return dbHandler.getAllFoodPinionsHashMapList();
     }
 
+    public static List<String> getAllDishNames(Context context) {
+        DatabaseHandler dbHandler = new DatabaseHandler(context);
+        return dbHandler.getAllDishNames();
+    }
+
     public static FoodPinionArrayList getAllFoodPinionsWithDish(int dishID, Context context) {
         DatabaseHandler dbHandler = new DatabaseHandler(context);
         return dbHandler.getAllFoodPinionsWithDish(dishID);
