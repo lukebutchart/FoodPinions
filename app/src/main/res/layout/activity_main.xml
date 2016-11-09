@@ -14,13 +14,31 @@
         android:layout_marginTop="65dp"
         android:ems="10" />
 
-    <Button
-        android:id="@+id/newFoodPinion_button"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/buttons"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:onClick="newFoodPinion"
-        android:text="@string/button_newFoodPinion" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/newFoodPinion_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:onClick="newFoodPinion"
+            android:text="@string/button_newFoodPinion" />
+
+        <Button
+            android:id="@+id/searchFoodPinion_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:onClick="searchFoodPinion"
+            android:text="@string/button_searchFoodPinion" />
+
+    </LinearLayout>
 
     <EditText
         android:id="@+id/search_editText"

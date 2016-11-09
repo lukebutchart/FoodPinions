@@ -1,14 +1,9 @@
 package com.stand_still.foodpinions.classes;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.widget.LinearLayout;
 
-import com.stand_still.foodpinions.activities.EditFoodPinionActivity;
-import com.stand_still.foodpinions.activities.MainActivity;
 import com.stand_still.foodpinions.exceptions.IncompleteFoodPinionHashMapException;
 
-import java.net.PortUnreachableException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -166,6 +161,11 @@ public class AppData {
     public static FoodPinionArrayList getAllFoodPinionsWithDish(int dishID, Context context) {
         DatabaseHandler dbHandler = new DatabaseHandler(context);
         return dbHandler.getAllFoodPinionsWithDish(dishID);
+    }
+
+    public static ArrayList<HashMap<String, String>> getAllFoodPinionBySearch(String searchText, Context context) {
+        DatabaseHandler dbHandler = new DatabaseHandler(context);
+        return dbHandler.getAllFoodPinionsBySearch(searchText);
     }
 
     public static List<User> getAllUsers(Context context) {

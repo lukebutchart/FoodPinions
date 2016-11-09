@@ -11,10 +11,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.stand_still.foodpinions.R;
 import com.stand_still.foodpinions.classes.Dish;
@@ -27,12 +25,9 @@ import com.stand_still.foodpinions.classes.User;
 import com.stand_still.foodpinions.classes.ViewFoodPinionsArrayAdapter;
 import com.stand_still.foodpinions.exceptions.IncompleteFoodPinionHashMapException;
 
-import static com.stand_still.foodpinions.classes.Constants.*;
-
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
 //    EditText searchEditText;
     Button newFoodPinionButton;
+    Button searchFoodPinionButton;
     ListView foodPinionsListView;
     ViewFoodPinionsArrayAdapter foodPinionsArrayAdapter;
     LinearLayout listHeadersLinearLayout;
@@ -65,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         listHeadersLinearLayout = (LinearLayout) findViewById(R.id.list_headers_linearLayout);
 //        searchEditText = (EditText) findViewById(R.id.search_editText);
         newFoodPinionButton = (Button) findViewById(R.id.newFoodPinion_button);
+        searchFoodPinionButton = (Button) findViewById(R.id.searchFoodPinion_button);
         foodPinionsListView = (ListView) findViewById(R.id.foodPinions_list);
         autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView1);
 
@@ -98,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         // Set up autoCompleteTextView
         setUpAutoCompleteTextView();
 
-        hideButton();
+        hideButtons();
         decideHeadersVisible();
     }
 
@@ -171,8 +168,19 @@ public class MainActivity extends AppCompatActivity {
         foodPinionsListView.setAdapter(adapter);
     }
 
+    private void setUpFoodPinionList(ArrayList<HashMap<String, String>> newList) {
+        ListViewAdapter adapter = new ListViewAdapter(this, newList);
+        foodPinionsListView.setAdapter(adapter);
+    }
+
     public void newFoodPinion(View view) {
         moveToNewFoodPinion();
+    }
+
+    public void searchFoodPinion(View view) {
+        String searchText = autoCompleteTextView.getText().toString();
+        ArrayList<HashMap<String, String>> newList = AppData.getAllFoodPinionBySearch(searchText, this);
+        setUpFoodPinionList(newList);
     }
 
     private void moveToNewFoodPinion() {
@@ -183,14 +191,18 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void hideButton() {
+    private void hideButtons() {
         newFoodPinionButton.setEnabled(false);
         newFoodPinionButton.setVisibility(View.INVISIBLE);
+        searchFoodPinionButton.setEnabled(false);
+        searchFoodPinionButton.setVisibility(View.INVISIBLE);
     }
 
-    private void showButton() {
+    private void showButtons() {
         newFoodPinionButton.setEnabled(true);
         newFoodPinionButton.setVisibility(View.VISIBLE);
+        searchFoodPinionButton.setEnabled(true);
+        searchFoodPinionButton.setVisibility(View.VISIBLE);
     }
 
     TextWatcher searchTextWatcher = new TextWatcher() {
@@ -207,8 +219,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void afterTextChanged(Editable editable) {
             if (editable.length() > 0)
-                showButton();
-            else hideButton();
+                showButtons();
+            else hideButtons();
         }
     };
 }

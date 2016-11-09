@@ -643,13 +643,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 DISH,       // 5
                 KEY_ID,     // 6    // Restaurant
                 RESTAURANT, // 7
-//                KEY_ID,           // User
-//                USER_NAME
-                TABLE_FOOD_PINIONS,
-                TABLE_DISHES,
+                TABLE_FOOD_PINIONS, // A
+                TABLE_DISHES,       // B
                 DISH_ID,    // 4
                 KEY_ID,
-                TABLE_RESTAURANTS,
+                TABLE_RESTAURANTS,  // C
                 RESTAURANT_ID,  // 6
                 KEY_ID,
                 KEY_ID
@@ -832,6 +830,117 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return foodPinionHashMapList;
     }
 
+    public ArrayList<HashMap<String, String>> getAllFoodPinionsBySearch(String searchText) {    // Todo: Combine with above
+        ArrayList<HashMap<String, String>> foodPinionHashMapList = new ArrayList<>();
+        // Select All query
+//        String selectQuery = "SELECT " +  " FROM " + TABLE_FOOD_PINIONS
+//                + " WHERE " + DISH + "=*" + searchText + "*"
+//                + " ORDER BY " + DATE_TIME
+//                + " DESC"; // Newest at top
+
+        String selectQuery = String.format(
+                "SELECT A.%s, A.%s, A.%s, A.%s, " +
+                        "B.%s, B.%s, " +
+                        "C.%s, C.%s, " +
+                        "D.%s, D.%s, " +
+                        "FROM %s A INNER JOIN %s B " +
+                        "ON A.%s = B.%s " +
+                        "INNER JOIN %s C " +
+                        "ON B.%s = C.%s " +
+                        "WHERE B.%s = *%s*" +
+                        " ORDER BY A.%s DESC", // Newest at top,
+                KEY_ID,     // 0    // FoodPinion
+                COMMENT,    // 1
+                DATE_TIME,  // 2
+                USER_ID,    // 3
+                KEY_ID,     // 4    // Dish
+                DISH,       // 5
+                KEY_ID,     // 6    // Restaurant
+                RESTAURANT, // 7
+                KEY_ID     // TODO: MUST ADD THE USER INTO ABOVE STATEMENT
+                USER_NAME,
+                TABLE_FOOD_PINIONS, // A
+                TABLE_DISHES,       // B
+                DISH_ID,    // 4
+                KEY_ID,
+                TABLE_RESTAURANTS,  // C
+                RESTAURANT_ID,  // 6
+                KEY_ID,
+                DISH,
+                searchText,
+                DATE_TIME
+        );
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // Looping through all rows and adding to the list
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    Restaurant restaurant = new Restaurant(
+                            Integer.parseInt(cursor.getString(6)),
+                            cursor.getString(7)
+                    );
+
+                    Dish dish = new Dish(
+                            Integer.parseInt(cursor.getString(4)),
+                            cursor.getString(5),
+                            restaurant
+                    );
+
+                    User user = new User(
+                            id,
+                            username
+                    );
+
+                    FoodPinion foodPinion = new FoodPinion(
+                            Integer.parseInt(cursor.getString(0)),
+                            dish,
+                            cursor.getString(1),
+                            cursor.getString(2),
+                            user
+                    );
+
+
+//                    FoodPinion foodPinion = new FoodPinion();
+//                    foodPinion.setID(Integer.parseInt(cursor.getString(0)));
+//
+//                    Dish dish = getDish(
+//                            Integer.parseInt(cursor.getString(1))
+//                    );
+//                    if (dish == null)
+//                        throw new FoodPinionDishIsNullException();
+//                    foodPinion.setDish(dish);
+//
+//                    foodPinion.setComment(cursor.getString(2));
+//                    foodPinion.setDateTime(cursor.getString(3));
+//
+//                    User user = getUser(Integer.parseInt(cursor.getString(4)));
+//                    if (user == null)
+//                        throw new FoodPinionUserIsNullException();
+//                    foodPinion.setUser(user);
+
+
+                    HashMap<String, String> temp = new HashMap<>();
+                    temp.put(DISH_NAME_COLUMN, foodPinion.getDish().getName());
+                    temp.put(RESTAURANT_NAME_COLUMN, foodPinion.getDish().getRestaurant().getName());
+                    temp.put(COMMENT_COLUMN, foodPinion.getComment());
+                    temp.put(DATE_TIME_COLUMN, foodPinion.getDateTimeString());
+                    temp.put(USER_NAME_COLUMN, foodPinion.getUser().getName());
+                    foodPinionHashMapList.add(temp);
+                } while (cursor.moveToNext());
+            }
+        } catch (FoodPinionDishIsNullException | FoodPinionUserIsNullException e) {
+            foodPinionHashMapList = null;
+        }
+
+        cursor.close();
+        db.close();
+        return foodPinionHashMapList;
+
+        do it
+    }
 
     public FoodPinionArrayList getAllFoodPinionsWithDish(int dishID) {
         FoodPinionArrayList foodPinionArrayList = new FoodPinionArrayList();
