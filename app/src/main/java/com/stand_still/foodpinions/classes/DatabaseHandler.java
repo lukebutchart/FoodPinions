@@ -36,8 +36,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     // FoodPinions table columns names
     private static final String KEY_ID = "id";
-    private static final String RESTAURANT = "restaurant";
-    private static final String DISH = "dish";
+    private static final String RESTAURANT_NAME = "restaurant";
+    private static final String DISH_NAME = "dish";
     private static final String COMMENT = "comment";
     //    private static final String KEY_RATING = "rating";
     private static final String DATE_TIME = "dateTime";
@@ -60,13 +60,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_RESTAURANTS_TABLE = "CREATE TABLE " + TABLE_RESTAURANTS + "("
                 + KEY_ID + " INTEGER PRIMARY KEY,"
-                + RESTAURANT + " TEXT NOT NULL UNIQUE"
+                + RESTAURANT_NAME + " TEXT NOT NULL UNIQUE"
                 + ")";
         db.execSQL(CREATE_RESTAURANTS_TABLE);
 
         String CREATE_DISHES_TABLE = "CREATE TABLE " + TABLE_DISHES + "("
                 + KEY_ID + " INTEGER PRIMARY KEY,"
-                + DISH + " TEXT NOT NULL,"
+                + DISH_NAME + " TEXT NOT NULL,"
                 + RESTAURANT_ID + " INTEGER NOT NULL,"
                 + "FOREIGN KEY (" + RESTAURANT_ID + ") REFERENCES " + TABLE_RESTAURANTS + "(" + KEY_ID + ")"
 //                + ",UNIQUE (" + DISH + "," + RESTAURANT_ID + ")"     // Don't use "ON CONFLICT REPLACE" to specify conflict behaviour. Should find a way that actually makes sense
@@ -114,7 +114,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(RESTAURANT, restaurant.getName()); // Restaurant name
+        values.put(RESTAURANT_NAME, restaurant.getName()); // Restaurant name
 
         // Inserting row
         db.insert(TABLE_RESTAURANTS, null, values);
@@ -125,7 +125,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public Restaurant getRestaurant(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_RESTAURANTS, new String[]{KEY_ID, RESTAURANT}, KEY_ID + "=?",
+        Cursor cursor = db.query(TABLE_RESTAURANTS, new String[]{KEY_ID, RESTAURANT_NAME}, KEY_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
@@ -146,7 +146,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public Restaurant getRestaurantByName(String name) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_RESTAURANTS, new String[]{KEY_ID, RESTAURANT}, RESTAURANT + "=?",
+        Cursor cursor = db.query(TABLE_RESTAURANTS, new String[]{KEY_ID, RESTAURANT_NAME}, RESTAURANT_NAME + "=?",
                 new String[]{String.valueOf(name)}, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
@@ -191,7 +191,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public List<String> getAllRestaurantNames() {
         List<String> restaurantNameList = new ArrayList<>();
         // Select All query
-        String selectQuery = "SELECT " + RESTAURANT + " FROM " + TABLE_RESTAURANTS;
+        String selectQuery = "SELECT " + RESTAURANT_NAME + " FROM " + TABLE_RESTAURANTS;
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -244,7 +244,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
         ContentValues values = new ContentValues();
-        values.put(RESTAURANT, restaurant.getName());
+        values.put(RESTAURANT_NAME, restaurant.getName());
 
         // Updating row
         return db.update(TABLE_RESTAURANTS, values, KEY_ID + " = ?",
@@ -273,7 +273,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 dish.getRestaurant().getName()
         ));
 
-        values.put(DISH, dish.getName());
+        values.put(DISH_NAME, dish.getName());
         values.put(RESTAURANT_ID, dish.getRestaurant().getID());
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -287,9 +287,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String GET_DISH_RESTAURANT_QUERY = String.format(
                 "SELECT A.%s, A.%s, B.%s, B.%s FROM %s A INNER JOIN %s B ON A.%s = B.%s WHERE A.%s=?",
                 KEY_ID, // 0
-                DISH, // 1
+                DISH_NAME, // 1
                 KEY_ID,
-                RESTAURANT, // 3
+                RESTAURANT_NAME, // 3
                 TABLE_DISHES,
                 TABLE_RESTAURANTS,
                 RESTAURANT_ID, // 2
@@ -402,7 +402,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public List<String> getAllDishNames() {
         List<String> dishNameList = new ArrayList<>();
         // Select All query
-        String selectQuery = "SELECT " + DISH + " FROM " + TABLE_DISHES;
+        String selectQuery = "SELECT " + DISH_NAME + " FROM " + TABLE_DISHES;
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -480,7 +480,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
         ContentValues values = new ContentValues();
-        values.put(DISH, dish.getName());
+        values.put(DISH_NAME, dish.getName());
 
         values.put(RESTAURANT_ID, restaurantID);
 
@@ -548,9 +548,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 DATE_TIME, // 2
                 USER_ID, // 3
                 KEY_ID,
-                DISH, // 5
+                DISH_NAME, // 5
                 KEY_ID,
-                RESTAURANT, // 7
+                RESTAURANT_NAME, // 7
                 TABLE_FOOD_PINIONS,
                 TABLE_DISHES,
                 DISH_ID, // 4
@@ -640,9 +640,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 DATE_TIME,  // 2
                 USER_ID,    // 3
                 KEY_ID,     // 4    // Dish
-                DISH,       // 5
+                DISH_NAME,       // 5
                 KEY_ID,     // 6    // Restaurant
-                RESTAURANT, // 7
+                RESTAURANT_NAME, // 7
                 TABLE_FOOD_PINIONS, // A
                 TABLE_DISHES,       // B
                 DISH_ID,    // 4
@@ -838,27 +838,32 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 //                + " ORDER BY " + DATE_TIME
 //                + " DESC"; // Newest at top
 
+        searchText = "%" + searchText + "%";
+
         String selectQuery = String.format(
                 "SELECT A.%s, A.%s, A.%s, A.%s, " +
                         "B.%s, B.%s, " +
                         "C.%s, C.%s, " +
-                        "D.%s, D.%s, " +
+                        "D.%s, D.%s " +
                         "FROM %s A INNER JOIN %s B " +
                         "ON A.%s = B.%s " +
                         "INNER JOIN %s C " +
                         "ON B.%s = C.%s " +
-                        "WHERE B.%s = *%s*" +
-                        " ORDER BY A.%s DESC", // Newest at top,
+                        "INNER JOIN %s D " +
+                        "ON A.%s = D.%s " +
+                        "WHERE B.%s LIKE '%s' " +
+                        "OR C.%s LIKE '%s' " +
+                        "ORDER BY A.%s DESC", // Newest at top,
                 KEY_ID,     // 0    // FoodPinion
                 COMMENT,    // 1
                 DATE_TIME,  // 2
                 USER_ID,    // 3
                 KEY_ID,     // 4    // Dish
-                DISH,       // 5
+                DISH_NAME,  // 5
                 KEY_ID,     // 6    // Restaurant
-                RESTAURANT, // 7
-                KEY_ID     // TODO: MUST ADD THE USER INTO ABOVE STATEMENT
-                USER_NAME,
+                RESTAURANT_NAME, // 7
+                KEY_ID,     // 8
+                USER_NAME,  // 9
                 TABLE_FOOD_PINIONS, // A
                 TABLE_DISHES,       // B
                 DISH_ID,    // 4
@@ -866,42 +871,49 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 TABLE_RESTAURANTS,  // C
                 RESTAURANT_ID,  // 6
                 KEY_ID,
-                DISH,
+                TABLE_USERS,
+                USER_ID,
+                KEY_ID,
+                DISH_NAME,
+                searchText,
+                RESTAURANT_NAME,
                 searchText,
                 DATE_TIME
         );
+
+
+//        String selectQuery = "SELECT * FROM " + TABLE_DISHES + " WHERE " + DISH + " LIKE '" + searchText + "'";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
         // Looping through all rows and adding to the list
-        try {
-            if (cursor.moveToFirst()) {
-                do {
-                    Restaurant restaurant = new Restaurant(
-                            Integer.parseInt(cursor.getString(6)),
-                            cursor.getString(7)
-                    );
+//        try {
+        if (cursor.moveToFirst()) {
+            do {
+                Restaurant restaurant = new Restaurant(
+                        Integer.parseInt(cursor.getString(6)),
+                        cursor.getString(7)
+                );
 
-                    Dish dish = new Dish(
-                            Integer.parseInt(cursor.getString(4)),
-                            cursor.getString(5),
-                            restaurant
-                    );
+                Dish dish = new Dish(
+                        Integer.parseInt(cursor.getString(4)),
+                        cursor.getString(5),
+                        restaurant
+                );
 
-                    User user = new User(
-                            id,
-                            username
-                    );
+                User user = new User(
+                        Integer.parseInt(cursor.getString(3)),
+                        cursor.getString(9)
+                );
 
-                    FoodPinion foodPinion = new FoodPinion(
-                            Integer.parseInt(cursor.getString(0)),
-                            dish,
-                            cursor.getString(1),
-                            cursor.getString(2),
-                            user
-                    );
-
+                FoodPinion foodPinion = new FoodPinion(
+                        Integer.parseInt(cursor.getString(0)),
+                        dish,
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        user
+                );
 
 //                    FoodPinion foodPinion = new FoodPinion();
 //                    foodPinion.setID(Integer.parseInt(cursor.getString(0)));
@@ -921,25 +933,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 //                        throw new FoodPinionUserIsNullException();
 //                    foodPinion.setUser(user);
 
-
-                    HashMap<String, String> temp = new HashMap<>();
-                    temp.put(DISH_NAME_COLUMN, foodPinion.getDish().getName());
-                    temp.put(RESTAURANT_NAME_COLUMN, foodPinion.getDish().getRestaurant().getName());
-                    temp.put(COMMENT_COLUMN, foodPinion.getComment());
-                    temp.put(DATE_TIME_COLUMN, foodPinion.getDateTimeString());
-                    temp.put(USER_NAME_COLUMN, foodPinion.getUser().getName());
-                    foodPinionHashMapList.add(temp);
-                } while (cursor.moveToNext());
-            }
-        } catch (FoodPinionDishIsNullException | FoodPinionUserIsNullException e) {
-            foodPinionHashMapList = null;
+                HashMap<String, String> temp = new HashMap<>();
+                temp.put(DISH_NAME_COLUMN, foodPinion.getDish().getName());
+                temp.put(RESTAURANT_NAME_COLUMN, foodPinion.getDish().getRestaurant().getName());
+                temp.put(COMMENT_COLUMN, foodPinion.getComment());
+                temp.put(DATE_TIME_COLUMN, foodPinion.getDateTimeString());
+                temp.put(USER_NAME_COLUMN, foodPinion.getUser().getName());
+                foodPinionHashMapList.add(temp);
+            } while (cursor.moveToNext());
         }
+//        } catch (FoodPinionDishIsNullException | FoodPinionUserIsNullException e) {
+//            foodPinionHashMapList = null;
+//        }
 
         cursor.close();
         db.close();
         return foodPinionHashMapList;
-
-        do it
     }
 
     public FoodPinionArrayList getAllFoodPinionsWithDish(int dishID) {

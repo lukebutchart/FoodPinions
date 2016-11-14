@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="0dp"
         android:ems="10" />
 
     <LinearLayout
@@ -40,13 +40,13 @@
 
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/search_editText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:hint="@string/search_editText"
-        android:inputType="textVisiblePassword" />
+    <!--<EditText-->
+        <!--android:id="@+id/search_editText"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--android:hint="@string/search_editText"-->
+        <!--android:inputType="textVisiblePassword" />-->
 
     <LinearLayout
         android:id="@+id/list_headers_linearLayout"
