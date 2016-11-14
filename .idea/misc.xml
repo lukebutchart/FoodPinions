@@ -37,6 +37,13 @@
     <ConfirmationsSetting value="0" id="Add" />
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
+  <component name="ProjectPlainTextFileTypeManager">
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/stand_still/foodpinions/xbudget/layout/activity_create_outgoing.xml" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/stand_still/foodpinions/xbudget/layout/activity_display_message.xml" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/stand_still/foodpinions/xbudget/layout/activity_main_budget.xml" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/stand_still/foodpinions/xbudget/layout/activity_view_outgoings.xml" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/stand_still/foodpinions/xbudget/layout/list_view_outgoings.xml" />
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" default="true" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

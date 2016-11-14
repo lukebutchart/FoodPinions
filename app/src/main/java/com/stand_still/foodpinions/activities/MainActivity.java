@@ -21,7 +21,6 @@ import com.stand_still.foodpinions.classes.AppData;
 import com.stand_still.foodpinions.classes.FoodPinionArrayList;
 import com.stand_still.foodpinions.classes.ListViewAdapter;
 import com.stand_still.foodpinions.classes.Restaurant;
-import com.stand_still.foodpinions.classes.User;
 //import com.stand_still.foodpinions.classes.ViewFoodPinionsArrayAdapter;
 import com.stand_still.foodpinions.exceptions.IncompleteFoodPinionHashMapException;
 
@@ -58,12 +57,12 @@ public class MainActivity extends AppCompatActivity {
         final Context context = this;
 
         // Find views
-        listHeadersLinearLayout = (LinearLayout) findViewById(R.id.list_headers_linearLayout);
+        listHeadersLinearLayout = (LinearLayout) findViewById(R.id.table_headers);
 //        searchEditText = (EditText) findViewById(R.id.search_editText);
         newFoodPinionButton = (Button) findViewById(R.id.newFoodPinion_button);
         searchFoodPinionButton = (Button) findViewById(R.id.searchFoodPinion_button);
         foodPinionsListView = (ListView) findViewById(R.id.foodPinions_list);
-        autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView1);
+        autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.autoCompleteSearchFoodPinion);
 
         // Collect data
         final FoodPinionArrayList foodPinionArrayList = AppData.getAllFoodPinionsArrayList(this);
@@ -146,9 +145,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void decideHeadersVisible() {
-        if (false)
-            listHeadersLinearLayout.setVisibility(View.INVISIBLE);
-        else listHeadersLinearLayout.setVisibility(View.VISIBLE);
+        listHeadersLinearLayout.setVisibility(View.VISIBLE);
     }
 
     @Override

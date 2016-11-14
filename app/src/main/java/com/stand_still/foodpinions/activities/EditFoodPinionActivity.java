@@ -22,8 +22,6 @@ import com.stand_still.foodpinions.classes.Settings;
 import com.stand_still.foodpinions.classes.User;
 import com.stand_still.foodpinions.exceptions.NoUserIDPassedToEditException;
 
-import java.util.List;
-
 public class EditFoodPinionActivity extends AppCompatActivity {
 
     EditText dishNameEditText;
@@ -70,13 +68,13 @@ public class EditFoodPinionActivity extends AppCompatActivity {
                 dishNameEditText.setText(passedInFoodPinion.getDish().getName());
                 commentEditText.setText(passedInFoodPinion.getComment());
 
-                createFoodPinionButton.setText(getResources().getString(R.string.editFoodPinion_newFoodPinion_button)); // make this local
+                createFoodPinionButton.setText(getResources().getString(R.string.editFoodPinion)); // make this local
             } else dishNameEditText.requestFocus();
         } catch (NoUserIDPassedToEditException e) {
             // Hopefully won't happen...
             Toast.makeText(
                     getApplicationContext(),
-                    String.format("NoUserIDPassedToEditException"),
+                    "NoUserIDPassedToEditException",
                     Toast.LENGTH_SHORT).show();
         }
     }
@@ -95,10 +93,10 @@ public class EditFoodPinionActivity extends AppCompatActivity {
     }
 
     private void findAndSetViews() {
-        restaurantEditText = (EditText) findViewById(R.id.restaurant_newFoodPinion_editText);
-        dishNameEditText = (EditText) findViewById(R.id.name_newFoodPinion_editText);
-        commentEditText = (EditText) findViewById(R.id.comment_newFoodPinion_editText);
-        createFoodPinionButton = (Button) findViewById(R.id.createFoodPinion_newFoodPinion_button);
+        restaurantEditText = (EditText) findViewById(R.id.restaurant_editText);
+        dishNameEditText = (EditText) findViewById(R.id.dish_editText);
+        commentEditText = (EditText) findViewById(R.id.comment_editText);
+        createFoodPinionButton = (Button) findViewById(R.id.createFoodPinion_button);
     }
 
     public void confirmFoodPinion(View view) {
@@ -224,9 +222,9 @@ public class EditFoodPinionActivity extends AppCompatActivity {
             else createFoodPinionButton.setEnabled(false);
             if (!editOnly) {
                 if (User.getFoodPinionByPair(dishNameEditText.getText().toString(), restaurantEditText.getText().toString()) == null) {
-                    createFoodPinionButton.setText(getResources().getString(R.string.createFoodPinion_newFoodPinion_button));
+                    createFoodPinionButton.setText(getResources().getString(R.string.createFoodPinion));
                 } else
-                    createFoodPinionButton.setText(getResources().getString(R.string.editFoodPinion_newFoodPinion_button));
+                    createFoodPinionButton.setText(getResources().getString(R.string.editFoodPinion));
             }
         }
     };

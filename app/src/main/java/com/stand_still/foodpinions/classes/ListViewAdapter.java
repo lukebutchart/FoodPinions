@@ -46,8 +46,8 @@ public class ListViewAdapter extends BaseAdapter {
         LayoutInflater inflater = activity.getLayoutInflater();
         if (convertView == null){
             convertView = inflater.inflate(R.layout.column_row, null);
-            textFirst = (TextView) convertView.findViewById(R.id.dish);
-            textSecond = (TextView) convertView.findViewById(R.id.restaurant);
+            textFirst = (TextView) convertView.findViewById(R.id.dishColumn);
+            textSecond = (TextView) convertView.findViewById(R.id.restaurantColumn);
 //            textThird = (TextView) convertView.findViewById(R.id.comment);
 //            textFourth = (TextView) convertView.findViewById(R.id.datetime);
         }

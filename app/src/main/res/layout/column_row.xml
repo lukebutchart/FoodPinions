@@ -6,27 +6,30 @@
     <!--This defines a single row in the main FoodPinion table-->
 
     <TextView
-        android:id="@+id/dish"
-        android:layout_height="wrap_content"
+        android:id="@+id/restaurantColumn"
         android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textStyle="bold" />
+        android:textSize="20sp" />
+
     <TextView
-        android:id="@+id/restaurant"
-        android:layout_height="wrap_content"
+        android:id="@+id/dishColumn"
         android:layout_width="0dp"
-        android:layout_weight="1" />
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="20sp" />
+    <!--android:textStyle="bold" -->
 
     <!--<TextView-->
-        <!--android:id="@+id/comment"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_weight="0.5" />-->
+    <!--android:id="@+id/comment"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_weight="0.5" />-->
 
     <!--<TextView-->
-        <!--android:id="@+id/datetime"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_weight="1" />-->
+    <!--android:id="@+id/datetime"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_weight="1" />-->
 
 </LinearLayout>

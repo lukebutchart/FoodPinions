@@ -1,19 +1,18 @@
 <resources>
-    <string name="app_name">FoodPinions</string>
-    <string name="edit_message">Enter a message</string>
-    <string name="button_send">Send</string>
-    <string name="button_test">TEST</string>
-    <string name="button_budget">Open budget</string>
-    <string name="button_newFoodPinion">New FoodPinion</string>
-    <string name="button_searchFoodPinion">Search</string>
-    <string name="name_newFoodPinion_editText">Name</string>
-    <string name="comment_newFoodPinion_editText">Comment</string>
-    <string name="rating_newFoodPinion_editText">Rating</string>
-    <string name="search_editText">Search FoodPinion</string>
-    <string name="createFoodPinion_newFoodPinion_button">Create FoodPinion</string>
-    <string name="title_activity_edit_food_pinion">EditFoodPinionActivity</string>
-    <string name="restaurant_newFoodPinion_editText">Restaurant</string>
-    <string name="name_header_textView">Name</string>
-    <string name="restaurant_header_textView">Restaurant</string>
-    <string name="editFoodPinion_newFoodPinion_button">Edit FoodPinion</string>
+    <string name="appName">FoodPinions</string>
+    <string name="enterAMessage">Enter a message</string>
+    <string name="send">Send</string>
+    <string name="test">Test</string>
+    <string name="openBudget">Open budget</string>
+    <string name="newFoodPinion">New FoodPinion</string>
+    <string name="search">Search</string>
+    <string name="dish">Dish</string>
+    <string name="comment">Comment</string>
+    <string name="rating">Rating</string>
+    <string name="searchFoodPinions">Search FoodPinion</string>
+    <string name="createFoodPinion">Create FoodPinion</string>
+    <string name="editFoodPinionActivity">EditFoodPinionActivity</string>
+    <string name="restaurant">Restaurant</string>
+    <string name="editFoodPinion">Edit FoodPinion</string>
+    <string name="editButtonDescription">An edit icon</string>
 </resources>

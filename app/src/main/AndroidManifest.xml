@@ -5,7 +5,7 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="@string/appName"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activities.MainActivity">
@@ -15,10 +15,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.DisplayMessageActivity" />
-        <activity android:name=".xbudget.activities.CreateOutgoingActivity" />
-        <activity android:name=".xbudget.activities.ViewOutgoingsActivity" />
-        <activity android:name=".xbudget.activities.MainBudgetActivity" />
+        <!--<activity android:name=".activities.DisplayMessageActivity" />-->
+        <!--<activity android:name=".xbudget.activities.CreateOutgoingActivity" />-->
+        <!--<activity android:name=".xbudget.activities.ViewOutgoingsActivity" />-->
+        <!--<activity android:name=".xbudget.activities.MainBudgetActivity" />-->
         <activity android:name=".activities.EditFoodPinionActivity" />
     </application>
 
