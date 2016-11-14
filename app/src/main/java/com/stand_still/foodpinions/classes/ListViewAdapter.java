@@ -48,14 +48,14 @@ public class ListViewAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.column_row, null);
             textFirst = (TextView) convertView.findViewById(R.id.dish);
             textSecond = (TextView) convertView.findViewById(R.id.restaurant);
-            textThird = (TextView) convertView.findViewById(R.id.comment);
-            textFourth = (TextView) convertView.findViewById(R.id.datetime);
+//            textThird = (TextView) convertView.findViewById(R.id.comment);
+//            textFourth = (TextView) convertView.findViewById(R.id.datetime);
         }
         HashMap<String, String> map = list.get(position);
         textFirst.setText(map.get(Constants.DISH_NAME_COLUMN));
         textSecond.setText(map.get(Constants.RESTAURANT_NAME_COLUMN));
-        textThird.setText(map.get(Constants.COMMENT_COLUMN));
-        textFourth.setText(map.get(Constants.DATE_TIME_COLUMN));
+//        textThird.setText(map.get(Constants.COMMENT_COLUMN));
+//        textFourth.setText(map.get(Constants.DATE_TIME_COLUMN));
         return convertView;
     }
 }

@@ -22,7 +22,7 @@ import com.stand_still.foodpinions.classes.FoodPinionArrayList;
 import com.stand_still.foodpinions.classes.ListViewAdapter;
 import com.stand_still.foodpinions.classes.Restaurant;
 import com.stand_still.foodpinions.classes.User;
-import com.stand_still.foodpinions.classes.ViewFoodPinionsArrayAdapter;
+//import com.stand_still.foodpinions.classes.ViewFoodPinionsArrayAdapter;
 import com.stand_still.foodpinions.exceptions.IncompleteFoodPinionHashMapException;
 
 import java.lang.reflect.Array;
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     Button newFoodPinionButton;
     Button searchFoodPinionButton;
     ListView foodPinionsListView;
-    ViewFoodPinionsArrayAdapter foodPinionsArrayAdapter;
+//    ViewFoodPinionsArrayAdapter foodPinionsArrayAdapter;
     LinearLayout listHeadersLinearLayout;
     AutoCompleteTextView autoCompleteTextView;
 
@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void decideHeadersVisible() {
-        if (User.getFoodPinions().isEmpty())
+        if (false)
             listHeadersLinearLayout.setVisibility(View.INVISIBLE);
         else listHeadersLinearLayout.setVisibility(View.VISIBLE);
     }

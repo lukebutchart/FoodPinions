@@ -5,15 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <AutoCompleteTextView
-        android:id="@+id/autoCompleteTextView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="0dp"
-        android:ems="10" />
-
     <LinearLayout
         android:id="@+id/buttons"
         android:layout_width="match_parent"
@@ -22,13 +13,14 @@
         android:layout_marginRight="10dp"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/newFoodPinion_button"
+        <AutoCompleteTextView
+            android:id="@+id/autoCompleteTextView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:onClick="newFoodPinion"
-            android:text="@string/button_newFoodPinion" />
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="0dp"
+            android:ems="10" />
 
         <Button
             android:id="@+id/searchFoodPinion_button"
@@ -83,4 +75,12 @@
             android:layout_gravity="center_horizontal"
             android:layout_weight="1" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/newFoodPinion_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:onClick="newFoodPinion"
+        android:text="@string/button_newFoodPinion" />
 </LinearLayout>

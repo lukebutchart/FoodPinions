@@ -3,6 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!--This defines a single row in the main FoodPinion table-->
+
     <TextView
         android:id="@+id/dish"
         android:layout_height="wrap_content"
@@ -15,16 +17,16 @@
         android:layout_width="0dp"
         android:layout_weight="1" />
 
-    <TextView
-        android:id="@+id/comment"
-        android:layout_height="wrap_content"
-        android:layout_width="0dp"
-        android:layout_weight="0.5" />
+    <!--<TextView-->
+        <!--android:id="@+id/comment"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_weight="0.5" />-->
 
-    <TextView
-        android:id="@+id/datetime"
-        android:layout_height="wrap_content"
-        android:layout_width="0dp"
-        android:layout_weight="1" />
+    <!--<TextView-->
+        <!--android:id="@+id/datetime"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_weight="1" />-->
 
 </LinearLayout>

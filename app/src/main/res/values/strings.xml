@@ -5,7 +5,7 @@
     <string name="button_test">TEST</string>
     <string name="button_budget">Open budget</string>
     <string name="button_newFoodPinion">New FoodPinion</string>
-    <string name="button_searchFoodPinion">Search FoodPinion</string>
+    <string name="button_searchFoodPinion">Search</string>
     <string name="name_newFoodPinion_editText">Name</string>
     <string name="comment_newFoodPinion_editText">Comment</string>
     <string name="rating_newFoodPinion_editText">Rating</string>
