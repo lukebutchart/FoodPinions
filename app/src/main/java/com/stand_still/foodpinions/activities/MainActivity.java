@@ -23,6 +23,8 @@ import com.stand_still.foodpinions.classes.ListViewAdapter;
 import com.stand_still.foodpinions.classes.Restaurant;
 //import com.stand_still.foodpinions.classes.ViewFoodPinionsArrayAdapter;
 import com.stand_still.foodpinions.exceptions.IncompleteFoodPinionHashMapException;
+import com.stand_still.foodpinions.exceptions.MissingListAndHeadersLayoutException;
+import com.stand_still.foodpinions.exceptions.MissingSearchAndButtonLayoutException;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -34,13 +36,16 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_NAME_VALUE = "com.stand_still.foodpinions.NAME_VALUE";
     public static final String EXTRA_USER_ID_VALUE = "com.stand_still.foodpinions.USER_ID_VALUE";
 
-//    EditText searchEditText;
+    //    EditText searchEditText;
     Button newFoodPinionButton;
     Button searchFoodPinionButton;
     ListView foodPinionsListView;
-//    ViewFoodPinionsArrayAdapter foodPinionsArrayAdapter;
+    //    ViewFoodPinionsArrayAdapter foodPinionsArrayAdapter;
     LinearLayout listHeadersLinearLayout;
     AutoCompleteTextView autoCompleteTextView;
+    LinearLayout searchAndButton;
+    LinearLayout listAndHeaders;
+    LinearLayout mainActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +63,13 @@ public class MainActivity extends AppCompatActivity {
 
         // Find views
         listHeadersLinearLayout = (LinearLayout) findViewById(R.id.table_headers);
-//        searchEditText = (EditText) findViewById(R.id.search_editText);
         newFoodPinionButton = (Button) findViewById(R.id.newFoodPinion_button);
         searchFoodPinionButton = (Button) findViewById(R.id.searchFoodPinion_button);
         foodPinionsListView = (ListView) findViewById(R.id.foodPinions_list);
         autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.autoCompleteSearchFoodPinion);
+        searchAndButton = (LinearLayout) findViewById(R.id.search_and_button);
+        listAndHeaders = (LinearLayout) findViewById(R.id.list_and_headers);
+        mainActivity = (LinearLayout) findViewById(R.id.mainActivity);
 
         // Collect data
         final FoodPinionArrayList foodPinionArrayList = AppData.getAllFoodPinionsArrayList(this);
@@ -70,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         // Modify views
 //        searchEditText.addTextChangedListener(searchTextWatcher);
         autoCompleteTextView.addTextChangedListener(searchTextWatcher);
+        listAndHeaders.setVisibility(View.INVISIBLE);
 
         // Set up Most Recent list
         setUpFoodPinionList();
@@ -98,21 +106,65 @@ public class MainActivity extends AppCompatActivity {
         decideHeadersVisible();
     }
 
+    void moveSearchToTop() throws MissingSearchAndButtonLayoutException, MissingListAndHeadersLayoutException {
+        View child0 = mainActivity.getChildAt(0);
+        View child1 = mainActivity.getChildAt(1);
+
+        View searchAndButton = getSearchAndButtonLayout(child0, child1);
+        View listAndHeaders = getListAndHeadersLayout(child0, child1);
+
+        if (child0 != searchAndButton) {
+            mainActivity.removeAllViews();
+
+            mainActivity.addView(searchAndButton);
+            mainActivity.addView(listAndHeaders);
+        }
+    }
+
+    void moveListToTop() throws MissingSearchAndButtonLayoutException, MissingListAndHeadersLayoutException {
+        View child0 = mainActivity.getChildAt(0);
+        View child1 = mainActivity.getChildAt(1);
+
+        View searchAndButton = getSearchAndButtonLayout(child0, child1);
+        View listAndHeaders = getListAndHeadersLayout(child0, child1);
+
+        mainActivity.removeAllViews();
+
+        mainActivity.addView(listAndHeaders);
+        mainActivity.addView(searchAndButton);
+    }
+
+    private View getSearchAndButtonLayout(View child0, View child1) throws MissingSearchAndButtonLayoutException {
+        if (child0.getId() == R.id.search_and_button)
+            return child0;
+        else if (child1.getId() == R.id.search_and_button)
+            return child1;
+        else throw new MissingSearchAndButtonLayoutException();
+    }
+
+    private View getListAndHeadersLayout(View child0, View child1) throws MissingListAndHeadersLayoutException {
+        if (child0.getId() == R.id.list_and_headers)
+            return child0;
+        else if (child1.getId() == R.id.list_and_headers)
+            return child1;
+        else throw new MissingListAndHeadersLayoutException();
+    }
+
     private void setUpAutoCompleteTextView() {
         String[] dishNames = AppData.getAllDishNames(this).toArray(new String[0]);
         String[] restaurantNames = AppData.getAllRestaurantNames(this).toArray(new String[0]);
-        String[] autoCompleteArray =  concatenate(dishNames, restaurantNames);
+        String[] autoCompleteArray = concatenate(dishNames, restaurantNames);
         ArrayAdapter<String> autoCompleteAdapter = new ArrayAdapter<>
                 (this, android.R.layout.simple_list_item_1, autoCompleteArray);
         autoCompleteTextView.setAdapter(autoCompleteAdapter);
     }
 
-    public <T> T[] concatenate (T[] a, T[] b) {
+    public <T> T[] concatenate(T[] a, T[] b) {
         int aLen = a.length;
         int bLen = b.length;
 
         @SuppressWarnings("unchecked")
-        T[] c = (T[]) Array.newInstance(a.getClass().getComponentType(), aLen+bLen);
+        T[] c = (T[]) Array.newInstance(a.getClass().getComponentType(), aLen + bLen);
         System.arraycopy(a, 0, c, 0, aLen);
         System.arraycopy(b, 0, c, aLen, bLen);
 
@@ -215,9 +267,17 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void afterTextChanged(Editable editable) {
-            if (editable.length() > 0)
+            if (editable.length() > 0) {
                 showButtons();
-            else hideButtons();
+                listAndHeaders.setVisibility(View.VISIBLE);
+                try {
+                    moveSearchToTop();
+                } catch (MissingSearchAndButtonLayoutException e) {
+                    e.printStackTrace();
+                } catch (MissingListAndHeadersLayoutException e) {
+                    e.printStackTrace();
+                }
+            } else hideButtons();
         }
     };
 }
