@@ -2,31 +2,27 @@ package com.stand_still.foodpinions.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
-import android.text.Layout;
 import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.stand_still.foodpinions.R;
+import com.stand_still.foodpinions.classes.AppData;
 import com.stand_still.foodpinions.classes.Dish;
 import com.stand_still.foodpinions.classes.FoodPinion;
-import com.stand_still.foodpinions.classes.AppData;
 import com.stand_still.foodpinions.classes.FoodPinionArrayList;
 import com.stand_still.foodpinions.classes.ListViewAdapter;
 import com.stand_still.foodpinions.classes.Restaurant;
-//import com.stand_still.foodpinions.classes.ViewFoodPinionsArrayAdapter;
 import com.stand_still.foodpinions.exceptions.IncompleteFoodPinionHashMapException;
 import com.stand_still.foodpinions.exceptions.MissingListAndHeadersLayoutException;
 import com.stand_still.foodpinions.exceptions.MissingSearchAndButtonLayoutException;
@@ -41,11 +37,9 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_NAME_VALUE = "com.stand_still.foodpinions.NAME_VALUE";
     public static final String EXTRA_USER_ID_VALUE = "com.stand_still.foodpinions.USER_ID_VALUE";
 
-    //    EditText searchEditText;
     Button newFoodPinionButton;
     Button searchFoodPinionButton;
     ListView foodPinionsListView;
-    //    ViewFoodPinionsArrayAdapter foodPinionsArrayAdapter;
     LinearLayout listHeadersLinearLayout;
     AutoCompleteTextView searchTextView;
     LinearLayout searchAndButton;
@@ -53,19 +47,15 @@ public class MainActivity extends AppCompatActivity {
 //    LinearLayout mainActivity;
 
     RelativeLayout mainActivity;
-//    FrameLayout mainActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // ===== TEST
-
+        // Establish Database
         if (AppData.getAllFoodPinions(this).size() < 1)
             establishDataBase();
-
-        // ===== TEST END
 
         final Context context = this;
 
@@ -79,25 +69,20 @@ public class MainActivity extends AppCompatActivity {
         listAndHeaders = (LinearLayout) findViewById(R.id.list_and_headers);
 //        mainActivity = (LinearLayout) findViewById(R.id.mainActivity);
         mainActivity = (RelativeLayout) findViewById(R.id.mainActivity);
-//        mainActivity = (FrameLayout) findViewById(R.id.mainActivity);
 
         // Collect data
         final FoodPinionArrayList foodPinionArrayList = AppData.getAllFoodPinionsArrayList(this);
 
         // Modify views
-//        searchEditText.addTextChangedListener(searchTextWatcher);
         searchTextView.addTextChangedListener(searchTextWatcher);
         listAndHeaders.setVisibility(View.INVISIBLE);
 
         searchTextView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
+                if (hasFocus) {
 //                    Toast.makeText(getApplicationContext(), "got the focus", Toast.LENGTH_LONG).show();
-//                    moveToPageTop(searchAndButton);
-
-//                    searchAndButton.setGravity(Gravity.TOP);
-                }else {
+                } else {
                     Toast.makeText(getApplicationContext(), "lost the focus", Toast.LENGTH_LONG).show();
                 }
             }
@@ -258,7 +243,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void moveToNewFoodPinion() {
         Intent intent = new Intent(this, EditFoodPinionActivity.class);
-//        String searchValue = searchEditText.getText().toString();
         String searchValue = searchTextView.getText().toString();
         intent.putExtra(EXTRA_RESTAURANT_VALUE, searchValue);
         startActivity(intent);
@@ -278,8 +262,6 @@ public class MainActivity extends AppCompatActivity {
         searchFoodPinionButton.setVisibility(View.VISIBLE);
     }
 
-    static boolean hasMoved = false;
-
     TextWatcher searchTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
@@ -296,21 +278,8 @@ public class MainActivity extends AppCompatActivity {
             if (editable.length() > 0) {
                 showButtons();
                 listAndHeaders.setVisibility(View.VISIBLE);
-
-
-
-//                if (!hasMoved) {
-//                    moveToPageTop(searchAndButton);
-////                    moveXY(searchAndButton, 100, 100);
-//                hasMoved = true;
-//                }
-            } else{
+            } else {
                 hideButtons();
-//                if (hasMoved){
-//                    moveToPageMiddle(searchAndButton);
-////                    moveXY(searchAndButton, 10, 10);
-//                    hasMoved = false;
-//                }
             }
         }
     };
@@ -329,12 +298,10 @@ public class MainActivity extends AppCompatActivity {
 
         float toCenterPageX = parentCenterX
                 - linearLayoutWidth / 2;
-//                - linearLayoutX;
         float toCenterPageY = parentCenterY
                 - linearLayoutHeight / 2;
-//                - linearLayoutY;
 
-        linearLayout.animate(). translationX(
+        linearLayout.animate().translationX(
                 toCenterPageX
         ).translationY(
                 toCenterPageY
@@ -342,98 +309,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void moveToPageMiddle(LinearLayout linearLayout) {
-//        LinearLayout mainActivity = (LinearLayout) linearLayout.getParent();
-
-        float parentCenterX = mainActivity.getX() + mainActivity.getWidth() / 2;
         float parentCenterY = mainActivity.getY() + mainActivity.getHeight() / 2;
-        int linearLayoutWidth = linearLayout.getWidth();
         int linearLayoutHeight = linearLayout.getHeight();
-        float linearLayoutX = linearLayout.getX();
-        float searchCenterX = linearLayoutX + linearLayoutWidth / 2;
-        float linearLayoutY = linearLayout.getY();
-        float searchCenterY = linearLayoutY + linearLayoutHeight / 2;
 
-//        float toCenterPageX = parentCenterX
-//                - linearLayoutWidth / 2;
-////                - linearLayoutX;
         float toCenterPageY = parentCenterY
                 - linearLayoutHeight / 2;
-//                - linearLayoutY;
 
-        linearLayout.animate().
-//                translationX(
-//                toCenterPageX
-//        ).
-                translationY(
-                toCenterPageY
-        );
+        linearLayout.animate().translationY(toCenterPageY);
     }
 
     private void moveToPageTop(LinearLayout linearLayout) {
-//        LinearLayout mainActivity = (LinearLayout) linearLayout.getParent();
-
-        float parentCenterX = mainActivity.getX() + mainActivity.getWidth() / 2;
-        float parentCenterY = mainActivity.getY() + mainActivity.getHeight() / 2;
-        float searchCenterX = linearLayout.getX() + linearLayout.getWidth() / 2;
-        float searchCenterY = linearLayout.getY() + linearLayout.getHeight() / 2;
-
-//        float toCenterPageX = parentCenterX
-//                - linearLayout.getWidth() / 2;
-////                - linearLayout.getX();
         float toTopCenterPageY = 0;
-//                - linearLayout.getHeight() / 2
-//                - linearLayout.getY();
 
-        linearLayout.animate().
-//                translationX(
-//                toCenterPageX
-//        ).
-                translationY(
-                toTopCenterPageY
-        );
+        linearLayout.animate().translationY(toTopCenterPageY);
     }
 
     private void moveToPageTopCenter(LinearLayout linearLayout) {
-//        LinearLayout mainActivity = (LinearLayout) linearLayout.getParent();
 
         float parentCenterX = mainActivity.getX() + mainActivity.getWidth() / 2;
-        float parentCenterY = mainActivity.getY() + mainActivity.getHeight() / 2;
-        float searchCenterX = linearLayout.getX() + linearLayout.getWidth() / 2;
-        float searchCenterY = linearLayout.getY() + linearLayout.getHeight() / 2;
 
         float toCenterPageX = parentCenterX
                 - linearLayout.getWidth() / 2;
-//                - linearLayout.getX();
         float toTopCenterPageY = 0;
-//                - linearLayout.getHeight() / 2
-//                - linearLayout.getY();
 
-        linearLayout.animate(). translationX(
-                toCenterPageX
-        ).translationY(
-                toTopCenterPageY
-        );
+        linearLayout.animate().translationX(toCenterPageX)
+                .translationY(toTopCenterPageY);
     }
 
     private void moveXY(LinearLayout linearLayout, int x, int y) {
-//        LinearLayout mainActivity = (LinearLayout) linearLayout.getParent();
-
-        float parentCenterX = mainActivity.getX() + mainActivity.getWidth() / 2;
-        float parentCenterY = mainActivity.getY() + mainActivity.getHeight() / 2;
-        float searchCenterX = linearLayout.getX() + linearLayout.getWidth() / 2;
-        float searchCenterY = linearLayout.getY() + linearLayout.getHeight() / 2;
-
-        float toCenterPageX = parentCenterX
-                - linearLayout.getWidth() / 2
-                - linearLayout.getX();
-        float toTopCenterPageY = 0
-//                - linearLayout.getHeight() / 2
-                - linearLayout.getY();
-
-        linearLayout.animate(). translationX(
-                x
-        ).translationY(
-                y
-        );
+        linearLayout.animate().translationX(x).translationY(y);
     }
 }
