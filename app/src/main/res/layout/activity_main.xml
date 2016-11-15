@@ -1,11 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/mainActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="10dp"
+    android:focusableInTouchMode="true"
     android:orientation="vertical">
     <!--android:animateLayoutChanges="true"-->
+
+    <LinearLayout
+        android:id="@+id/search_and_button"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="horizontal">
+
+        <AutoCompleteTextView
+            android:id="@+id/autoCompleteSearchFoodPinion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="9"
+            android:layout_marginTop="0dp"
+            android:ems="10" />
+
+        <Button
+            android:id="@+id/searchFoodPinion_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_weight="1"
+            android:onClick="searchFoodPinion"
+            android:text="@string/search" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/list_and_headers"
@@ -54,25 +80,4 @@
             android:text="@string/newFoodPinion" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/search_and_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <AutoCompleteTextView
-            android:id="@+id/autoCompleteSearchFoodPinion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            android:ems="10" />
-
-        <Button
-            android:id="@+id/searchFoodPinion_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:onClick="searchFoodPinion"
-            android:text="@string/search" />
-    </LinearLayout>
-</LinearLayout>
+</RelativeLayout>
