@@ -44,9 +44,9 @@ public class MainActivity extends AppCompatActivity {
     AutoCompleteTextView searchTextView;
     LinearLayout searchAndButton;
     LinearLayout listAndHeaders;
-//    LinearLayout mainActivity;
 
-    RelativeLayout mainActivity;
+    LinearLayout mainActivity;
+//    RelativeLayout mainActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +67,9 @@ public class MainActivity extends AppCompatActivity {
         searchTextView = (AutoCompleteTextView) findViewById(R.id.autoCompleteSearchFoodPinion);
         searchAndButton = (LinearLayout) findViewById(R.id.search_and_button);
         listAndHeaders = (LinearLayout) findViewById(R.id.list_and_headers);
-//        mainActivity = (LinearLayout) findViewById(R.id.mainActivity);
-        mainActivity = (RelativeLayout) findViewById(R.id.mainActivity);
+        mainActivity = (LinearLayout) findViewById(R.id.mainActivity);
+//        mainActivity = (RelativeLayout) findViewById(R.id.mainActivity);
+
 
         // Collect data
         final FoodPinionArrayList foodPinionArrayList = AppData.getAllFoodPinionsArrayList(this);
@@ -113,50 +114,6 @@ public class MainActivity extends AppCompatActivity {
 
         hideButtons();
         decideHeadersVisible();
-    }
-
-    void moveSearchToTop() throws MissingSearchAndButtonLayoutException, MissingListAndHeadersLayoutException {
-        View child0 = mainActivity.getChildAt(0);
-        View child1 = mainActivity.getChildAt(1);
-
-        View searchAndButton = getSearchAndButtonLayout(child0, child1);
-        View listAndHeaders = getListAndHeadersLayout(child0, child1);
-
-        if (child0 != searchAndButton) {
-            mainActivity.removeAllViews();
-
-            mainActivity.addView(searchAndButton);
-            mainActivity.addView(listAndHeaders);
-        }
-    }
-
-    void moveListToTop() throws MissingSearchAndButtonLayoutException, MissingListAndHeadersLayoutException {
-        View child0 = mainActivity.getChildAt(0);
-        View child1 = mainActivity.getChildAt(1);
-
-        View searchAndButton = getSearchAndButtonLayout(child0, child1);
-        View listAndHeaders = getListAndHeadersLayout(child0, child1);
-
-        mainActivity.removeAllViews();
-
-        mainActivity.addView(listAndHeaders);
-        mainActivity.addView(searchAndButton);
-    }
-
-    private View getSearchAndButtonLayout(View child0, View child1) throws MissingSearchAndButtonLayoutException {
-        if (child0.getId() == R.id.search_and_button)
-            return child0;
-        else if (child1.getId() == R.id.search_and_button)
-            return child1;
-        else throw new MissingSearchAndButtonLayoutException();
-    }
-
-    private View getListAndHeadersLayout(View child0, View child1) throws MissingListAndHeadersLayoutException {
-        if (child0.getId() == R.id.list_and_headers)
-            return child0;
-        else if (child1.getId() == R.id.list_and_headers)
-            return child1;
-        else throw new MissingListAndHeadersLayoutException();
     }
 
     private void setUpAutoCompleteTextView() {
@@ -235,10 +192,14 @@ public class MainActivity extends AppCompatActivity {
         moveToNewFoodPinion();
     }
 
-    public void searchFoodPinion(View view) {
+    public void searchFoodPinion() {
         String searchText = searchTextView.getText().toString();
         ArrayList<HashMap<String, String>> newList = AppData.getAllFoodPinionBySearch(searchText, this);
         setUpFoodPinionList(newList);
+    }
+
+    public void searchFoodPinion(View view) {
+        searchFoodPinion();
     }
 
     private void moveToNewFoodPinion() {
@@ -266,11 +227,13 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
             // Action to perform before text changed
+            Toast.makeText(getApplicationContext(), "beforeTextChanged", Toast.LENGTH_LONG).show();
         }
 
         @Override
         public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
             // While changing(?)
+            Toast.makeText(getApplicationContext(), "onTextChanged", Toast.LENGTH_LONG).show();
         }
 
         @Override
@@ -278,65 +241,10 @@ public class MainActivity extends AppCompatActivity {
             if (editable.length() > 0) {
                 showButtons();
                 listAndHeaders.setVisibility(View.VISIBLE);
+                searchFoodPinion();
             } else {
                 hideButtons();
             }
         }
     };
-
-    private void moveToPageCenter(LinearLayout linearLayout) {
-//        LinearLayout mainActivity = (LinearLayout) linearLayout.getParent();
-
-        float parentCenterX = mainActivity.getX() + mainActivity.getWidth() / 2;
-        float parentCenterY = mainActivity.getY() + mainActivity.getHeight() / 2;
-        int linearLayoutWidth = linearLayout.getWidth();
-        int linearLayoutHeight = linearLayout.getHeight();
-        float linearLayoutX = linearLayout.getX();
-        float searchCenterX = linearLayoutX + linearLayoutWidth / 2;
-        float linearLayoutY = linearLayout.getY();
-        float searchCenterY = linearLayoutY + linearLayoutHeight / 2;
-
-        float toCenterPageX = parentCenterX
-                - linearLayoutWidth / 2;
-        float toCenterPageY = parentCenterY
-                - linearLayoutHeight / 2;
-
-        linearLayout.animate().translationX(
-                toCenterPageX
-        ).translationY(
-                toCenterPageY
-        );
-    }
-
-    private void moveToPageMiddle(LinearLayout linearLayout) {
-        float parentCenterY = mainActivity.getY() + mainActivity.getHeight() / 2;
-        int linearLayoutHeight = linearLayout.getHeight();
-
-        float toCenterPageY = parentCenterY
-                - linearLayoutHeight / 2;
-
-        linearLayout.animate().translationY(toCenterPageY);
-    }
-
-    private void moveToPageTop(LinearLayout linearLayout) {
-        float toTopCenterPageY = 0;
-
-        linearLayout.animate().translationY(toTopCenterPageY);
-    }
-
-    private void moveToPageTopCenter(LinearLayout linearLayout) {
-
-        float parentCenterX = mainActivity.getX() + mainActivity.getWidth() / 2;
-
-        float toCenterPageX = parentCenterX
-                - linearLayout.getWidth() / 2;
-        float toTopCenterPageY = 0;
-
-        linearLayout.animate().translationX(toCenterPageX)
-                .translationY(toTopCenterPageY);
-    }
-
-    private void moveXY(LinearLayout linearLayout, int x, int y) {
-        linearLayout.animate().translationX(x).translationY(y);
-    }
 }
