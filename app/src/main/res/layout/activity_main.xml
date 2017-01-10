@@ -69,14 +69,14 @@
             android:layout_marginTop="0dp"
             android:ems="10" />
 
-        <Button
-            android:id="@+id/searchFoodPinion_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_weight="1"
-            android:onClick="searchFoodPinion"
-            android:text="@string/search" />
+        <!--<Button-->
+            <!--android:id="@+id/searchFoodPinion_button"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="right"-->
+            <!--android:layout_weight="1"-->
+            <!--android:onClick="searchFoodPinion"-->
+            <!--android:text="@string/search" />-->
     </LinearLayout>
 
 </LinearLayout>

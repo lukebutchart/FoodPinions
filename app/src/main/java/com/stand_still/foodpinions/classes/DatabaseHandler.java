@@ -23,7 +23,7 @@ import java.util.List;
 public class DatabaseHandler extends SQLiteOpenHelper {
     // All static variables
     // Database version
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 1; // reset this before building for phone. Current value to use: 1
 
     // Database name
     private static final String DATABASE_NAME = "foodPinionsManager";

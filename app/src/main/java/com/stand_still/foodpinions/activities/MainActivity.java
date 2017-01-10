@@ -38,9 +38,9 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_USER_ID_VALUE = "com.stand_still.foodpinions.USER_ID_VALUE";
 
     Button newFoodPinionButton;
-    Button searchFoodPinionButton;
+//    Button searchFoodPinionButton;
     ListView foodPinionsListView;
-    LinearLayout listHeadersLinearLayout;
+//    LinearLayout listHeadersLinearLayout;
     AutoCompleteTextView searchTextView;
     LinearLayout searchAndButton;
     LinearLayout listAndHeaders;
@@ -54,15 +54,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Establish Database
-        if (AppData.getAllFoodPinions(this).size() < 1)
-            establishDataBase();
+//        if (AppData.getAllFoodPinions(this).size() < 1)
+//            establishDataBase();
 
         final Context context = this;
 
         // Find views
-        listHeadersLinearLayout = (LinearLayout) findViewById(R.id.table_headers);
+//        listHeadersLinearLayout = (LinearLayout) findViewById(R.id.table_headers);
         newFoodPinionButton = (Button) findViewById(R.id.newFoodPinion_button);
-        searchFoodPinionButton = (Button) findViewById(R.id.searchFoodPinion_button);
+//        searchFoodPinionButton = (Button) findViewById(R.id.searchFoodPinion_button); // Deprecated with searching now automatic
         foodPinionsListView = (ListView) findViewById(R.id.foodPinions_list);
         searchTextView = (AutoCompleteTextView) findViewById(R.id.autoCompleteSearchFoodPinion);
         searchAndButton = (LinearLayout) findViewById(R.id.search_and_button);
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         setUpAutoCompleteTextView();
 
         hideButtons();
-        decideHeadersVisible();
+//        decideHeadersVisible();
     }
 
     private void setUpAutoCompleteTextView() {
@@ -162,9 +162,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void decideHeadersVisible() {
-        listHeadersLinearLayout.setVisibility(View.VISIBLE);
-    }
+//    private void decideHeadersVisible() {
+////        listHeadersLinearLayout.setVisibility(View.VISIBLE);
+//    }
 
     @Override
     protected void onResume() {
@@ -174,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
 
         setUpAutoCompleteTextView();
 
-        decideHeadersVisible();
+//        decideHeadersVisible();
     }
 
     private void setUpFoodPinionList() {
@@ -212,28 +212,28 @@ public class MainActivity extends AppCompatActivity {
     private void hideButtons() {
         newFoodPinionButton.setEnabled(false);
         newFoodPinionButton.setVisibility(View.INVISIBLE);
-        searchFoodPinionButton.setEnabled(false);
-        searchFoodPinionButton.setVisibility(View.INVISIBLE);
+//        searchFoodPinionButton.setEnabled(false);
+//        searchFoodPinionButton.setVisibility(View.INVISIBLE);
     }
 
     private void showButtons() {
         newFoodPinionButton.setEnabled(true);
         newFoodPinionButton.setVisibility(View.VISIBLE);
-        searchFoodPinionButton.setEnabled(true);
-        searchFoodPinionButton.setVisibility(View.VISIBLE);
+//        searchFoodPinionButton.setEnabled(true);
+//        searchFoodPinionButton.setVisibility(View.VISIBLE);
     }
 
     TextWatcher searchTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
             // Action to perform before text changed
-            Toast.makeText(getApplicationContext(), "beforeTextChanged", Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplicationContext(), "beforeTextChanged", Toast.LENGTH_LONG).show();
         }
 
         @Override
         public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
             // While changing(?)
-            Toast.makeText(getApplicationContext(), "onTextChanged", Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplicationContext(), "onTextChanged", Toast.LENGTH_LONG).show();
         }
 
         @Override
@@ -244,6 +244,7 @@ public class MainActivity extends AppCompatActivity {
                 searchFoodPinion();
             } else {
                 hideButtons();
+                listAndHeaders.setVisibility(View.INVISIBLE);
             }
         }
     };
