@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -78,6 +79,19 @@ public class MainActivity extends AppCompatActivity {
         searchTextView.addTextChangedListener(searchTextWatcher);
         searchTextView.requestFocus();
         listAndHeaders.setVisibility(View.INVISIBLE);
+
+        searchTextView.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                // If the event is a key-down event on the "enter" button
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    // Perform action on key press
+                    Toast.makeText(getApplicationContext(), "pressed enter", Toast.LENGTH_LONG).show();
+                    return true;
+                }
+                return false;
+            }
+        });
 
 //        searchTextView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 //            @Override
