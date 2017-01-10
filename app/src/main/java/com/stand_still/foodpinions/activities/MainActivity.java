@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     // Perform action on key press
-                    Toast.makeText(getApplicationContext(), "pressed enter", Toast.LENGTH_LONG).show();
+                    moveToNewFoodPinion();
                     return true;
                 }
                 return false;
