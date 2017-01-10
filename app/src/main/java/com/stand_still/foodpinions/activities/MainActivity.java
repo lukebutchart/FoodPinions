@@ -76,18 +76,19 @@ public class MainActivity extends AppCompatActivity {
 
         // Modify views
         searchTextView.addTextChangedListener(searchTextWatcher);
+        searchTextView.requestFocus();
         listAndHeaders.setVisibility(View.INVISIBLE);
 
-        searchTextView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-//                    Toast.makeText(getApplicationContext(), "got the focus", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "lost the focus", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+//        searchTextView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (hasFocus) {
+////                    Toast.makeText(getApplicationContext(), "got the focus", Toast.LENGTH_LONG).show();
+//                } else {
+//                    Toast.makeText(getApplicationContext(), "lost the focus", Toast.LENGTH_LONG).show();
+//                }
+//            }
+//        });
 
         // Set up Most Recent list
         setUpFoodPinionList();
