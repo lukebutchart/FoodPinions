@@ -135,6 +135,15 @@ public class MainActivity extends AppCompatActivity {
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
     }
 
+    @Override
+    public void onContentChanged(){
+        super.onContentChanged();
+
+        View empty = findViewById(R.id.empty);
+        foodPinionsListView = (ListView) findViewById(R.id.foodPinions_list);
+        foodPinionsListView.setEmptyView(empty);
+    }
+
     private void setUpAutoCompleteTextView() {
         String[] dishNames = AppData.getAllDishNames(this).toArray(new String[0]);
         String[] restaurantNames = AppData.getAllRestaurantNames(this).toArray(new String[0]);

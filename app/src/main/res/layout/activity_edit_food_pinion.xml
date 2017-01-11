@@ -46,7 +46,7 @@
         android:id="@+id/comment_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/restaurant"
+        android:text="@string/comment"
         android:textSize="14sp"
         android:paddingLeft="4dp" />
 
