@@ -1,5 +1,6 @@
 package com.stand_still.foodpinions.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -77,6 +79,8 @@ public class EditFoodPinionActivity extends AppCompatActivity {
                     "NoUserIDPassedToEditException",
                     Toast.LENGTH_SHORT).show();
         }
+
+
     }
 
     private void setDefaultValues(String restaurantString) {

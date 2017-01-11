@@ -15,4 +15,7 @@
     <string name="restaurant">Restaurant</string>
     <string name="editFoodPinion">Edit FoodPinion</string>
     <string name="editButtonDescription">An edit icon</string>
+    <string name="restaurantHint">e.g. Pizza Express</string>
+    <string name="dishHint">e.g. Garlic bread</string>
+    <string name="commentHint">e.g. Too small</string>
 </resources>
