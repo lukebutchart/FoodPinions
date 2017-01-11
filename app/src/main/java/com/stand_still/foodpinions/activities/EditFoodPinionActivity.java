@@ -81,10 +81,8 @@ public class EditFoodPinionActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
         }
 
+        // Force keyboard to show
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-
-//        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
     }
 
     private void setDefaultValues(String restaurantString) {

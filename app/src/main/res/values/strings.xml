@@ -18,4 +18,6 @@
     <string name="restaurantHint">e.g. Pizza Express</string>
     <string name="dishHint">e.g. Garlic bread</string>
     <string name="commentHint">e.g. Too small</string>
+    <string name="foodPinionLabel">Enter a FoodPinion</string>
+    <string name="foodPinionHint">e.g. Pizza Express</string>
 </resources>

@@ -131,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
         hideButtons();
 //        decideHeadersVisible();
 
+        // Force keyboard to show
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
     }
 
