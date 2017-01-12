@@ -209,7 +209,7 @@ public class EditFoodPinionActivity extends AppCompatActivity {
 
     private void clearFoodPinionActivity() {
         clearFields();
-        dishNameEditText.requestFocus();
+        decideFocus();
     }
 
     void showError(EditText editText) {
