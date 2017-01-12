@@ -46,7 +46,6 @@ public class EditFoodPinionActivity extends AppCompatActivity {
         boolean passingIn = intent.getExtras().getBoolean(MainActivity.EXTRA_EDITING_BOOLEAN);
         int userID = intent.getIntExtra(MainActivity.EXTRA_USER_ID_VALUE, 0);
 
-//        boolean passingIn = areEditingString != null;
         findAndSetViews();
         addTextChangedListeners();
         setDefaultValues(restaurantString, dishString);
@@ -60,8 +59,8 @@ public class EditFoodPinionActivity extends AppCompatActivity {
         try {
             if (passingIn) {
                 editIcon.setVisibility(View.VISIBLE);
-                Restaurant restaurant = AppData.getRestaurant(restaurantString, this);//asg
-                Dish dish = AppData.getDish(dishString /*nameString*/, restaurant, this);
+                Restaurant restaurant = AppData.getRestaurant(restaurantString, this);
+                Dish dish = AppData.getDish(dishString, restaurant, this);
                 if (userID < 1)
                     throw new NoUserIDPassedToEditException();
                 User user = AppData.getUser(userID, this);
@@ -71,7 +70,7 @@ public class EditFoodPinionActivity extends AppCompatActivity {
                 commentEditText.setText(passedInFoodPinion.getComment());
 
                 createFoodPinionButton.setText(getResources().getString(R.string.editFoodPinion)); // make this local
-            } else dishNameEditText.requestFocus();
+            }
         } catch (NoUserIDPassedToEditException e) {
             // Hopefully won't happen...
             Toast.makeText(
@@ -80,8 +79,20 @@ public class EditFoodPinionActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
         }
 
+        decideFocus();
+
         // Force keyboard to show
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+    }
+
+    private void decideFocus() {
+        if (restaurantEditText.getText().toString().trim().length() == 0)
+            restaurantEditText.requestFocus();
+        else if (dishNameEditText.getText().toString().trim().length() == 0)
+            dishNameEditText.requestFocus();
+        else if (commentEditText.getText().toString().trim().length() == 0)
+            commentEditText.requestFocus();
+        else restaurantEditText.requestFocus();
     }
 
     private void setDefaultValues(String restaurantString, String dishString) {
