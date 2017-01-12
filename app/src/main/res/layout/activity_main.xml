@@ -40,12 +40,20 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/newFoodPinion_button"
+            android:id="@+id/new_restaurant_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
-            android:onClick="newFoodPinion"
-            android:text="@string/newFoodPinion" />
+            android:onClick="newFoodPinionByRestaurant"
+            android:text="@string/restaurant" />
+
+        <Button
+            android:id="@+id/new_dish_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:onClick="newFoodPinionByDish"
+            android:text="@string/dish" />
 
         <!--<Button-->
         <!--android:id="@+id/searchFoodPinion_button"-->

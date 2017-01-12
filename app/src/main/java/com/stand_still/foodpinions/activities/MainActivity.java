@@ -15,8 +15,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.stand_still.foodpinions.R;
 import com.stand_still.foodpinions.classes.AppData;
@@ -26,8 +24,6 @@ import com.stand_still.foodpinions.classes.FoodPinionArrayList;
 import com.stand_still.foodpinions.classes.ListViewAdapter;
 import com.stand_still.foodpinions.classes.Restaurant;
 import com.stand_still.foodpinions.exceptions.IncompleteFoodPinionHashMapException;
-import com.stand_still.foodpinions.exceptions.MissingListAndHeadersLayoutException;
-import com.stand_still.foodpinions.exceptions.MissingSearchAndButtonLayoutException;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -37,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String EXTRA_RESTAURANT_VALUE = "com.stand_still.foodpinions.RESTAURANT_VALUE";
     public static final String EXTRA_NAME_VALUE = "com.stand_still.foodpinions.NAME_VALUE";
+    public static final String EXTRA_DISH_VALUE = "com.stand_still.foodpinions.DISH_VALUE";
     public static final String EXTRA_USER_ID_VALUE = "com.stand_still.foodpinions.USER_ID_VALUE";
 
     Button newFoodPinionButton;
@@ -59,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         final Context context = this;
 
         // Find views
-        newFoodPinionButton = (Button) findViewById(R.id.newFoodPinion_button);
+        newFoodPinionButton = (Button) findViewById(R.id.new_restaurant_button);
         foodPinionsListView = (ListView) findViewById(R.id.foodPinions_list);
         searchTextView = (AutoCompleteTextView) findViewById(R.id.autoCompleteSearchFoodPinion);
         searchAndButton = (LinearLayout) findViewById(R.id.search_and_button);
@@ -81,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     // Perform action on key press
-                    moveToNewFoodPinion();
+                    moveToNewFoodPinion(searchTextView.getText().toString(), null);
                     return true;
                 }
                 return false;
@@ -169,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
     private void moveToEditFoodPinion(FoodPinion foodPinion) {  // Todo: Fix so that changing the non-comment fields actually updates
         Intent intent = new Intent(this, EditFoodPinionActivity.class);
         intent.putExtra(EXTRA_RESTAURANT_VALUE, foodPinion.getRestaurantName());
-        intent.putExtra(EXTRA_NAME_VALUE, foodPinion.getDishName());
+        intent.putExtra(EXTRA_NAME_VALUE, foodPinion.getDishName()); // Todo: Make this use EXTRA_DISH_VALUE instead
         intent.putExtra(EXTRA_USER_ID_VALUE, foodPinion.getUser().getID());
         startActivity(intent);
     }
@@ -194,8 +191,12 @@ public class MainActivity extends AppCompatActivity {
         foodPinionsListView.setAdapter(adapter);
     }
 
-    public void newFoodPinion(View view) {
-        moveToNewFoodPinion();
+    public void newFoodPinionByRestaurant(View view) {
+        moveToNewFoodPinion(searchTextView.getText().toString(), null);
+    }
+
+    public void newFoodPinionByDish(View view) {
+        moveToNewFoodPinion(null, searchTextView.getText().toString());
     }
 
     public void searchFoodPinion() {
@@ -208,10 +209,10 @@ public class MainActivity extends AppCompatActivity {
         searchFoodPinion();
     }
 
-    private void moveToNewFoodPinion() {
+    private void moveToNewFoodPinion(String restaurantName, String dishName) {
         Intent intent = new Intent(this, EditFoodPinionActivity.class);
-        String searchValue = searchTextView.getText().toString();
-        intent.putExtra(EXTRA_RESTAURANT_VALUE, searchValue);
+        intent.putExtra(EXTRA_RESTAURANT_VALUE, restaurantName);
+        intent.putExtra(EXTRA_DISH_VALUE, dishName);
         startActivity(intent);
     }
 

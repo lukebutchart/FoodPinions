@@ -44,13 +44,14 @@ public class EditFoodPinionActivity extends AppCompatActivity {
         // Retrieve intent information
         Intent intent = getIntent();
         String restaurantString = intent.getStringExtra(MainActivity.EXTRA_RESTAURANT_VALUE);
+        String dishString = intent.getStringExtra(MainActivity.EXTRA_DISH_VALUE);
         String nameString = intent.getStringExtra(MainActivity.EXTRA_NAME_VALUE);
         int userID = intent.getIntExtra(MainActivity.EXTRA_USER_ID_VALUE, 0);
 
         boolean passingIn = nameString != null;
         findAndSetViews();
         addTextChangedListeners();
-        setDefaultValues(restaurantString);
+        setDefaultValues(restaurantString, dishString);
         createFoodPinionButton.setEnabled(false);
 
         ImageView editIcon = (ImageView) findViewById(R.id.editButtonImageView);
@@ -61,7 +62,7 @@ public class EditFoodPinionActivity extends AppCompatActivity {
         try {
             if (passingIn) {
                 editIcon.setVisibility(View.VISIBLE);
-                Restaurant restaurant = AppData.getRestaurant(restaurantString, this);
+                Restaurant restaurant = AppData.getRestaurant(restaurantString, this);//asg
                 Dish dish = AppData.getDish(nameString, restaurant, this);
                 if (userID < 1)
                     throw new NoUserIDPassedToEditException();
@@ -85,8 +86,9 @@ public class EditFoodPinionActivity extends AppCompatActivity {
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
     }
 
-    private void setDefaultValues(String restaurantString) {
+    private void setDefaultValues(String restaurantString, String dishString) {
         restaurantEditText.setText(restaurantString);
+        dishNameEditText.setText(dishString);
     }
 
     private void addTextChangedListeners() {
