@@ -97,10 +97,11 @@
 
         <TextView
             android:id="@+id/empty"
-            android:text="Empty"
+            android:text="@string/empty_table_string"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:gravity="center"
+            android:textSize="20sp"
             />
 
 

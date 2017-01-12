@@ -20,4 +20,5 @@
     <string name="commentHint">e.g. Too small</string>
     <string name="foodPinionLabel">Enter a FoodPinion</string>
     <string name="foodPinionHint">e.g. Pizza Express</string>
+    <string name="empty_table_string">Nothing matches your search.\nTry creating a new FoodPinion</string>
 </resources>
