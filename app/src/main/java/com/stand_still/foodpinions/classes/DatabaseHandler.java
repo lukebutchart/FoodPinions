@@ -832,11 +832,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public ArrayList<HashMap<String, String>> getAllFoodPinionsBySearch(String searchText) {    // Todo: Combine with above
         ArrayList<HashMap<String, String>> foodPinionHashMapList = new ArrayList<>();
-        // Select All query
-//        String selectQuery = "SELECT " +  " FROM " + TABLE_FOOD_PINIONS
-//                + " WHERE " + DISH + "=*" + searchText + "*"
-//                + " ORDER BY " + DATE_TIME
-//                + " DESC"; // Newest at top
 
         searchText = "%" + searchText + "%";
 
@@ -851,8 +846,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                         "ON B.%s = C.%s " +
                         "INNER JOIN %s D " +
                         "ON A.%s = D.%s " +
-                        "WHERE B.%s LIKE '%s' " +
-                        "OR C.%s LIKE '%s' " +
+                        "WHERE B.%s LIKE '%s' " +   // Todo: try combining this line and below as WHERE B.%s + " " + C.%s LIKE '%s'
+                        "OR C.%s LIKE '%s' " +      //
                         "ORDER BY A.%s DESC", // Newest at top,
                 KEY_ID,     // 0    // FoodPinion
                 COMMENT,    // 1
