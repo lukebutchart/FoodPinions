@@ -36,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_DISH_VALUE = "com.stand_still.foodpinions.DISH_VALUE";
     public static final String EXTRA_USER_ID_VALUE = "com.stand_still.foodpinions.USER_ID_VALUE";
 
-    Button newFoodPinionButton;
+    Button newFoodPinionByRestaurantButton;
+    Button newFoodPinionByDishButton;
     ListView foodPinionsListView;
     AutoCompleteTextView searchTextView;
     LinearLayout searchAndButton;
@@ -56,7 +57,8 @@ public class MainActivity extends AppCompatActivity {
         final Context context = this;
 
         // Find views
-        newFoodPinionButton = (Button) findViewById(R.id.new_restaurant_button);
+        newFoodPinionByRestaurantButton = (Button) findViewById(R.id.new_restaurant_button);
+        newFoodPinionByDishButton = (Button) findViewById(R.id.new_dish_button);
         foodPinionsListView = (ListView) findViewById(R.id.foodPinions_list);
         searchTextView = (AutoCompleteTextView) findViewById(R.id.autoCompleteSearchFoodPinion);
         searchAndButton = (LinearLayout) findViewById(R.id.search_and_button);
@@ -218,13 +220,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void hideButtons() {
-        newFoodPinionButton.setEnabled(false);
-        newFoodPinionButton.setVisibility(View.INVISIBLE);
+        newFoodPinionByRestaurantButton.setEnabled(false);
+        newFoodPinionByRestaurantButton.setVisibility(View.INVISIBLE);
+        newFoodPinionByDishButton.setEnabled(false);
+        newFoodPinionByDishButton.setVisibility(View.INVISIBLE);
     }
 
     private void showButtons() {
-        newFoodPinionButton.setEnabled(true);
-        newFoodPinionButton.setVisibility(View.VISIBLE);
+        newFoodPinionByRestaurantButton.setEnabled(true);
+        newFoodPinionByRestaurantButton.setVisibility(View.VISIBLE);
+        newFoodPinionByDishButton.setEnabled(true);
+        newFoodPinionByDishButton.setVisibility(View.VISIBLE);
     }
 
     TextWatcher searchTextWatcher = new TextWatcher() {

@@ -846,8 +846,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                         "ON B.%s = C.%s " +
                         "INNER JOIN %s D " +
                         "ON A.%s = D.%s " +
-                        "WHERE B.%s || ' ' || C.%s LIKE '%s' " +   // Todo: try combining this line and below as WHERE B.%s + " " + C.%s LIKE '%s'
-                        "OR C.%s || ' ' || B.%s LIKE '%s' " +      //
+                        "WHERE B.%s || ' ' || C.%s LIKE '%s' " +
+                        "OR C.%s || ' ' || B.%s LIKE '%s' " +      // Todo: CONTAINS
                         "ORDER BY A.%s DESC", // Newest at top,
                 KEY_ID,     // 0    // FoodPinion
                 COMMENT,    // 1
