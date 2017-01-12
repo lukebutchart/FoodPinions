@@ -846,8 +846,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                         "ON B.%s = C.%s " +
                         "INNER JOIN %s D " +
                         "ON A.%s = D.%s " +
-                        "WHERE B.%s LIKE '%s' " +   // Todo: try combining this line and below as WHERE B.%s + " " + C.%s LIKE '%s'
-                        "OR C.%s LIKE '%s' " +      //
+                        "WHERE B.%s || ' ' || C.%s LIKE '%s' " +   // Todo: try combining this line and below as WHERE B.%s + " " + C.%s LIKE '%s'
+                        "OR C.%s || ' ' || B.%s LIKE '%s' " +      //
                         "ORDER BY A.%s DESC", // Newest at top,
                 KEY_ID,     // 0    // FoodPinion
                 COMMENT,    // 1
@@ -870,8 +870,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 USER_ID,
                 KEY_ID,
                 DISH_NAME,
+                RESTAURANT_NAME,
                 searchText,
                 RESTAURANT_NAME,
+                DISH_NAME,
                 searchText,
                 DATE_TIME
         );
