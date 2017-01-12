@@ -32,7 +32,7 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity {
 
     public static final String EXTRA_RESTAURANT_VALUE = "com.stand_still.foodpinions.RESTAURANT_VALUE";
-    public static final String EXTRA_NAME_VALUE = "com.stand_still.foodpinions.NAME_VALUE";
+    public static final String EXTRA_EDITING_BOOLEAN = "com.stand_still.foodpinions.EDITING_BOOLEAN";
     public static final String EXTRA_DISH_VALUE = "com.stand_still.foodpinions.DISH_VALUE";
     public static final String EXTRA_USER_ID_VALUE = "com.stand_still.foodpinions.USER_ID_VALUE";
 
@@ -166,7 +166,8 @@ public class MainActivity extends AppCompatActivity {
     private void moveToEditFoodPinion(FoodPinion foodPinion) {  // Todo: Fix so that changing the non-comment fields actually updates
         Intent intent = new Intent(this, EditFoodPinionActivity.class);
         intent.putExtra(EXTRA_RESTAURANT_VALUE, foodPinion.getRestaurantName());
-        intent.putExtra(EXTRA_NAME_VALUE, foodPinion.getDishName()); // Todo: Make this use EXTRA_DISH_VALUE instead
+        intent.putExtra(EXTRA_DISH_VALUE, foodPinion.getDishName());
+        intent.putExtra(EXTRA_EDITING_BOOLEAN, true);
         intent.putExtra(EXTRA_USER_ID_VALUE, foodPinion.getUser().getID());
         startActivity(intent);
     }

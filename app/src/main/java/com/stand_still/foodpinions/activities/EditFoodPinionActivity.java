@@ -1,6 +1,5 @@
 package com.stand_still.foodpinions.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,7 +9,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -45,10 +43,10 @@ public class EditFoodPinionActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String restaurantString = intent.getStringExtra(MainActivity.EXTRA_RESTAURANT_VALUE);
         String dishString = intent.getStringExtra(MainActivity.EXTRA_DISH_VALUE);
-        String nameString = intent.getStringExtra(MainActivity.EXTRA_NAME_VALUE);
+        boolean passingIn = intent.getExtras().getBoolean(MainActivity.EXTRA_EDITING_BOOLEAN);
         int userID = intent.getIntExtra(MainActivity.EXTRA_USER_ID_VALUE, 0);
 
-        boolean passingIn = nameString != null;
+//        boolean passingIn = areEditingString != null;
         findAndSetViews();
         addTextChangedListeners();
         setDefaultValues(restaurantString, dishString);
@@ -63,7 +61,7 @@ public class EditFoodPinionActivity extends AppCompatActivity {
             if (passingIn) {
                 editIcon.setVisibility(View.VISIBLE);
                 Restaurant restaurant = AppData.getRestaurant(restaurantString, this);//asg
-                Dish dish = AppData.getDish(nameString, restaurant, this);
+                Dish dish = AppData.getDish(dishString /*nameString*/, restaurant, this);
                 if (userID < 1)
                     throw new NoUserIDPassedToEditException();
                 User user = AppData.getUser(userID, this);
