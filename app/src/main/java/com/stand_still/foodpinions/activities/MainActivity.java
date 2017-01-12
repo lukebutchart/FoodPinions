@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         searchTextView.requestFocus();
         listAndHeaders.setVisibility(View.INVISIBLE);
 
+        // Set 'enter' event
         searchTextView.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 // If the event is a key-down event on the "enter" button

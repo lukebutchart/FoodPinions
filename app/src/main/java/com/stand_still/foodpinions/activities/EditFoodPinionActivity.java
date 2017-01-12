@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -83,6 +84,20 @@ public class EditFoodPinionActivity extends AppCompatActivity {
 
         // Force keyboard to show
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+
+        // Set 'enter' event
+        commentEditText.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                // If the event is a key-down event on the "enter" button
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    // Perform action on key press
+                    confirmFoodPinion();
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     private void decideFocus() {
@@ -116,10 +131,12 @@ public class EditFoodPinionActivity extends AppCompatActivity {
         createFoodPinionButton = (Button) findViewById(R.id.createFoodPinion_button);
     }
 
-    public void confirmFoodPinion(View view) {
+    public void confirmFoodPinion(View view) {  // Todo: Run when pressing enter
+        confirmFoodPinion();
+    }
 
+    private void confirmFoodPinion() {
         String addOrEditString;
-
         String dishName = dishNameEditText.getText().toString();
         String restaurantName = restaurantEditText.getText().toString();
         String comment = commentEditText.getText().toString();
