@@ -29,7 +29,7 @@ public class Settings {
         return RESTAURANT_IS_MANDATORY;
     }
 
-    public static boolean isNameMandatory() {
+    public static boolean isDishMandatory() {
         return NAME_IS_MANDATORY;
     }
 

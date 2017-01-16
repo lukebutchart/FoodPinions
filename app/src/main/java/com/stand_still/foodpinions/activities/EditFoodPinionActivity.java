@@ -118,7 +118,7 @@ public class EditFoodPinionActivity extends AppCompatActivity {
     private void addTextChangedListeners() {
         if (Settings.isRestaurantMandatory())
             restaurantEditText.addTextChangedListener(newFoodPinionTextWatcher);
-        if (Settings.isNameMandatory())
+        if (Settings.isDishMandatory())
             dishNameEditText.addTextChangedListener(newFoodPinionTextWatcher);
         if (Settings.isCommentMandatory())
             commentEditText.addTextChangedListener(newFoodPinionTextWatcher);
@@ -143,7 +143,7 @@ public class EditFoodPinionActivity extends AppCompatActivity {
 
         Restaurant restaurant = new Restaurant(restaurantName);
         Dish dish = new Dish(dishName, restaurant);
-        FoodPinion foodPinion = new FoodPinion(dish, comment, this);
+//        FoodPinion foodPinion = new FoodPinion(dish, comment, this);
 
         if (checkFieldsAreValid()) {
             User user = Settings.getUser(this);
@@ -197,7 +197,32 @@ public class EditFoodPinionActivity extends AppCompatActivity {
             if (editOnly)
                 finish();
             else clearFoodPinionActivity();
+        } else {
+            afterFieldsNotValid();
         }
+    }
+
+    private void afterFieldsNotValid() {
+        EditText topInError = null;
+
+        if (dishNameEditText.getText().toString().trim().length() == 0
+                && Settings.isDishMandatory()) {
+            showError(dishNameEditText);
+            topInError = dishNameEditText;
+        }
+        if (restaurantEditText.getText().toString().trim().length() == 0
+                && Settings.isRestaurantMandatory()) {
+            showError(restaurantEditText);
+            topInError = restaurantEditText;
+        }
+        if (commentEditText.getText().toString().trim().length() == 0
+                && Settings.isCommentMandatory()) {
+            showError(commentEditText);
+            topInError = commentEditText;
+        }
+
+//        if (topInError != null)
+//            topInError.requestFocus();
     }
 
     private void confirmationToast(String addOrEdit, String name) {
@@ -220,13 +245,13 @@ public class EditFoodPinionActivity extends AppCompatActivity {
 
     private boolean checkFieldsAreValid() {
         boolean returnValue = true;
-        if (dishNameEditText.getText().toString().isEmpty()
-                && Settings.isNameMandatory())
+        if (dishNameEditText.getText().toString().trim().length() == 0
+                && Settings.isDishMandatory())
             returnValue = false;
-        if (restaurantEditText.getText().toString().isEmpty()
+        if (restaurantEditText.getText().toString().trim().length() == 0
                 && Settings.isRestaurantMandatory())
             returnValue = false;
-        if (commentEditText.getText().toString().isEmpty()
+        if (commentEditText.getText().toString().trim().length() == 0
                 && Settings.isCommentMandatory())
             returnValue = false;
         return returnValue;
