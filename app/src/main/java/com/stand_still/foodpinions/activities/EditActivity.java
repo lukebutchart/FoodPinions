@@ -24,6 +24,11 @@ import com.stand_still.foodpinions.classes.Settings;
 import com.stand_still.foodpinions.classes.User;
 import com.stand_still.foodpinions.exceptions.NoUserIDPassedToEditException;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static android.R.id.list;
+
 public class EditActivity extends AppCompatActivity {
 
     EditText dishNameEditText;
@@ -32,6 +37,9 @@ public class EditActivity extends AppCompatActivity {
     Button createFoodPinionButton;
     FoodPinion passedInFoodPinion;
     boolean editOnly;
+
+    ArrayList<EditText> editTextList = new ArrayList<>();
+
 
     static final String ADDED = "added";
     static final String EDITED = "edited";
@@ -129,6 +137,13 @@ public class EditActivity extends AppCompatActivity {
         dishNameEditText = (EditText) findViewById(R.id.dish_editText);
         commentEditText = (EditText) findViewById(R.id.comment_editText);
         createFoodPinionButton = (Button) findViewById(R.id.createFoodPinion_button);
+
+//        ArrayList<EditText> editTextList = new ArrayList<>();
+        if (editTextList.size() == 0) {
+            editTextList.add(restaurantEditText);
+            editTextList.add(dishNameEditText);
+            editTextList.add(commentEditText);
+        }
     }
 
     public void confirmFoodPinion(View view) {  // Todo: Run when pressing enter
@@ -204,6 +219,17 @@ public class EditActivity extends AppCompatActivity {
 
     private void afterFieldsNotValid() {
         EditText topInError = null;
+
+//        for (EditText editText :   //Todo: Sort this with ExtEditText
+//                editTextList) {
+//            if (editText.getText().toString().trim().length() == 0
+//                    && Settings.isDishMandatory()) {
+//                showError(dishNameEditText);
+//                topInError = dishNameEditText;
+//            }
+//        }
+
+//        dishNameEditText.is
 
         if (dishNameEditText.getText().toString().trim().length() == 0
                 && Settings.isDishMandatory()) {
