@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void moveToEditFoodPinion(FoodPinion foodPinion) {  // Todo: Fix so that changing the non-comment fields actually updates
-        Intent intent = new Intent(this, EditFoodPinionActivity.class);
+        Intent intent = new Intent(this, EditActivity.class);
         intent.putExtra(EXTRA_RESTAURANT_VALUE, foodPinion.getRestaurantName());
         intent.putExtra(EXTRA_DISH_VALUE, foodPinion.getDishName());
         intent.putExtra(EXTRA_EDITING_BOOLEAN, true);
@@ -214,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void moveToNewFoodPinion(String restaurantName, String dishName) {
-        Intent intent = new Intent(this, EditFoodPinionActivity.class);
+        Intent intent = new Intent(this, EditActivity.class);
         intent.putExtra(EXTRA_RESTAURANT_VALUE, restaurantName);
         intent.putExtra(EXTRA_DISH_VALUE, dishName);
         startActivity(intent);

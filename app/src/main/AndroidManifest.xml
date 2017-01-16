@@ -19,7 +19,7 @@
         <!--<activity android:name=".xbudget.activities.CreateOutgoingActivity" />-->
         <!--<activity android:name=".xbudget.activities.ViewOutgoingsActivity" />-->
         <!--<activity android:name=".xbudget.activities.MainBudgetActivity" />-->
-        <activity android:name=".activities.EditFoodPinionActivity" />
+        <activity android:name=".activities.EditActivity" />
     </application>
 
 </manifest>

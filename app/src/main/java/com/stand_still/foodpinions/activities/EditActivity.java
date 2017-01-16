@@ -24,7 +24,7 @@ import com.stand_still.foodpinions.classes.Settings;
 import com.stand_still.foodpinions.classes.User;
 import com.stand_still.foodpinions.exceptions.NoUserIDPassedToEditException;
 
-public class EditFoodPinionActivity extends AppCompatActivity {
+public class EditActivity extends AppCompatActivity {
 
     EditText dishNameEditText;
     EditText restaurantEditText;
